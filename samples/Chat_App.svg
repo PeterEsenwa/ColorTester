@@ -1,0 +1,48 @@
+<svg width="375" height="812" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 812" style="border-radius: 0.5rem;">
+    <!-- Font Reference -->
+    <defs>
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&amp;display=swap');
+            .chat-font {
+            font-family: 'Quicksand', sans-serif;
+            }
+        </style>
+    </defs>
+
+    <!-- Background -->
+    <rect width="100%" height="100%" fill="#E0E0E0" data-color-role="primary" />
+
+    <!-- Header -->
+    <rect width="100%" height="60" fill="#6200EA" data-color-role="secondary"/>
+    <text x="20" y="40" font-size="20" fill="#FFFFFF" data-color-role="text" class="chat-font">Chat</text>
+
+    <!-- Status Bar -->
+    <text x="187.5" y="20" font-size="14" fill="#FFFFFF" data-color-role="text" class="chat-font" text-anchor="middle">
+        12:34
+    </text>
+    <circle cx="345" cy="16" r="6" fill="#8C9EFF" data-color-role="accent"/>
+    <circle cx="360" cy="16" r="6" fill="#8C9EFF" data-color-role="accent"/>
+
+    <!-- Chat bubbles -->
+    <rect x="20" y="80" width="200" height="40" rx="10" ry="10" fill="#FFFFFF" data-color-role="secondary"/>
+    <text x="30" y="105" font-size="16" fill="#000000" data-color-role="text" class="chat-font">Hello, how are you?
+    </text>
+
+    <rect x="155" y="140" width="200" height="40" rx="10" ry="10" fill="#8C9EFF" data-color-role="accent"/>
+    <text x="165" y="165" font-size="16" fill="#000000" data-color-role="text" class="chat-font">I'm good, thank you!
+    </text>
+
+    <!-- Additional Chat bubbles -->
+    <rect x="20" y="190" width="200" height="40" rx="10" ry="10" fill="#FFFFFF" data-color-role="secondary"/>
+    <rect x="20" y="250" width="200" height="80" rx="10" ry="10" fill="#FFFFFF" data-color-role="secondary"/>
+    <rect x="155" y="350" width="200" height="40" rx="10" ry="10" fill="#8C9EFF" data-color-role="accent"/>
+    <rect x="135" y="410" width="220" height="60" rx="10" ry="10" fill="#8C9EFF" data-color-role="accent"/>
+
+    <!-- Input area -->
+    <rect width="100%" height="60" y="752" fill="#6200EA" data-color-role="secondary"/>
+    <text x="20" y="792" font-size="20" fill="#FFFFFF" data-color-role="text" class="chat-font">Type a message...</text>
+
+    <!-- Send Button and Icon -->
+    <circle cx="345" cy="782" r="20" fill="#FFF" data-color-role="accent"/>
+    <polygon points="340,772 340,792 355,782" fill="#6200EA" data-color-role="text"/>
+</svg>
