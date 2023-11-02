@@ -7,16 +7,22 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "story:build": "histoire build",
+    "story:dev": "histoire dev",
+    "story:preview": "histoire preview"
   },
   "devDependencies": {
-    "@histoire/plugin-nuxt": "^0.17.4",
-    "@histoire/plugin-vue": "^0.17.4",
+    "@histoire/plugin-nuxt": "0.17.3",
+    "@histoire/plugin-vue": "0.17.1",
     "@iconify-json/fluent": "^1.1.39",
+    "@vitejs/plugin-vue": "^4.4.0",
     "@iconify-json/svg-spinners": "^1.1.2",
     "@nuxt/devtools": "latest",
     "@unocss/nuxt": "^0.57.1",
-    "nuxt": "^3.8.0",
+    "nuxt": "3.7.4",
+    "histoire": "0.17.2",
+    "vite": "^4.5.0",
     "vue": "^3.3.7",
     "vue-router": "^4.2.5"
   }

@@ -1,4 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+import { nuxtModulesConfig } from './configs/nuxt/nuxt-modules.config';
+
+// Define Nuxt.js configuration.
 export default defineNuxtConfig({
-  devtools: { enabled: true }
+	...nuxtModulesConfig,
+
+	devtools: {
+		enabled: false
+	}
 })
