@@ -24,4 +24,9 @@
       <Folder Include="Controllers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ColorTesterAPI.Application\ColorTesterAPI.Application.csproj" />
+      <ProjectReference Include="..\ColorTesterAPI.Infrastructure.Persistence.InMemory\ColorTesterAPI.Infrastructure.Persistence.InMemory.csproj" />
+    </ItemGroup>
+
 </Project>

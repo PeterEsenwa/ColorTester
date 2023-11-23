@@ -4,5 +4,13 @@ namespace ColorTesterAPI.Application.DTOs;
 
 public class CreatePaletteRequest
 {
-    public List<PaletteColor> Colors { get; set; }
+    public List<PaletteColorDto> Colors { get; set; } = new();
+    
+    public List<PaletteColorDto> GetColors()
+    {
+        return Colors;
+    }
+    
+    // constructor
+    public CreatePaletteRequest() { }
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ColorTesterAPI.Application;
+using ColorTesterAPI.Application.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +13,65 @@ namespace ColorTesterAPI.Controllers
     [ApiController]
     public class PaletteController : ControllerBase
     {
-        // GET: api/
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly PaletteApplicationService _paletteService;
+    
+        public PaletteController(PaletteApplicationService paletteService)
         {
-            return new string[] { "value1", "value2" };
+            _paletteService = paletteService;
+        }
+    
+        [HttpPost(Name = "Create"), ActionName("Create")]
+        public async Task<IActionResult> Create([FromBody] CreatePaletteRequest request)
+        {
+            var id = await _paletteService.CreatePaletteAsync(request);
+            return CreatedAtAction(nameof(FindById), new { id = id }, null);
+        }
+        
+        
+        [HttpGet(Name = "FindAll")]
+        public async Task<IActionResult> FindAll()
+        {
+            var palettes = await _paletteService.GetPalettesAsync();
+            return Ok(palettes);
         }
 
-        // GET: api//5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}", Name = "FindByID")]
+        public Task<IActionResult> FindById(Guid id)
         {
-            return "value";
+            var paletteTask = _paletteService.GetPaletteAsync(id);
+            
+            return paletteTask.ContinueWith<IActionResult>(task =>
+            {
+                var palette = task.Result;
+                if (palette == null)
+                {
+                    return NotFound();
+                }
+                return Ok(palette);
+            });
         }
 
-        // POST: api/
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPut("{id}" , Name = "Update")]
+        public Task<IActionResult> Update(Guid id, [FromBody] CreatePaletteRequest request)
         {
-        }
-
-        // PUT: api//5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            var paletteTask = _paletteService.GetPaletteAsync(id);
+            
+            return paletteTask.ContinueWith<IActionResult>(task =>
+            {
+                var palette = task.Result;
+                if (palette == null)
+                {
+                    return NotFound();
+                }
+                return Ok(palette);
+            });
         }
 
         // DELETE: api//5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
+            var paletteTask = _paletteService.GetPaletteAsync(id);
         }
     }
 }
