@@ -1,8 +1,9 @@
+using ColorTesterAPI.Domain.Abstract;
 using ColorTesterAPI.Domain.ValueObjects;
 
 namespace ColorTesterAPI.Domain.Entities
 {
-    public class Palette
+    public class Palette : AuditableEntity
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
         private Dictionary<ColorRole, PaletteColor> _colors = new();

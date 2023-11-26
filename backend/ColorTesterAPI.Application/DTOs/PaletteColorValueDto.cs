@@ -11,7 +11,7 @@ public class PaletteColorValueDtoConverter : JsonConverter<PaletteColorValueDto>
         using var doc = JsonDocument.ParseValue(ref reader);
         var root = doc.RootElement;
         
-        var type = root.GetProperty("Type").GetInt32();
+        var type = root.GetProperty("type").GetInt32();
         switch (type)
         {
             case 0:
