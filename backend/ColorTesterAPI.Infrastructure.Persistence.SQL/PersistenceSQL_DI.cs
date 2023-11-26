@@ -12,7 +12,7 @@ public static class PersistenceSQL_DI
     {
         services.AddDbContext<ColorTesterDbContext>(options =>
         {
-            options.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=postgres");
+            options.UseNpgsql("Host=localhost;Port=5432;Database=color_tester;Username=postgres;Password=postgres");
         });
         
         services.AddScoped<IPaletteQueryRepository, PaletteSqlRepository>();

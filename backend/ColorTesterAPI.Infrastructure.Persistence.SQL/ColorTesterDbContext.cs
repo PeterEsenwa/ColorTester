@@ -2,6 +2,7 @@
 using ColorTesterAPI.Domain.Entities;
 using ColorTesterAPI.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 
 namespace ColorTesterAPI.Infrastructure.Persistence.SQL;
@@ -31,7 +32,13 @@ public class ColorTesterDbContext : DbContext
                 .HasConversion(
                     c => JsonConvert.SerializeObject(c),
                     c => JsonConvert.DeserializeObject<Dictionary<ColorRole, PaletteColor>>(c) ?? new Dictionary<ColorRole, PaletteColor>()
-                ).HasColumnName("colors");
+                ).HasColumnName("colors")
+                .HasColumnType("jsonb")
+                .Metadata.SetValueComparer(new ValueComparer<Dictionary<ColorRole, PaletteColor>>(
+                    (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToDictionary(v => v.Key, v => v.Value)
+                ));
         });
     }
 }
