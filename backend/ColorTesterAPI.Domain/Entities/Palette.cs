@@ -6,34 +6,29 @@ namespace ColorTesterAPI.Domain.Entities
     public class Palette : AuditableEntity
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
-        private Dictionary<ColorRole, PaletteColor> _colors = new();
+        public Dictionary<ColorRole, PaletteColor> Colors = new();
 
         private Palette() { }
 
         public void AddColor(PaletteColor color)
         {
-            if (!_colors.TryAdd(color.Role, color))
+            if (!Colors.TryAdd(color.Role, color))
                 throw new ArgumentException($"The palette already contains a color with the role {color.Role}.");
         }
 
         public bool RemoveColor(ColorRole role)
         {
-            return _colors.Remove(role);
+            return Colors.Remove(role);
         }
 
         public void UpdateColor(PaletteColor newColor)
         {
-            _colors[newColor.Role] = newColor;
-        }
-
-        public List<PaletteColor> GetColors()
-        {
-            return _colors.Values.ToList();
+            Colors[newColor.Role] = newColor;
         }
 
         public PaletteColor GetColorByRole(ColorRole role)
         {
-            if (!_colors.TryGetValue(role, out var color))
+            if (!Colors.TryGetValue(role, out var color))
                 throw new ArgumentException($"The palette does not contain a color with the role {role}.");
             return color;
         }
@@ -57,7 +52,7 @@ namespace ColorTesterAPI.Domain.Entities
             {
                 return new Palette
                 {
-                    _colors = new Dictionary<ColorRole, PaletteColor>(_colors)
+                    Colors = new Dictionary<ColorRole, PaletteColor>(_colors)
                 };
             }
         }

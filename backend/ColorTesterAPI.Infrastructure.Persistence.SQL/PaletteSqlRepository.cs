@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ColorTesterAPI.Infrastructure.Persistence.SQL
 {
-    public class PaletteRepository : IPaletteCommandRepository, IPaletteQueryRepository
+    public class PaletteSqlRepository : IPaletteCommandRepository, IPaletteQueryRepository
     {
         private readonly ColorTesterDbContext _context;
 
-        public PaletteRepository(ColorTesterDbContext context)
+        public PaletteSqlRepository(ColorTesterDbContext context)
         {
             _context = context;
         }

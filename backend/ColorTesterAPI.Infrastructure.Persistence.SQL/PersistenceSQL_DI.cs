@@ -1,3 +1,4 @@
+using ColorTesterAPI.Application;
 using ColorTesterAPI.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,9 +12,13 @@ public static class PersistenceSQL_DI
     {
         services.AddDbContext<ColorTesterDbContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("PostgreSQLConnection"));
+            options.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=postgres");
         });
-
+        
+        services.AddScoped<IPaletteQueryRepository, PaletteSqlRepository>();
+        services.AddScoped<IPaletteCommandRepository, PaletteSqlRepository>();
+        services.AddScoped<PaletteApplicationService>();
+        
         return services;
     }
 }
