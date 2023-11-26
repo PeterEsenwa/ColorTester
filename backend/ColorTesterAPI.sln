@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorTesterAPI.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorTesterAPI.Application", "ColorTesterAPI.Application\ColorTesterAPI.Application.csproj", "{23E35641-74EC-4011-8849-005F46AFE7C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorTesterAPl.Infrastructure.Persistence.SQL", "ColorTesterAPl.Infrastructure.Persistence.SQL\ColorTesterAPl.Infrastructure.Persistence.SQL.csproj", "{4C4C8C32-623A-48D1-929B-63A3662E1D6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorTesterAPI.Infrastructure.Persistence.SQL", "ColorTesterAPI.Infrastructure.Persistence.SQL\ColorTesterAPI.Infrastructure.Persistence.SQL.csproj", "{4C4C8C32-623A-48D1-929B-63A3662E1D6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

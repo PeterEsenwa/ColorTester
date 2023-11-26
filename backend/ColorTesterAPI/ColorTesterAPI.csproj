@@ -28,7 +28,7 @@
     <ItemGroup>
       <ProjectReference Include="..\ColorTesterAPI.Application\ColorTesterAPI.Application.csproj" />
       <ProjectReference Include="..\ColorTesterAPI.Infrastructure.Persistence.InMemory\ColorTesterAPI.Infrastructure.Persistence.InMemory.csproj" />
-      <ProjectReference Include="..\ColorTesterAPl.Infrastructure.Persistence.SQL\ColorTesterAPl.Infrastructure.Persistence.SQL.csproj" />
+      <ProjectReference Include="..\ColorTesterAPI.Infrastructure.Persistence.SQL\ColorTesterAPI.Infrastructure.Persistence.SQL.csproj" />
     </ItemGroup>
 
 </Project>
