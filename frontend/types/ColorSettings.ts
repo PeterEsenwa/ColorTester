@@ -1,4 +1,5 @@
 import type { KeysOf } from '#app/composables/asyncData';
+import type { RequireAtLeastOne } from 'type-fest';
 
 export type ColorVariants =
 	| { 50: string }
@@ -13,15 +14,22 @@ export type ColorVariants =
 	| { 900: string }
 	| string;
 
-export type ThemeColors =
-	| { primary: ColorVariants }
-	| { secondary: ColorVariants }
-	| { background: ColorVariants }
-	| { accent: ColorVariants }
-	| { error: ColorVariants }
-	| { success: ColorVariants }
-	| { warning: ColorVariants }
-	| { text: ColorVariants };
+export enum ThemeColor {
+	primary = 'primary',
+	secondary = 'secondary',
+	background = 'background',
+	accent = 'accent',
+	error = 'error',
+	success = 'success',
+	warning = 'warning',
+	text = 'text',
+}
+
+export type ThemeColors = RequireAtLeastOne<{ [key in ThemeColor]: string }>;
+
+const themeColors: ThemeColors = {
+	primary: '',
+}
 
 export type ThemeColorKeys = KeysOf<ThemeColors>
 
