@@ -1,7 +1,7 @@
-using Xunit;
 using ColorTesterAPI.Domain.Abstract;
+using Xunit;
 
-namespace ColorTesterAPI.Domain.Tests;
+namespace ColorTesterAPI.Domain.Tests.Abstract;
 
 public class AuditableEntityTests
 {
@@ -31,5 +31,15 @@ public class AuditableEntityTests
             throw new NullReferenceException("DeletedAt is null.");
 
         Assert.True((DateTime.UtcNow - entity.DeletedAt.Value).TotalSeconds < 1);
+    }
+
+    [Fact]
+    public void MarkCreated_SetsCreatedAtToCurrentTime()
+    {
+        var entity = new TestEntity();
+        
+        Thread.Sleep(1000);
+
+        Assert.True(entity.CreatedAt.AddSeconds(1) < DateTime.UtcNow);
     }
 }

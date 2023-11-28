@@ -1,28 +1,19 @@
 ﻿using System.Globalization;
+using Newtonsoft.Json;
 
 namespace ColorTesterAPI.Domain.ValueObjects;
 
 public class Color
 {
-    public int Red { get; private set; }
-    public int Green { get; private set; }
-    public int Blue { get; private set; }
-    public int? Alpha { get; private set; }
-
-    private Color() {}
-        
-    public Color(int red, int green, int blue, int? alpha)
+    [JsonConstructor]
+    public Color(int red, int green, int blue, int? alpha = null)
     {
         if (!IsValueValid(red) || !IsValueValid(green) || !IsValueValid(blue))
-        {
             throw new ArgumentOutOfRangeException(nameof(alpha), "All color parameters must be between 0 and 255.");
-        }
-        
+
         if (alpha is not null && !IsValueValid(alpha.Value))
-        {
             throw new ArgumentOutOfRangeException(nameof(alpha), "Alpha parameter must be between 0 and 255.");
-        }
-        
+
         Alpha = alpha;
         Red = red;
         Green = green;
@@ -39,7 +30,7 @@ public class Color
             ParseColorComponent(hex, 1, 3, out var alpha);
             Alpha = alpha;
         }
-        
+
         ParseColorComponent(hex, hex.Length - 6, hex.Length - 4, out var red);
         ParseColorComponent(hex, hex.Length - 4, hex.Length - 2, out var green);
         ParseColorComponent(hex, hex.Length - 2, hex.Length, out var blue);
@@ -48,6 +39,11 @@ public class Color
         Green = green;
         Blue = blue;
     }
+
+    public int Red { get; }
+    public int Green { get; }
+    public int Blue { get; }
+    public int? Alpha { get; }
 
     private static void CheckHexLength(string hex)
     {
