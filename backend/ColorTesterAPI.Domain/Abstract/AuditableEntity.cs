@@ -3,8 +3,8 @@ namespace ColorTesterAPI.Domain.Abstract;
 public abstract class AuditableEntity
 {
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
-    public DateTime? DeletedAt { get; set; }
+    public DateTime? UpdatedAt { get; private set; }
+    public DateTime? DeletedAt { get; private set; }
 
     public void MarkUpdated()
     {
