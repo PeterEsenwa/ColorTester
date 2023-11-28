@@ -18,4 +18,8 @@
       <ProjectReference Include="..\ColorTesterAPI.Domain\ColorTesterAPI.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
 </Project>

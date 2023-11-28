@@ -20,7 +20,7 @@ namespace ColorTesterAPI.Controllers
             _paletteService = paletteService;
         }
     
-        [HttpPost(Name = "Create"), ActionName("Create")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePaletteRequest request)
         {
             var id = await _paletteService.CreatePaletteAsync(request);
@@ -28,14 +28,14 @@ namespace ColorTesterAPI.Controllers
         }
         
         
-        [HttpGet(Name = "FindAll")]
+        [HttpGet]
         public async Task<IActionResult> FindAll()
         {
             var palettes = await _paletteService.GetPalettesAsync();
             return Ok(palettes);
         }
 
-        [HttpGet("{id}", Name = "FindByID")]
+        [HttpGet("{id}")]
         public Task<IActionResult> FindById(Guid id)
         {
             var paletteTask = _paletteService.GetPaletteAsync(id);
@@ -51,7 +51,7 @@ namespace ColorTesterAPI.Controllers
             });
         }
 
-        [HttpPut("{id}" , Name = "Update")]
+        [HttpPut("{id}")]
         public Task<IActionResult> Update(Guid id, [FromBody] CreatePaletteRequest request)
         {
             var paletteTask = _paletteService.GetPaletteAsync(id);
