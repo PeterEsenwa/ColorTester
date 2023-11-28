@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorTesterAPI.Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorTesterAPI.Infrastructure.Persistence.SQL", "ColorTesterAPI.Infrastructure.Persistence.SQL\ColorTesterAPI.Infrastructure.Persistence.SQL.csproj", "{4C4C8C32-623A-48D1-929B-63A3662E1D6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorTesterAPI.Domain.Tests", "ColorTesterAPI.Domain.Tests\ColorTesterAPI.Domain.Tests.csproj", "{CC868B5B-658C-4F41-9A36-1185FCA90DF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{4C4C8C32-623A-48D1-929B-63A3662E1D6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C4C8C32-623A-48D1-929B-63A3662E1D6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C4C8C32-623A-48D1-929B-63A3662E1D6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC868B5B-658C-4F41-9A36-1185FCA90DF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC868B5B-658C-4F41-9A36-1185FCA90DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC868B5B-658C-4F41-9A36-1185FCA90DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC868B5B-658C-4F41-9A36-1185FCA90DF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
