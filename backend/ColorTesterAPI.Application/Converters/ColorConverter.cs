@@ -1,7 +1,7 @@
 using ColorTesterAPI.Domain.ValueObjects;
 using Newtonsoft.Json;
 
-namespace ColorTesterAPI.Converters;
+namespace ColorTesterAPI.Application.Converters;
 
 public class ColorConverter : JsonConverter
 {

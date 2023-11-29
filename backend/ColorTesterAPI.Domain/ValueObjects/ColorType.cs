@@ -1,4 +1,4 @@
-namespace ColorTesterAPI.Application.DTOs;
+namespace ColorTesterAPI.Domain.ValueObjects;
 
 public enum ColorType
 {

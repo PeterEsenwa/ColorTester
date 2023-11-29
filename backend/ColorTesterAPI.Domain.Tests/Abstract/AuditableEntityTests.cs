@@ -14,8 +14,7 @@ public class AuditableEntityTests
 
         entity.MarkUpdated();
         
-        if (entity.UpdatedAt == null)
-            throw new NullReferenceException("UpdatedAt is null.");
+        Assert.NotNull(entity.UpdatedAt);
 
         Assert.True((DateTime.UtcNow - entity.UpdatedAt.Value).TotalSeconds < 1);
     }
@@ -27,8 +26,7 @@ public class AuditableEntityTests
 
         entity.MarkDeleted();
         
-        if (entity.DeletedAt == null)
-            throw new NullReferenceException("DeletedAt is null.");
+        Assert.NotNull(entity.DeletedAt);
 
         Assert.True((DateTime.UtcNow - entity.DeletedAt.Value).TotalSeconds < 1);
     }

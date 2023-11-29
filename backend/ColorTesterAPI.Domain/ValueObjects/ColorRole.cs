@@ -15,5 +15,5 @@ public enum ColorRole
     OnAccent,
     OnError,
     OnSuccess,
-    OnWarning,
+    OnWarning
 }
