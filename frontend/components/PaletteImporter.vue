@@ -41,35 +41,11 @@
 								Show "On*" Colors
 							</label>
 						</div>
-						<div
+						<ColorInputs
 							v-if="showOnColors"
-							class="color-inputs">
-							<div
-								class="color-input"
-								v-for="[name, value] in getThemeColorsEntries(themeColors)"
-								:key="name"
-							>
-								<label
-									:for="name"
-									class="color-label"
-								>{{ name }}
-								</label>
-								<label
-									:for="name"
-									class="color-display"
-									:style="{ backgroundColor: getColor(value) }"
-								>
-									<input
-										type="color"
-										hidden
-										:id="name"
-										:name="`${name}Color`"
-										class="color-picker"
-										v-model="themeColors[name]"
-									/>
-								</label>
-							</div>
-						</div>
+							:colors="themeOnColors"
+						>
+						</ColorInputs>
 						<div class="json-import my-4">
 							<textarea
 								placeholder="Paste your JSON here"
@@ -102,16 +78,15 @@
 >
 import { Dialog, DialogPanel, DialogTitle, DialogDescription, DialogOverlay } from '@headlessui/vue';
 import type { ColorSettings } from '@/types/ColorSettings';
-import { generateThemeColorsObject } from '~/utils/generateThemeColorsObject';
+import { generateThemeColorsObject, generateThemeOnColorsObject } from '~/utils/generateThemeColorsObject';
 import { useToggle } from '@vueuse/core';
-import type { MainColorRoles } from '~/types/ColorRole';
-import { getColor } from '~/utils/getColor';
-import { getThemeColorsEntries } from '~/utils/getThemeColorsEntries';
+import { type MainColorRoles, type OnColorRoles } from '~/types/ColorRole';
 
 const isOpen = ref(false);
 const jsonInput = ref('');
 const [ showOnColors, toggleOnColors ] = useToggle(false);
 const themeColors = ref<MainColorRoles>(generateThemeColorsObject());
+const themeOnColors = ref<OnColorRoles>(generateThemeOnColorsObject());
 
 // Emits
 const emit = defineEmits<{

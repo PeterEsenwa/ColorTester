@@ -1,7 +1,7 @@
 <template>
 	<div class="color-inputs">
 		<div class="color-input"
-			v-for="name in Object.keys(themeColors) as [MainColorRole]"
+			v-for="name in Object.keys(themeColors) as[ MainColorRole | OnColorRole]"
 			:key="name"
 		>
 			<label :for="name" class="color-label">{{ name }}</label>
@@ -27,20 +27,24 @@
 <script setup lang="ts">
 import { getColor } from '~/utils/getColor';
 import type { PropType } from 'vue';
-import { type MainColorRoles, MainColorRole } from '~/types/ColorRole';
+import { MainColorRole, OnColorRole, type ColorRoles } from '~/types/ColorRole';
 import { ColorType } from '~/types/ColorType';
 import type { HEX } from '~/types/PaletteColor';
+import { useVModel } from '@vueuse/core';
 
-defineProps({
+const props = defineProps({
 	colors: {
-		type: Object as PropType<MainColorRoles>,
+		type: Object as PropType<ColorRoles>,
 		required: true,
 	},
 });
 
-const themeColors = ref<MainColorRoles>(generateThemeColorsObject());
+const themeColors = useVModel(props, 'colors');
 
-const updateColor = (name: MainColorRole, value: HEX) => {
+const updateColor = (
+	name: MainColorRole | OnColorRole,
+	value: HEX
+) => {
 	themeColors.value[name] = {
 		type: ColorType.Color,
 		value,
