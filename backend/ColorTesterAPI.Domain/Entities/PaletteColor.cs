@@ -1,9 +1,10 @@
+using ColorTesterAPI.Domain.Interfaces;
 using ColorTesterAPI.Domain.ValueObjects;
 using Newtonsoft.Json;
 
 namespace ColorTesterAPI.Domain.Entities;
 
-public class PaletteColor
+public class PaletteColor : IPaletteColor
 {
     [JsonConstructor]
     public PaletteColor(ColorRole role, PaletteColorValue value)
@@ -28,6 +29,6 @@ public class PaletteColor
     }
 
     public Guid Id { get; } = Guid.NewGuid();
-    public ColorRole Role { get; private set; }
-    public PaletteColorValue Value { get; private set; }
+    public ColorRole Role { get; }
+    public PaletteColorValue Value { get; }
 }

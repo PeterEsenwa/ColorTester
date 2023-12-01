@@ -7,16 +7,6 @@ internal class PaletteRepository : IPaletteQueryRepository, IPaletteCommandRepos
 {
     private readonly List<Palette> _palettes = new();
 
-    public Task<IEnumerable<Palette>> GetPalettesAsync()
-    {
-        return Task.FromResult(_palettes.AsEnumerable());
-    }
-
-    public Task<Palette?> GetPaletteAsync(Guid id)
-    {
-        return Task.FromResult(_palettes.FirstOrDefault(p => p.Id == id));
-    }
-
     public Task AddPaletteAsync(Palette palette)
     {
         _palettes.Add(palette);
@@ -26,9 +16,9 @@ internal class PaletteRepository : IPaletteQueryRepository, IPaletteCommandRepos
     public Task UpdatePaletteAsync(Palette palette)
     {
         var existingPalette = _palettes.FirstOrDefault(p => p.Id == palette.Id);
-        
+
         if (existingPalette == null) throw new ArgumentException("Palette not found");
-        
+
         _palettes.Remove(existingPalette);
         _palettes.Add(palette);
 
@@ -40,9 +30,19 @@ internal class PaletteRepository : IPaletteQueryRepository, IPaletteCommandRepos
         var existingPalette = _palettes.FirstOrDefault(p => p.Id == id);
 
         if (existingPalette == null) throw new ArgumentException("Palette not found");
-        
+
         _palettes.Remove(existingPalette);
-        
+
         return Task.CompletedTask;
+    }
+
+    public Task<IEnumerable<Palette>> GetPalettesAsync()
+    {
+        return Task.FromResult(_palettes.AsEnumerable());
+    }
+
+    public Task<Palette?> GetPaletteAsync(Guid id)
+    {
+        return Task.FromResult(_palettes.FirstOrDefault(p => p.Id == id));
     }
 }

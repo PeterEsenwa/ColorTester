@@ -1,64 +1,73 @@
 using ColorTesterAPI.Application.DTOs;
+using ColorTesterAPI.Domain.ValueObjects;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 namespace ColorTesterAPI.Application.Converters;
 
 public class ColorDtoConverter : JsonConverter
 {
+    private const string PropertyName = "type";
+
+    private static ColorType GetPaletteColorType(JObject jsonObject)
+    {
+        var jToken = jsonObject[PropertyName];
+
+        if (jToken == null)
+            throw new JsonSerializationException($"Missing required property '{PropertyName}'.");
+
+        try
+        {
+            return JsonConvert.DeserializeObject<ColorType>($"\"{jToken}\"");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new JsonSerializationException($"Unable to parse '{PropertyName}' value '{jToken}' to ColorType.");
+        }
+    }
+
+    private static object ParseJsonObject(JToken jsonObject, JsonSerializer serializer, ColorType type)
+    {
+        return type switch
+        {
+            ColorType.Color => jsonObject.ToObject<ColorValueDto>(serializer) ??
+                               throw new InvalidOperationException("ColorValueDto is null"),
+            ColorType.Dictionary => jsonObject.ToObject<ColorDictionaryDto>(serializer) ??
+                                    throw new InvalidOperationException("ColorDictionaryDto is null"),
+            _ => throw new InvalidOperationException("Unsupported PaletteColorValueDto type")
+        };
+    }
+
     public override bool CanConvert(Type objectType)
     {
-        return objectType == typeof(ColorValueDto) || objectType == typeof(ColorDictionaryDto) || objectType == typeof(PaletteColorValueDto);
+        return objectType == typeof(PaletteColorValueDto);
     }
-    
-    public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+
+    public override object ReadJson(JsonReader reader, Type objectType, object? existingValue,
+        JsonSerializer serializer)
     {
         var jsonObject = JObject.Load(reader);
 
-        var jToken = jsonObject["type"];
-        
-        if (jToken == null)
-            throw new JsonSerializationException("Missing 'type' property in PaletteColorValueDto");
-        
-        var type = jToken.Value<int>();
-        
-        var nestedSerializer = new JsonSerializer();
-        
-        foreach (var converter in serializer.Converters)
-        {
-            if (converter.GetType() != typeof(ColorDtoConverter))
-            {
-                nestedSerializer.Converters.Add(converter);
-            }
-        }
-        
-        switch (type)
-        {
-            case 0:
-                return jsonObject.ToObject<ColorValueDto>(nestedSerializer) ?? throw new InvalidOperationException("ColorValueDto is null");
-            case 1:
-                return jsonObject.ToObject<ColorDictionaryDto>(nestedSerializer) ?? throw new InvalidOperationException("ColorDictionaryDto is null");
-            default:
-                throw new InvalidOperationException("Unsupported PaletteColorValueDto type");
-        }
+        var paletteColorType = GetPaletteColorType(jsonObject);
+
+        // accept type as string or integer
+        return ParseJsonObject(jsonObject, serializer, paletteColorType);
     }
-    
+
     public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-        if (value == null)
+        switch (value)
         {
-            writer.WriteNull();
-            return;
-        }
-
-        var color = (PaletteColorValueDto)value;
-        switch (color.Type)
-        {
-            case ColorType.Color:
-                serializer.Serialize(writer, (ColorValueDto)color);
+            case ColorValueDto colorValueDto:
+                serializer.Serialize(writer, colorValueDto);
                 break;
-            case ColorType.Dictionary:
-                serializer.Serialize(writer, (ColorDictionaryDto)color);
+            case ColorDictionaryDto colorDictionaryDto:
+                serializer.Serialize(writer, colorDictionaryDto);
+                break;
+            case null:
+                writer.WriteNull();
                 break;
             default:
                 throw new InvalidOperationException("Unsupported PaletteColorValueDto type");

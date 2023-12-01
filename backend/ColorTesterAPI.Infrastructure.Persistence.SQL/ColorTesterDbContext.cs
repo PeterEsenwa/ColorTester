@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using ColorTesterAPI.Application.Converters;
 using ColorTesterAPI.Domain.Entities;
 using ColorTesterAPI.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +17,17 @@ public class ColorTesterDbContext : DbContext
     // DbSet properties representing your tables in the PostgreSQL database
     public DbSet<Palette> Palettes { get; set; } = null!;
 
+    private static Dictionary<ColorRole, PaletteColor> DoDeserializeObject(string json)
+    {
+        var settings = new JsonSerializerSettings();
+
+        settings.Converters.Add(new PaletteColorValueConverter());
+
+        var paletteColors = JsonConvert.DeserializeObject<Dictionary<ColorRole, PaletteColor>>(json, settings);
+        return paletteColors ??
+               new Dictionary<ColorRole, PaletteColor>();
+    }
+
     // Fluent API configuration
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,7 +42,7 @@ public class ColorTesterDbContext : DbContext
             entity.Property(e => e.Colors)
                 .HasConversion(
                     c => JsonConvert.SerializeObject(c),
-                    c => JsonConvert.DeserializeObject<Dictionary<ColorRole, PaletteColor>>(c) ?? new Dictionary<ColorRole, PaletteColor>()
+                    c => DoDeserializeObject(c)
                 ).HasColumnName("colors")
                 .HasColumnType("jsonb")
                 .Metadata.SetValueComparer(new ValueComparer<Dictionary<ColorRole, PaletteColor>>(

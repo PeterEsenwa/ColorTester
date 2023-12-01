@@ -62,6 +62,13 @@ public class ColorTests
         Assert.Equal(255, color.Green);
         Assert.Equal(255, color.Blue);
         Assert.Equal(255, color.Alpha);
+        
+        color = new Color("#FF00FF00");
+        
+        Assert.Equal(0, color.Red);
+        Assert.Equal(255, color.Green);
+        Assert.Equal(0, color.Blue);
+        Assert.Equal(255, color.Alpha);
     }
     
     [Fact]

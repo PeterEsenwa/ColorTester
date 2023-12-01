@@ -38,6 +38,7 @@ public class PaletteApplicationService
                 default:
                     throw new InvalidOperationException("Unsupported PaletteColorValueDto type");
             }
+
             paletteBuilder.AddColor(new PaletteColor(color.Role, colorValue));
         }
 
@@ -51,7 +52,7 @@ public class PaletteApplicationService
     {
         return await _paletteQueryRepository.GetPalettesAsync();
     }
-    
+
     public async Task<Palette?> GetPaletteAsync(Guid id)
     {
         return await _paletteQueryRepository.GetPaletteAsync(id);

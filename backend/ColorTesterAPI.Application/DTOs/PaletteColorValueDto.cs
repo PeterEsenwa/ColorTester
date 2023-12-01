@@ -1,6 +1,4 @@
 using ColorTesterAPI.Domain.ValueObjects;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ColorTesterAPI.Application.DTOs;
 
