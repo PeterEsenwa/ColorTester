@@ -1,30 +1,18 @@
-import { type ThemeColors, ThemeColor, type ColorVariants } from '~/types/ColorSettings';
-import type { Entries } from 'type-fest';
+import type { PaletteColor } from '~/types/PaletteColor';
+import { ColorType } from '~/types/ColorType';
+import { type MainColorRoles, MainColorRole } from '~/types/ColorRole';
 
-export const generateThemeColorsObject = (): ThemeColors => {
-	const keys = Object.values(ThemeColor);
+export const generateThemeColorsObject = (): MainColorRoles => {
+	const keys = Object.values(MainColorRole);
 
-	const colors = {} as ThemeColors;
+	const colors = {} as MainColorRoles;
 
 	for (const key of keys) {
-		colors[key] = '';
+		colors[key] = {
+			type: ColorType.Color,
+			value: '#000000'
+		} as PaletteColor['value'];
 	}
 
 	return colors;
 };
-
-export const getColor = (color: ColorVariants | undefined): string => {
-	if (!color) {
-		return '';
-	}
-
-	if (typeof color === 'string') {
-		return color;
-	}
-
-	return Object.values(color)[0];
-}
-
-export const getThemeColorsEntries = (colors: ThemeColors): Entries<ThemeColors> => {
-	return Object.entries(colors) as Entries<ThemeColors>;
-}
