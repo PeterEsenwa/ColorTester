@@ -4,13 +4,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import type { ColorSettings } from '@/types/ColorSettings';
-import type { MainColorRoles } from '~/types/ColorRole';
+import type { ColorRoles } from '~/types/ColorRole';
+import type { PaletteColors } from '~/types/PaletteColor';
 
 // Props
 const props = defineProps<{
 	svgPath: string;
-	colorSettings: ColorSettings;
+	paletteColors: PaletteColors;
 }>();
 
 const emit = defineEmits<{
@@ -31,32 +31,43 @@ const loadAndRenderSVG = async () => {
 		const svgText = await response.text();
 
 		if (svgContainer.value) {
-			svgContainer.value.innerHTML = applyColorSettings(svgText, props.colorSettings);
+			svgContainer.value.innerHTML = applyColorSettings(svgText, props.paletteColors);
 		}
 	} catch (error) {
 		console.error(error);
 	}
 };
 
-const applyColorSettings = (svgText: string, colorSettings: ColorSettings): string => {
+const applyColorSettings = (svgText: string, paletteColors?: PaletteColors): string => {
 	const parser = new DOMParser();
 	const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
 	const svgElement = svgDoc.documentElement;
-	const colorRoles: MainColorRoles | undefined = colorSettings.colors;
 
-	if (!colorRoles) {
+	if (!paletteColors) {
 		return svgElement.outerHTML;
 	}
 
 	// Apply color settings to SVG elements
-	for (const colorRoleKey in colorRoles) {
-		const colorRole = colorRoles[colorRoleKey as keyof MainColorRoles];
+	for (const colorRoleKey in paletteColors) {
+
+		console.log(`Applying color role ${ colorRoleKey }`);
+
+		const colorRole = paletteColors[colorRoleKey as keyof ColorRoles];
 		const color = colorRole?.value;
-		const svgElements = svgElement.querySelectorAll(`[data-color-role="${ colorRoleKey }"]`);
+
+		if (!color) {
+			console.log(`No color for role ${ colorRoleKey }`);
+			continue;
+		}
+
+		const svgElements = svgElement.querySelectorAll(`[data-color-role="${ colorRoleKey.toLowerCase() }"]`);
 
 		for (const svgElement of svgElements) {
-			if (color && typeof color !== 'object') {
-				svgElement.setAttribute('fill', color);
+			console.log(`Setting color for:`, svgElement);
+
+			if (color.value && typeof color.value !== 'object') {
+				console.log(`String color: ${ color }`);
+				svgElement.setAttribute('fill', color.value);
 			}
 		}
 	}

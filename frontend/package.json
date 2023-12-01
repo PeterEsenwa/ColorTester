@@ -21,6 +21,7 @@
     "@unocss/nuxt": "^0.57.1",
     "@vitejs/plugin-vue": "^4.4.0",
     "@vueuse/core": "^10.6.1",
+    "axios": "^1.6.2",
     "histoire": "0.17.2",
     "nuxt": "3.7.4",
     "nuxt-headlessui": "^1.1.4",

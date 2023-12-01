@@ -77,10 +77,12 @@
 	lang="ts"
 >
 import { Dialog, DialogPanel, DialogTitle, DialogDescription, DialogOverlay } from '@headlessui/vue';
-import type { ColorSettings } from '@/types/ColorSettings';
 import { generateThemeColorsObject, generateThemeOnColorsObject } from '~/utils/generateThemeColorsObject';
 import { useToggle } from '@vueuse/core';
-import { type MainColorRoles, type OnColorRoles } from '~/types/ColorRole';
+import { type MainColorRoles, type OnColorRoles, type ColorRoles, type ColorRole } from '~/types/ColorRole';
+import type { PaletteColor } from '~/types/PaletteColor';
+import { ColorType } from '~/types/ColorType';
+import type { RequireAtLeastOne } from 'type-fest';
 
 const isOpen = ref(false);
 const jsonInput = ref('');
@@ -90,7 +92,7 @@ const themeOnColors = ref<OnColorRoles>(generateThemeOnColorsObject());
 
 // Emits
 const emit = defineEmits<{
-	(event: 'update-color-settings', colorSettings: ColorSettings): void;
+	(event: 'update', colorSettings: RequireAtLeastOne<Record<ColorRole, PaletteColor>>): void;
 }>();
 
 const parseJsonInput = () => {
@@ -101,8 +103,15 @@ const parseJsonInput = () => {
 	}
 };
 
+const colorSettings = computed<ColorRoles>(() => {
+	return {
+		...themeColors.value,
+		...themeOnColors.value,
+	};
+});
+
 const confirmColors = () => {
-	emit('update-color-settings', { themeType: 'default', colors: themeColors.value });
+	emit('update', colorSettings.value);
 	isOpen.value = false;
 };
 </script>

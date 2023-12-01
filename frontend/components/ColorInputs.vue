@@ -29,7 +29,7 @@ import { getColor } from '~/utils/getColor';
 import type { PropType } from 'vue';
 import { MainColorRole, OnColorRole, type ColorRoles } from '~/types/ColorRole';
 import { ColorType } from '~/types/ColorType';
-import type { HEX } from '~/types/PaletteColor';
+import type { HEX, PaletteColor } from '~/types/PaletteColor';
 import { useVModel } from '@vueuse/core';
 
 const props = defineProps({
@@ -46,9 +46,12 @@ const updateColor = (
 	value: HEX
 ) => {
 	themeColors.value[name] = {
-		type: ColorType.Color,
-		value,
-	};
+		role: name,
+		value: {
+			type: ColorType.Color,
+			value,
+		}
+	} as PaletteColor;
 };
 </script>
 
