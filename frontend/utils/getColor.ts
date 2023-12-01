@@ -1,9 +1,11 @@
 import type { PaletteColor } from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
 import { ColorIntensity } from '~/types/ColorIntensity';
+import { isDef } from '@vueuse/shared';
 
 export const getColor = (color: PaletteColor['value'] | undefined): string => {
-	if (color === undefined) {
+	console.log(color);
+	if (!isDef(color) || !isDef(color.value)) {
 		return '';
 	}
 

@@ -4,7 +4,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import type { ColorSettings, ThemeColors, ColorVariants, LightDarkColorSettings } from '@/types/ColorSettings';
+import type { ColorSettings } from '@/types/ColorSettings';
+import type { MainColorRoles } from '~/types/ColorRole';
 
 // Props
 const props = defineProps<{
@@ -41,7 +42,7 @@ const applyColorSettings = (svgText: string, colorSettings: ColorSettings): stri
 	const parser = new DOMParser();
 	const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
 	const svgElement = svgDoc.documentElement;
-	const colorRoles: ThemeColors | undefined = colorSettings.colors;
+	const colorRoles: MainColorRoles | undefined = colorSettings.colors;
 
 	if (!colorRoles) {
 		return svgElement.outerHTML;
@@ -49,14 +50,13 @@ const applyColorSettings = (svgText: string, colorSettings: ColorSettings): stri
 
 	// Apply color settings to SVG elements
 	for (const colorRoleKey in colorRoles) {
-		if (colorRoles.hasOwnProperty(colorRoleKey)) {
-			const colorRole = colorRoles[colorRoleKey as keyof typeof colorRoles] as ColorVariants;
-			// Only use color string
-			if (typeof colorRole === 'string') {
-				const svgElements = svgElement.querySelectorAll(`[data-color-role="${ colorRoleKey }"]`);
-				svgElements.forEach((svgElement) => {
-					svgElement.setAttribute('fill', colorRole);
-				});
+		const colorRole = colorRoles[colorRoleKey as keyof MainColorRoles];
+		const color = colorRole?.value;
+		const svgElements = svgElement.querySelectorAll(`[data-color-role="${ colorRoleKey }"]`);
+
+		for (const svgElement of svgElements) {
+			if (color && typeof color !== 'object') {
+				svgElement.setAttribute('fill', color);
 			}
 		}
 	}

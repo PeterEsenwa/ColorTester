@@ -23,17 +23,27 @@
 					<DialogDescription class="description">
 						Enter color values manually or import a JSON configuration.
 					</DialogDescription>
-					<div class="checkbox-container">
-						<input
-							type="checkbox"
-							id="toggle-on-colors"
-							v-model="showOnColors"
-						/>
-						<label for="toggle-on-colors">Show "On*" Colors</label>
-					</div>
 					<div class="inputs">
 						<!-- Manual color input fields -->
-						<div class="color-inputs">
+						<ColorInputs
+							:colors="themeColors"
+						/>
+						<div class="checkbox-container">
+							<input
+								type="checkbox"
+								id="toggle-on-colors"
+								v-model="showOnColors"
+							/>
+							<label
+								id="toggle-on-colors-label"
+								for="toggle-on-colors"
+							>
+								Show "On*" Colors
+							</label>
+						</div>
+						<div
+							v-if="showOnColors"
+							class="color-inputs">
 							<div
 								class="color-input"
 								v-for="[name, value] in getThemeColorsEntries(themeColors)"
@@ -53,7 +63,7 @@
 										type="color"
 										hidden
 										:id="name"
-										:name="name"
+										:name="`${name}Color`"
 										class="color-picker"
 										v-model="themeColors[name]"
 									/>
@@ -65,6 +75,7 @@
 								placeholder="Paste your JSON here"
 								v-model="jsonInput"
 								@input="parseJsonInput"
+								name="json-color-input"
 								class="json-field"
 							></textarea>
 						</div>
@@ -90,14 +101,17 @@
 	lang="ts"
 >
 import { Dialog, DialogPanel, DialogTitle, DialogDescription, DialogOverlay } from '@headlessui/vue';
-import type { ColorSettings, ThemeColors } from '@/types/ColorSettings';
-import { generateThemeColorsObject, getColor, getThemeColorsEntries } from '~/utils/generateThemeColorsObject';
+import type { ColorSettings } from '@/types/ColorSettings';
+import { generateThemeColorsObject } from '~/utils/generateThemeColorsObject';
 import { useToggle } from '@vueuse/core';
+import type { MainColorRoles } from '~/types/ColorRole';
+import { getColor } from '~/utils/getColor';
+import { getThemeColorsEntries } from '~/utils/getThemeColorsEntries';
 
 const isOpen = ref(false);
 const jsonInput = ref('');
 const [ showOnColors, toggleOnColors ] = useToggle(false);
-const themeColors = ref<ThemeColors>(generateThemeColorsObject());
+const themeColors = ref<MainColorRoles>(generateThemeColorsObject());
 
 // Emits
 const emit = defineEmits<{
@@ -153,16 +167,8 @@ const confirmColors = () => {
 			.inputs {
 				@apply mt-4;
 
-				.color-inputs {
-					@apply flex flex-wrap justify-center gap-4;
-
-					.color-input {
-						@apply flex flex-col items-center justify-center gap-0.5em;
-
-						.color-display {
-							@apply inline-block w-8 h-8 border rounded-full;
-						}
-					}
+				.checkbox-container {
+					@apply flex flex-row my-4 gap-1;
 				}
 			}
 

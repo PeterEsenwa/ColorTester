@@ -10,7 +10,7 @@ export const generateThemeColorsObject = (): MainColorRoles => {
 	for (const key of keys) {
 		colors[key] = {
 			type: ColorType.Color,
-			value: '#000000'
+			value: '#FFFFFF'
 		} as PaletteColor['value'];
 	}
 
