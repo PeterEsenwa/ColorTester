@@ -1,5 +1,7 @@
 <template>
-	<PaletteImporter v-model="colors" />
+	<ClientOnly>
+		<PaletteImporter />
+	</ClientOnly>
 </template>
 
 <script setup lang="ts">

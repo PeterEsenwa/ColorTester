@@ -8,14 +8,14 @@
 			<label
 				:for="name"
 				class="color-display"
+				:class="{ 'filled': inputHasValue(themeColors[name]?.value) }"
 				:style="{ backgroundColor: getColor(themeColors[name]) }"
 			>
 				<input
 					type="color"
-					hidden
 					:id="name"
 					:name="name"
-					class="color-picker"
+					class="sr-only top-100%"
 					:value="themeColors[name]?.value"
 					@input="updateColor(name, $event.target.value)"
 				/>
@@ -38,6 +38,10 @@ const props = defineProps({
 		required: true,
 	},
 });
+
+const inputHasValue = (input?: string) => {
+	return input && input !== '';
+};
 
 const themeColors = useVModel(props, 'colors');
 
@@ -63,7 +67,7 @@ const updateColor = (
 		@apply flex flex-col items-center justify-center gap-0.5em;
 
 		.color-display {
-			@apply inline-block w-8 h-8 border rounded-full;
+			@apply inline-block w-8 h-8 border border-dashed border-[#000000] rounded-full;
 		}
 	}
 }

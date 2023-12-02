@@ -12,7 +12,7 @@
 		<Dialog
 			as="div"
 			v-model:open="isOpen"
-			class="dialog"
+			class="dialog bg-gray-100 fixed inset-0 z-10 overflow-y-auto"
 		>
 			<DialogOverlay class="overlay" />
 
@@ -120,20 +120,26 @@ const confirmColors = () => {
 	scoped
 	lang="scss"
 >
+* {
+	@apply box-border font-inherit;
+}
+
 .palette-importer {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 	.open-btn {
 		@apply px-4 py-2 rounded bg-blue-600 text-white;
 	}
 }
 
 .dialog {
-	@apply bg-gray-100 fixed inset-0 z-10 overflow-y-auto;
-
 	.overlay {
 		@apply bg-black opacity-50 fixed inset-0 bg-black opacity-30;
 	}
 
 	.content {
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 		@apply flex flex-col items-center justify-center min-h-screen px-4 text-center;
 
 		.panel {

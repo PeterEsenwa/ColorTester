@@ -3,14 +3,16 @@ import { ColorType } from '~/types/ColorType';
 import { ColorIntensity } from '~/types/ColorIntensity';
 import { isDef } from '@vueuse/shared';
 
-export const getColor = (color: PaletteColor['value'] | undefined): string => {
+export const getColor = (color: PaletteColor | undefined): string => {
 	if (!isDef(color) || !isDef(color.value)) {
 		return '';
 	}
 
-	if (color.type === ColorType.Color) {
-		return color.value;
+	let colorValue = color.value;
+
+	if (colorValue.type === ColorType.Color) {
+		return colorValue.value;
 	}
 
-	return color.value[ColorIntensity.Intensity500];
+	return colorValue.value[ColorIntensity.Intensity500];
 }

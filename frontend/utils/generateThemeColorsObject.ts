@@ -15,10 +15,6 @@ export const generateThemeColorsObject = (): MainColorRoles => {
 	for (const key of keys) {
 		colors[key] = {
 			role: key,
-			value: {
-				type: ColorType.Color,
-				value: '#FFFFFF'
-			}
 		} as PaletteColor;
 	}
 
