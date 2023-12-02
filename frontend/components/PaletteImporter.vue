@@ -12,14 +12,22 @@
 		<Dialog
 			as="div"
 			v-model:open="isOpen"
-			class="dialog bg-gray-100 fixed inset-0 z-10 overflow-y-auto"
+			class="dialog fixed inset-0 z-10 overflow-y-auto"
 		>
 			<DialogOverlay class="overlay" />
 
 			<!-- This is the modal content -->
 			<div class="content">
 				<DialogPanel class="panel">
-					<DialogTitle class="title">Import Color Palette</DialogTitle>
+					<DialogTitle class="title">
+						Import Color Palette
+
+						<!-- Close button -->
+						<MiscCloseButton
+							@click="isOpen = false"
+							class="close-btn"
+						/>
+					</DialogTitle>
 					<DialogDescription class="description">
 						Enter color values manually or import a JSON configuration.
 					</DialogDescription>
@@ -148,6 +156,7 @@ const confirmColors = () => {
 
 			.title {
 				@apply font-bold text-lg mb-4;
+				@apply flex flex-row justify-between items-center;
 			}
 
 			.description {
