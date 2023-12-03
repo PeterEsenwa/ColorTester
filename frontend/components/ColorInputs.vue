@@ -16,7 +16,7 @@
 					:id="name"
 					:name="name"
 					class="sr-only top-100%"
-					:value="themeColors[name]?.value"
+					:value="getColor(themeColors[name])"
 					@input="updateColor(name, $event.target.value)"
 				/>
 			</label>

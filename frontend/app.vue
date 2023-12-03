@@ -12,14 +12,20 @@ html, body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
 	@apply h-full w-full m-0 p-0;
-
-	#app {
-		@apply p-8;
-	}
 }
 
 * {
 	@apply box-border font-inherit;
+}
+
+#app {
+	@apply p-8 h-100vh w-100vw;
+	@apply flex flex-col items-center justify-center gap-4;
+
+	background-image: url('/FlowyColours.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
 }
 
 button {

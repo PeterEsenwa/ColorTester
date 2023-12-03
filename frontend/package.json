@@ -22,6 +22,8 @@
     "@vitejs/plugin-vue": "^4.4.0",
     "@vueuse/core": "^10.6.1",
     "axios": "^1.6.2",
+    "firebase-admin": "latest",
+    "firebase-functions": "latest",
     "histoire": "0.17.2",
     "nuxt": "3.7.4",
     "nuxt-headlessui": "^1.1.4",
@@ -30,5 +32,8 @@
     "vite": "^4.5.0",
     "vue": "^3.3.7",
     "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.3.0"
   }
 }

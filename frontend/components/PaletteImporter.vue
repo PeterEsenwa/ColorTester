@@ -1,12 +1,14 @@
 <template>
 	<div class="palette-importer">
 		<!-- Button to open the dialog -->
-		<button
-			@click="isOpen = true"
-			class="open-btn"
-		>
-			Import Palette
-		</button>
+		<div class="open-btn-container">
+			<button
+				@click="isOpen = true"
+				class="open-btn"
+			>
+				Import Palette
+			</button>
+		</div>
 
 		<!-- Dialog for importing colors -->
 		<Dialog
@@ -87,7 +89,7 @@
 import { Dialog, DialogPanel, DialogTitle, DialogDescription, DialogOverlay } from '@headlessui/vue';
 import { generateThemeColorsObject, generateThemeOnColorsObject } from '~/utils/generateThemeColorsObject';
 import { useToggle } from '@vueuse/core';
-import { type MainColorRoles, type OnColorRoles, type ColorRoles, type ColorRole } from '~/types/ColorRole';
+import { type MainColorRoles, type OnColorRoles, type ColorRoles, type ColorRole, MainColorRole, OnColorRole } from '~/types/ColorRole';
 import type { PaletteColor } from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
 import type { RequireAtLeastOne } from 'type-fest';
@@ -106,6 +108,31 @@ const emit = defineEmits<{
 const parseJsonInput = () => {
 	try {
 		const parsedColors = JSON.parse(jsonInput.value);
+
+		// json will be an object with keys that are the color roles
+		// and values that are the color values
+		// e.g. { primary: '#000000' }
+
+		// Loop through the keys and update the themeColors object and themeOnColors object
+		for (const [ role, value ] of Object.entries(parsedColors)) {
+			if (themeColors.value[role as MainColorRole]) {
+				themeColors.value[role as MainColorRole] = {
+					role: role as ColorRole,
+					value: {
+						type: ColorType.Color,
+						value,
+					}
+				} as PaletteColor;
+			} else if (themeOnColors.value[role as OnColorRole]) {
+				themeOnColors.value[role as OnColorRole] = {
+					role: role as ColorRole,
+					value: {
+						type: ColorType.Color,
+						value,
+					}
+				} as PaletteColor;
+			}
+		}
 	} catch (error) {
 		console.error('Invalid JSON:', error);
 	}
@@ -135,8 +162,13 @@ const confirmColors = () => {
 .palette-importer {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-	.open-btn {
-		@apply px-4 py-2 rounded bg-blue-600 text-white;
+	.open-btn-container {
+		@apply flex p-2 w-fit bg-white rounded overflow-hidden;
+
+		.open-btn {
+			@apply px-4 py-2 rounded bg-blue-600 text-white;
+			@apply outline-none border-none cursor-pointer;
+		}
 	}
 }
 

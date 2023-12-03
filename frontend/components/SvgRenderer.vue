@@ -50,27 +50,26 @@ const applyColorSettings = (svgText: string, paletteColors?: PaletteColors): str
 	// Apply color settings to SVG elements
 	for (const colorRoleKey in paletteColors) {
 
-		console.log(`Applying color role ${ colorRoleKey }`);
 
 		const colorRole = paletteColors[colorRoleKey as keyof ColorRoles];
 		const color = colorRole?.value;
 
 		if (!color) {
-			console.log(`No color for role ${ colorRoleKey }`);
 			continue;
 		}
 
 		const svgElements = svgElement.querySelectorAll(`[data-color-role="${ colorRoleKey.toLowerCase() }"]`);
 
 		for (const svgElement of svgElements) {
-			console.log(`Setting color for:`, svgElement);
-
 			if (color.value && typeof color.value !== 'object') {
-				console.log(`String color: ${ color }`);
 				svgElement.setAttribute('fill', color.value);
 			}
 		}
 	}
+
+	// add styles to SVG element
+	svgElement.setAttribute('style', 'width: auto; height: 100%;');
+	svgElement.classList.add('rounded-lg');
 
 	return svgElement.outerHTML;
 };
@@ -85,6 +84,7 @@ onMounted(() => {
 <style scoped>
 .svg-renderer {
 	@apply flex items-center justify-center;
+	@apply h-full;
 }
 
 /* Styles for interactive highlighting */

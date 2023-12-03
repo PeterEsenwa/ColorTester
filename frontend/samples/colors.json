@@ -1,0 +1,10 @@
+{
+  "primary": "#880d1e",
+  "onPrimary": "#ffffff",
+  "secondary": "#dd2d4a",
+  "onSecondary": "#ffffff",
+  "background": "#ffffff",
+  "onBackground": "#4a4a4a",
+  "accent": "#cbeef3",
+  "onAccent": "#4a4a4a"
+}
