@@ -21,9 +21,9 @@ export enum OnColorRole {
 	onWarning = 'onWarning',
 }
 
-export type MainColorRoles = RequireAtLeastOne<{ [key in MainColorRole]: PaletteColor }>;
+export type MainColorRoles = { [key in MainColorRole]: PaletteColor };
 
-export type OnColorRoles = RequireAtLeastOne<{ [key in OnColorRole]: PaletteColor }>;
+export type OnColorRoles = { [key in OnColorRole]: PaletteColor };
 
 export type ColorRoles = MainColorRoles & OnColorRoles;
 

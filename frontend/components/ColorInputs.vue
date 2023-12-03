@@ -1,5 +1,5 @@
 <template>
-	<div class="color-inputs">
+	<div class="color-inputs" v-if="themeColors">
 		<div class="color-input"
 			v-for="name in Object.keys(themeColors) as[ MainColorRole | OnColorRole]"
 			:key="name"
@@ -17,7 +17,7 @@
 					:name="name"
 					class="sr-only top-100%"
 					:value="getColor(themeColors[name])"
-					@input="updateColor(name, $event.target.value)"
+					@input="updateColor(name, $event.target?.value)"
 				/>
 			</label>
 		</div>
@@ -26,29 +26,28 @@
 
 <script setup lang="ts">
 import { getColor } from '~/utils/getColor';
-import type { PropType } from 'vue';
-import { MainColorRole, OnColorRole, type ColorRoles } from '~/types/ColorRole';
+import { MainColorRole, OnColorRole, type MainColorRoles, type OnColorRoles, type ColorRoles } from '~/types/ColorRole';
 import { ColorType } from '~/types/ColorType';
-import type { HEX, PaletteColor } from '~/types/PaletteColor';
-import { useVModel } from '@vueuse/core';
+import type { HEX, PaletteColor, ColorValue, ColorDictionaryValue } from '~/types/PaletteColor';
 
-const props = defineProps({
-	colors: {
-		type: Object as PropType<ColorRoles>,
-		required: true,
-	},
-});
+const inputHasValue = (input?: ColorValue | ColorDictionaryValue) => {
+	if (!input) return false;
 
-const inputHasValue = (input?: string) => {
-	return input && input !== '';
+	if (input.type === ColorType.Color) {
+		return !!input.value;
+	}
+
+	return Object.values(input.value).some((value) => !!value);
 };
 
-const themeColors = useVModel(props, 'colors');
+const themeColors = defineModel<Partial<ColorRoles>>()
 
 const updateColor = (
 	name: MainColorRole | OnColorRole,
 	value: HEX
 ) => {
+	if (!themeColors.value) return;
+
 	themeColors.value[name] = {
 		role: name,
 		value: {

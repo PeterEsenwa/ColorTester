@@ -5,5 +5,6 @@ export const nuxtModulesConfig: InputConfig<NuxtConfig> = {
 	modules: [
 		'@unocss/nuxt',
 		'nuxt-headlessui',
+		'nuxt-monaco-editor',
 	],
 }

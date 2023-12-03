@@ -1,7 +1,6 @@
 import { ColorType } from '~/types/ColorType';
 import type { ColorIntensity } from '~/types/ColorIntensity';
 import type { ColorRole } from '~/types/ColorRole';
-import type { RequireAtLeastOne } from 'type-fest';
 
 interface ColorValueInterface {
 	type: ColorType;
@@ -25,4 +24,4 @@ export interface PaletteColor {
 }
 
 
-export type PaletteColors = RequireAtLeastOne<Record<ColorRole, PaletteColor>>;
+export type PaletteColors = Record<ColorRole, PaletteColor>;

@@ -36,7 +36,7 @@
 					<div class="inputs">
 						<!-- Manual color input fields -->
 						<ColorInputs
-							:colors="themeColors"
+							v-model="themeColors"
 						/>
 						<div class="checkbox-container">
 							<input
@@ -53,7 +53,7 @@
 						</div>
 						<ColorInputs
 							v-if="showOnColors"
-							:colors="themeOnColors"
+							v-model="themeOnColors"
 						>
 						</ColorInputs>
 						<div class="json-import my-4">
@@ -97,8 +97,8 @@ import type { RequireAtLeastOne } from 'type-fest';
 const isOpen = ref(false);
 const jsonInput = ref('');
 const [ showOnColors, toggleOnColors ] = useToggle(false);
-const themeColors = ref<MainColorRoles>(generateThemeColorsObject());
-const themeOnColors = ref<OnColorRoles>(generateThemeOnColorsObject());
+const themeColors = ref(generateThemeColorsObject());
+const themeOnColors = ref(generateThemeOnColorsObject());
 
 // Emits
 const emit = defineEmits<{
