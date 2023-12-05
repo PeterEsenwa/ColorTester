@@ -57,13 +57,13 @@
 						>
 						</ColorInputs>
 						<div class="json-import my-4">
-							<textarea
+							<MonacoEditor
+								lang="json"
 								placeholder="Paste your JSON here"
 								v-model="jsonInput"
-								@input="parseJsonInput"
 								name="json-color-input"
 								class="json-field"
-							></textarea>
+							/>
 						</div>
 					</div>
 
@@ -138,6 +138,8 @@ const parseJsonInput = () => {
 	}
 };
 
+watch(jsonInput, parseJsonInput);
+
 const colorSettings = computed<ColorRoles>(() => {
 	return {
 		...themeColors.value,
@@ -204,7 +206,8 @@ const confirmColors = () => {
 			}
 
 			.json-field {
-				@apply w-full px-3 py-2 border rounded text-gray-700 w-full p-2 border rounded;
+				@apply w-full px-3 py-2 border rounded text-gray-700;
+				@apply h-48;
 			}
 
 			.confirmation {

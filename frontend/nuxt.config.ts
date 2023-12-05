@@ -5,6 +5,9 @@ import { nuxtModulesConfig } from './configs/nuxt/nuxt-modules.config';
 // Define Nuxt.js configuration.
 export default defineNuxtConfig({
 	...nuxtModulesConfig,
+	devtools: {
+		enabled: false
+	},
 	nitro: {
 		preset: 'firebase',
 		firebase: {
@@ -15,8 +18,12 @@ export default defineNuxtConfig({
 			}
 		},
 	},
-
-	devtools: {
-		enabled: false
-	}
+	vite: {
+		vue: {
+			script: {
+				defineModel: true,
+				propsDestructure: true
+			}
+		}
+	},
 })
