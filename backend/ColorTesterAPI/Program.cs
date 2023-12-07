@@ -1,27 +1,32 @@
 using System.Security.Claims;
+// using dotenv.net;
 using ColorTesterAPI;
 using ColorTesterAPI.Application.Converters;
 using ColorTesterAPI.Infrastructure.Persistence.SQL;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add CORS
+// builder.Configuration.Sources.Clear();
+// DotEnv.Load();
+// builder.Configuration.AddEnvironmentVariables();
 
-builder.Services.AddCors(options =>
+// Add CORS policy
+if (builder.Environment.IsDevelopment())
 {
-    options.AddPolicy("AllowAll", b =>
+    builder.Services.AddCors(options =>
     {
-        b.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
+        options.AddPolicy("AllowAll", b =>
+        {
+            b.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
     });
-});
+}
 
 // Add services to the container.
 builder.Services.AddPostgresSQLDependencyInjection(builder.Configuration);
