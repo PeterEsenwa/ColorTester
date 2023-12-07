@@ -1,5 +1,6 @@
 using ColorTesterAPI.Application;
 using ColorTesterAPI.Application.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ColorTesterAPI.Controllers;
@@ -24,6 +25,7 @@ public class PaletteController : ControllerBase
 
 
     [HttpGet]
+    // [Authorize("read:palettes")]
     public async Task<IActionResult> FindAll()
     {
         var palettes = await _paletteService.GetPalettesAsync();
@@ -31,6 +33,7 @@ public class PaletteController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    // [Authorize("read:palettes")]
     public Task<IActionResult> FindById(Guid id)
     {
         var paletteTask = _paletteService.GetPaletteAsync(id);
