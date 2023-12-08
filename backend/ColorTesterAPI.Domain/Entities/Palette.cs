@@ -12,6 +12,10 @@ public class Palette : AuditableEntity
     }
 
     public Guid Id { get; } = Guid.NewGuid();
+    
+    public string? Name { get; set; }
+    
+    public string UserId { get; set; } = null!;
 
     public void AddColor(PaletteColor color)
     {

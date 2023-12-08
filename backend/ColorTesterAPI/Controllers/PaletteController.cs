@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using ColorTesterAPI.Application;
 using ColorTesterAPI.Application.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -17,9 +18,17 @@ public class PaletteController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize("PaletteCreator")]
     public async Task<IActionResult> Create([FromBody] CreatePaletteRequest request)
     {
-        var id = await _paletteService.CreatePaletteAsync(request);
+        // Extract the sub claim from the JWT token
+        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+        {
+            return Unauthorized();
+        }
+        
+        var id = await _paletteService.CreatePaletteAsync(request, userIdClaim.Value);
         return CreatedAtAction(nameof(FindById), new { id }, null);
     }
 

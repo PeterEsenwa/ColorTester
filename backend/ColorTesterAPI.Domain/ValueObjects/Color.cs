@@ -20,8 +20,11 @@ public class Color
         Blue = blue;
     }
 
-    public Color(string hex)
+    public Color(string? hex)
     {
+        if (string.IsNullOrEmpty(hex))
+            throw new ArgumentException("Hexadecimal color cannot be null or empty.");
+        
         CheckHexLength(hex);
         CheckHexPrefix(hex);
 

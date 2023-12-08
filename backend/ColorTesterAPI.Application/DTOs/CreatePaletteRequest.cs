@@ -9,4 +9,6 @@ public class CreatePaletteRequest
     {
         return Colors;
     }
+    
+    public string? Name { get; set; }
 }

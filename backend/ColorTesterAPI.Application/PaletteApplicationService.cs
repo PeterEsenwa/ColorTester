@@ -18,7 +18,7 @@ public class PaletteApplicationService
         _paletteQueryRepository = paletteQueryRepository;
     }
 
-    public async Task<Guid> CreatePaletteAsync(CreatePaletteRequest request)
+    public async Task<Guid> CreatePaletteAsync(CreatePaletteRequest request, string userId)
     {
         var paletteBuilder = Palette.Builder();
         foreach (var color in request.Colors)
@@ -43,6 +43,11 @@ public class PaletteApplicationService
         }
 
         var newPalette = paletteBuilder.Build();
+        
+        // add other properties
+        newPalette.UserId = userId;
+        newPalette.Name = request.Name;
+        
         await _paletteCommandRepository.AddPaletteAsync(newPalette);
 
         return newPalette.Id;

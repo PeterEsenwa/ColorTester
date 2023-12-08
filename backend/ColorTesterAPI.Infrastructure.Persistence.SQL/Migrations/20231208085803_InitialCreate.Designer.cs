@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ColorTesterAPI.Infrastructure.Persistence.SQL.Migrations
 {
     [DbContext(typeof(ColorTesterDbContext))]
-    [Migration("20231126204551_InitialCreate")]
+    [Migration("20231208085803_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -45,11 +45,22 @@ namespace ColorTesterAPI.Infrastructure.Persistence.SQL.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("palettes", (string)null);
                 });

@@ -42,11 +42,22 @@ namespace ColorTesterAPI.Infrastructure.Persistence.SQL.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("palettes", (string)null);
                 });

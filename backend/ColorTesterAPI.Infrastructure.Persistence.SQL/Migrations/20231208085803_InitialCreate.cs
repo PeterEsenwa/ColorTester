@@ -16,6 +16,8 @@ namespace ColorTesterAPI.Infrastructure.Persistence.SQL.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     colors = table.Column<string>(type: "jsonb", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -25,6 +27,16 @@ namespace ColorTesterAPI.Infrastructure.Persistence.SQL.Migrations
                 {
                     table.PrimaryKey("PK_palettes", x => x.id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_palettes_Name",
+                table: "palettes",
+                column: "Name");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_palettes_UserId",
+                table: "palettes",
+                column: "UserId");
         }
 
         /// <inheritdoc />

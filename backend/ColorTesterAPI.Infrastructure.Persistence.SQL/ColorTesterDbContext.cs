@@ -35,6 +35,8 @@ public class ColorTesterDbContext : DbContext
         {
             entity.ToTable("palettes");
             entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.UserId);
+            entity.HasIndex(e => e.Name).IsUnique().HasFilter("[name] IS NOT NULL");
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
