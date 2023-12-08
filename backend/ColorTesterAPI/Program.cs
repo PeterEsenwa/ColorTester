@@ -9,111 +9,163 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// builder.Configuration.Sources.Clear();
-// DotEnv.Load();
-// builder.Configuration.AddEnvironmentVariables();
-
-// Add CORS policy
-if (builder.Environment.IsDevelopment())
+public class Program
 {
-    builder.Services.AddCors(options =>
+    public static void Main(string[] args)
     {
-        options.AddPolicy("AllowAll", b =>
+        var builder = WebApplication.CreateBuilder(args);
+        ConfigureServices(builder);
+        
+        var app = builder.Build();
+        Configure(app);
+        app.Run();
+    }
+
+    private static void ConfigureServices(WebApplicationBuilder builder)
+    {
+        builder.Services.AddEndpointsApiExplorer();
+
+        builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
+        ConfigureCors(builder);
+        ConfigureDatabase(builder);
+        ConfigureControllers(builder);
+        ConfigureSwagger(builder);
+        ConfigureAuthentication(builder);
+        ConfigureAuthorization(builder);
+    }
+
+    private static void Configure(WebApplication app)
+    {
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
         {
-            b.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
-    });
-}
-
-// Add services to the container.
-builder.Services.AddPostgresSQLDependencyInjection(builder.Configuration);
-
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.Converters.Add(new PaletteColorValueConverter());
-        options.SerializerSettings.Converters.Add(new ColorConverter());
-        options.SerializerSettings.Converters.Add(new ColorDtoConverter());
-        options.SerializerSettings.Converters.Add(new ColorIntensityConverter());
-        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-    });
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new() { Title = "ColorTesterAPI", Version = "v1" });
-    
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = @"JWT Authorization header using the Bearer scheme.<br/> 
-            Enter 'Bearer' [space] and then your token in the text input below.<br/>
-            Example: 'Bearer 12345abcdef'",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
-    
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                },
-                Scheme = "oauth2",
-                Name = "Bearer",
-                In = ParameterLocation.Header
-            },
-            new List<string>()
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ColorTesterAPI v1");
+
+                c.OAuthClientId(app.Configuration["Auth0:ClientId"]);
+            });
         }
-    });
-});
+        
+        app.UseHttpsRedirection();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+        app.UseCors("AllowAll");
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapControllers();
+    }
+
+    private static void ConfigureCors(WebApplicationBuilder builder)
     {
-        options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}/";
-        options.Audience = builder.Configuration["Auth0:Audience"];
-        options.TokenValidationParameters = new TokenValidationParameters
+        // Add CORS policy
+        if (builder.Environment.IsDevelopment())
         {
-            NameClaimType = ClaimTypes.NameIdentifier
-        };
-    });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", b =>
+                {
+                    b.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+        }
+    }
 
-if (builder.Environment.IsDevelopment())
-{
-    /*builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie(options =>
+    private static void ConfigureDatabase(WebApplicationBuilder builder)
+    {
+        // Add database context
+        builder.Services.AddPostgresSQLDependencyInjection(builder.Configuration);
+    }
+
+    private static void ConfigureControllers(WebApplicationBuilder builder)
+    {
+        // Add controllers
+        builder.Services.AddControllers()
+            .AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Converters.Add(new PaletteColorValueConverter());
+                options.SerializerSettings.Converters.Add(new ColorConverter());
+                options.SerializerSettings.Converters.Add(new ColorDtoConverter());
+                options.SerializerSettings.Converters.Add(new ColorIntensityConverter());
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            });
+    }
+
+    private static void ConfigureSwagger(WebApplicationBuilder builder)
+    {
+        // Add Swagger
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        if (builder.Environment.IsDevelopment())
         {
-            options.Cookie.Name = "auth";
-            options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
-            options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.None;
-            options.Cookie.HttpOnly = false;
-            options.Cookie.IsEssential = true;
-            options.LoginPath = "/login";
-            options.LogoutPath = "/logout";
-        });*/
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new() { Title = "ColorTesterAPI", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme.<br/> 
+                        Enter 'Bearer' [space] and then your token in the text input below.<br/>
+                        Example: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
+            });
+        }
+    }
     
-    builder.Services
-        .AddAuthorization(options =>
+    private static void ConfigureAuthentication(WebApplicationBuilder builder)
+    {
+        // Add authentication
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}/";
+                options.Audience = builder.Configuration["Auth0:Audience"];
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                };
+            });
+    }
+    
+    private static void ConfigureAuthorization(WebApplicationBuilder builder)
+    {
+        // Add authorization
+        builder.Services.AddAuthorization(options =>
         {
             var roles = new Dictionary<string, string>
             {
-                {"PaletteCreator", "create:palettes"},
-                {"PaletteReader", "read:palettes"},
-                {"PaletteUpdater", "update:palettes"},
-                {"PaletteDeleter", "delete:palettes"}
+                { "PaletteCreator", "create:palettes" },
+                { "PaletteReader", "read:palettes" },
+                { "PaletteUpdater", "update:palettes" },
+                { "PaletteDeleter", "delete:palettes" }
             };
-            
+
             foreach (var (role, scope) in roles)
             {
                 options.AddPolicy(
@@ -124,32 +176,5 @@ if (builder.Environment.IsDevelopment())
                 );
             }
         });
+    }
 }
-
-builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ColorTesterAPI v1");
-        
-        c.OAuthClientId(builder.Configuration["Auth0:ClientId"]);
-    });
-}
-
-app.UseHttpsRedirection();
-
-app.UseCors("AllowAll");
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

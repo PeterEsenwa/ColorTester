@@ -25,22 +25,29 @@ public class Color
         if (string.IsNullOrEmpty(hex))
             throw new ArgumentException("Hexadecimal color cannot be null or empty.");
         
-        CheckHexLength(hex);
-        CheckHexPrefix(hex);
+        (Alpha, Red, Green, Blue) = HexColorParser.Parse(hex);
+    }
 
-        if (hex.Length is 9)
+    private static class HexColorParser
+    {
+        public static (int? alpha, int red, int green, int blue) Parse(string hex)
         {
-            ParseColorComponent(hex, 1, 3, out var alpha);
-            Alpha = alpha;
+            CheckHexLength(hex);
+            CheckHexPrefix(hex);
+
+            int? alpha = null;
+            if (hex.Length is 9)
+            {
+                ParseColorComponent(hex, 1, 3, out var alphaValue);
+                alpha = alphaValue;
+            }
+
+            ParseColorComponent(hex, hex.Length - 6, hex.Length - 4, out var red);
+            ParseColorComponent(hex, hex.Length - 4, hex.Length - 2, out var green);
+            ParseColorComponent(hex, hex.Length - 2, hex.Length, out var blue);
+
+            return (alpha, red, green, blue);
         }
-
-        ParseColorComponent(hex, hex.Length - 6, hex.Length - 4, out var red);
-        ParseColorComponent(hex, hex.Length - 4, hex.Length - 2, out var green);
-        ParseColorComponent(hex, hex.Length - 2, hex.Length, out var blue);
-
-        Red = red;
-        Green = green;
-        Blue = blue;
     }
 
     public int Red { get; }
