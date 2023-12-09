@@ -13,6 +13,11 @@ export default defineConfig({
 		'**/*.story.vue',
 		'**/story.vue'
 	],
+	storyIgnored: [
+		'**/node_modules/**',
+		'**/dist/**',
+		'**/SvgRenderer.story.vue',
+	],
 	theme: {
 		darkClass: 'dark-theme'
 	},
