@@ -8,6 +8,8 @@
 </script>
 
 <style lang="scss">
+@import url('@fontsource-variable/source-sans-3');
+
 html, body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
@@ -22,10 +24,10 @@ html, body {
 	@apply p-8 h-100vh w-100vw;
 	@apply flex flex-col items-center justify-center gap-4;
 
-	background-image: url('/FlowyColours.svg');
+/*	background-image: url('/FlowyColours.svg');
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: cover;
+	background-size: cover;*/
 }
 
 button {

@@ -1,9 +1,11 @@
 import { defineConfig, presetAttributify, presetUno } from 'unocss'
 import presetIcons from '@unocss/preset-icons'
+import theme from './configs/unocss/theme'
 import transformerDirectives from '@unocss/transformer-directives'
 import type { IconifyJSON } from '@iconify/types'
 
 export default defineConfig({
+	theme,
 	presets: [
 		presetUno(),
 		presetIcons({
