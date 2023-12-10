@@ -1,5 +1,8 @@
 <template>
-	<div class="svg-renderer" ref="svgContainer"></div>
+	<div
+		ref="svgContainer"
+		class="svg-renderer"
+	/>
 </template>
 
 <script setup lang="ts">

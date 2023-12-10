@@ -8,7 +8,7 @@ export const getColor = (color: PaletteColor | undefined): string => {
 		return '';
 	}
 
-	let colorValue = color.value;
+	const colorValue = color.value;
 
 	if (colorValue.type === ColorType.Color) {
 		return colorValue.value;

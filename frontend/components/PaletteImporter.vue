@@ -3,8 +3,8 @@
 		<!-- Button to open the dialog -->
 		<div class="open-btn-container">
 			<button
-				@click="isOpen = true"
 				class="open-btn"
+				@click="isOpen = true"
 			>
 				Import Palette
 			</button>
@@ -12,8 +12,8 @@
 
 		<!-- Dialog for importing colors -->
 		<Dialog
-			as="div"
 			v-model:open="isOpen"
+			as="div"
 			class="dialog fixed inset-0 z-10 overflow-y-auto"
 		>
 			<DialogOverlay class="overlay" />
@@ -26,8 +26,8 @@
 
 						<!-- Close button -->
 						<MiscCloseButton
-							@click="isOpen = false"
 							class="close-btn"
+							@click="isOpen = false"
 						/>
 					</DialogTitle>
 					<DialogDescription class="description">
@@ -40,10 +40,10 @@
 						/>
 						<div class="checkbox-container">
 							<input
-								type="checkbox"
 								id="toggle-on-colors"
 								v-model="showOnColors"
-							/>
+								type="checkbox"
+							>
 							<label
 								id="toggle-on-colors-label"
 								for="toggle-on-colors"
@@ -54,13 +54,12 @@
 						<ColorInputs
 							v-if="showOnColors"
 							v-model="themeOnColors"
-						>
-						</ColorInputs>
+						/>
 						<div class="json-import my-4">
 							<MonacoEditor
+								v-model="jsonInput"
 								lang="json"
 								placeholder="Paste your JSON here"
-								v-model="jsonInput"
 								name="json-color-input"
 								class="json-field"
 							/>
@@ -70,8 +69,8 @@
 					<div class="confirmation mt-4">
 						<button
 							type="button"
-							@click="confirmColors"
 							class="confirm-btn"
+							@click="confirmColors"
 						>
 							Confirm
 						</button>

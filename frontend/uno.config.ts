@@ -1,12 +1,14 @@
 import { defineConfig, presetAttributify, presetUno } from 'unocss'
 import presetIcons from '@unocss/preset-icons'
-import theme from './configs/unocss/theme'
+import theme, { darkColors } from './configs/unocss/theme'
 import transformerDirectives from '@unocss/transformer-directives'
 import type { IconifyJSON } from '@iconify/types'
+import presetTheme from 'unocss-preset-theme';
+import type { Theme } from 'unocss/preset-uno'
 
 export default defineConfig({
-	theme,
 	presets: [
+		presetAttributify({}),
 		presetUno(),
 		presetIcons({
 			prefix: 'icon-',
@@ -15,8 +17,15 @@ export default defineConfig({
 				// googleMaterialIcons: () => import('@iconify-json/ic/icons.json').then((m) => m.default) as Promise<IconifyJSON>,
 			}
 		}),
-		presetAttributify({}),
+		presetTheme<Theme>({
+			theme: {
+				dark: {
+					colors: darkColors
+				}
+			}
+		})
 	],
+	theme,
 	transformers: [
 		transformerDirectives()
 	]

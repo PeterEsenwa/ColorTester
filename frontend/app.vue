@@ -1,10 +1,14 @@
 <template>
-	<div id="app">
+	<div
+		id="app"
+		:class="{ 'dark': usePreferredDark() }"
+	>
 		<NuxtPage />
 	</div>
 </template>
 
 <script setup lang="ts">
+import { usePreferredDark } from '@vueuse/core';
 </script>
 
 <style lang="scss">
@@ -22,7 +26,7 @@ html, body {
 }
 
 #app {
-	@apply p-2 h-100vh w-100vw;
+	@apply h-100vh w-100vw bg-background text-on-background;
 
 	/*	background-image: url('/FlowyColours.svg');
 		background-repeat: no-repeat;

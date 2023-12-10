@@ -1,59 +1,37 @@
-import type { ConfigBase } from '@unocss/core';
+import type { Theme } from 'unocss/preset-uno'
 
-const theme: ConfigBase['theme'] = {
-	colors: {
-		accent: {
-			DEFAULT: '#FFCC80',
-			light: '#FFCC80',
-			dark: '#FFA726',
-		},
-		background: {
-			DEFAULT: '#FFFFFF',
-			light: '#FFFFFF',
-			dark: '#212121',
-		},
-		error: {
-			DEFAULT: '#FF7043',
-			light: '#FF7043',
-			dark: '#E64A19',
-		},
-		onaccent: {
-			DEFAULT: '#000000',
-			light: '#000000',
-			dark: '#000000',
-		},
-		onbackground: {
-			DEFAULT: '#303030',
-			light: '#303030',
-			dark: '#E0E0E0',
-		},
-		onprimary: {
-			DEFAULT: '#FFFFFF',
-			light: '#FFFFFF',
-			dark: '#FFFFFF',
-		},
-		onsecondary: {
-			DEFAULT: '#FFFFFF',
-			light: '#FFFFFF',
-			dark: '#FFFFFF',
-		},
-		primary: {
-			DEFAULT: '#607D8B',
-			light: '#607D8B',
-			dark: '#455A64',
-		},
-		secondary: {
-			DEFAULT: '#4DB6AC',
-			light: '#4DB6AC',
-			dark: '#00897B',
-		},
-		success: {
-			DEFAULT: '#66BB6A',
-			light: '#66BB6A',
-			dark: '#43A047',
-		}
-	},
+const lightColors = {
+	accent: '#FFCC80',
+	background: '#FFFFFF',
+	error: '#FF7043',
+	'on-accent': '#000000',
+	'on-background': '#303030',
+	'on-primary': '#FFFFFF',
+	'on-secondary': '#FFFFFF',
+	'on-surface': '#000000',
+	primary: '#607D8B',
+	secondary: '#4DB6AC',
+	success: '#66BB6A',
+	surface: '#FAFAFA',
+};
 
+export const darkColors = {
+	accent: '#FFA726',
+	background: '#212121',
+	error: '#E64A19',
+	'on-accent': '#000000',
+	'on-background': '#E0E0E0',
+	'on-primary': '#FFFFFF',
+	'on-secondary': '#FFFFFF',
+	'on-surface': '#FFFFFF',
+	primary: '#455A64',
+	secondary: '#00897B',
+	success: '#43A047',
+	surface: '#424242',
+}
+
+const theme: Theme = {
+	colors: lightColors,
 	// TODO: Use Noto family of fonts.
 	//  This will make it easier to support other languages.
 	fontFamily: {

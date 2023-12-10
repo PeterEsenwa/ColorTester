@@ -1,10 +1,17 @@
 <template>
-	<div class="color-inputs" v-if="themeColors">
-		<div class="color-input"
+	<div
+		v-if="themeColors"
+		class="color-inputs"
+	>
+		<div
 			v-for="name in Object.keys(themeColors) as[ MainColorRole | OnColorRole]"
 			:key="name"
+			class="color-input"
 		>
-			<label :for="name" class="color-label">{{ name }}</label>
+			<label
+				:for="name"
+				class="color-label"
+			>{{ name }}</label>
 			<label
 				:for="name"
 				class="color-display"
@@ -12,13 +19,13 @@
 				:style="{ backgroundColor: getColor(themeColors[name]) }"
 			>
 				<input
-					type="color"
 					:id="name"
+					type="color"
 					:name="name"
 					class="sr-only top-100%"
 					:value="getColor(themeColors[name])"
 					@input="updateColor(name, $event.target?.value)"
-				/>
+				>
 			</label>
 		</div>
 	</div>

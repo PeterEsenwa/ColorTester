@@ -28,14 +28,11 @@
 				>
 					<span>Sign Up</span>
 				</HeaderNavItem>
-				<!-- TODO: Add Profile avatar and hover card -->
-				<HeaderNavItem
+				<LazyMiscUserMenu
 					v-if="isAuthenticated"
-					title="Logout"
-					@click="() => logout()"
-				>
-					<span>Logout</span>
-				</HeaderNavItem>
+					:user="user"
+					@logout="logout"
+				/>
 			</NavigationMenuList>
 		</nav>
 	</NavigationMenuRoot>
@@ -52,11 +49,7 @@ const { loginWithPopup, logout, user, isAuthenticated } = useAuth0();
 <style scoped lang="css">
 .app-header {
 	@apply flex justify-end items-center font-ss3v p-4;
-	@apply bg-background text-onbackground;
-
-	.dark & {
-		@apply bg-background-dark text-onbackground-dark;
-	}
+	@apply bg-background text-on-background;
 
 	.nav {
 		@apply flex justify-between items-center gap-4;
