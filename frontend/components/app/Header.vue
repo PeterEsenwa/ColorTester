@@ -2,15 +2,40 @@
 	<NavigationMenuRoot class="app-header">
 		<nav class="nav">
 			<NavigationMenuList class="flex flex-row gap-4 cursor-pointer">
-				<HeaderNavItem title="Home" to="/" />
-				<HeaderNavItem title="About" to="/about" />
-				<HeaderNavItem v-if="!isAuthenticated"
-					title="Login" @click="() => $auth0.loginWithPopup()">
-					<template #default>
-						<span>Login</span>
-					</template>
+				<HeaderNavItem
+					title="Home"
+					to="/"
+				/>
+				<HeaderNavItem
+					title="About"
+					to="/about"
+				/>
+				<HeaderNavItem
+					v-if="!isAuthenticated"
+					title="Login"
+					@click="() => loginWithPopup()"
+				>
+					<span>Login</span>
 				</HeaderNavItem>
-				<HeaderNavItem title="Register" to="/register" />
+				<HeaderNavItem
+					v-if="!isAuthenticated"
+					title="Sign Up"
+					@click="() => loginWithPopup({
+						authorizationParams: {
+							screen_hint: 'signup'
+						}
+					})"
+				>
+					<span>Sign Up</span>
+				</HeaderNavItem>
+				<!-- TODO: Add Profile avatar and hover card -->
+				<HeaderNavItem
+					v-if="isAuthenticated"
+					title="Logout"
+					@click="() => logout()"
+				>
+					<span>Logout</span>
+				</HeaderNavItem>
 			</NavigationMenuList>
 		</nav>
 	</NavigationMenuRoot>
@@ -19,23 +44,9 @@
 <script setup lang="ts">
 import HeaderNavItem from '~/components/app/HeaderNavItem.vue';
 import { NavigationMenuList, NavigationMenuRoot, } from 'radix-vue';
-import type { Auth0Client } from '@auth0/auth0-spa-js';
+import { useAuth0 } from '@auth0/auth0-vue';
 
-const {
-	$auth0
-} = useNuxtApp();
-
-let loginWithPopup: typeof $auth0['loginWithPopup'];
-let isAuthenticated: typeof $auth0['isAuthenticated'];
-
-watch(() => $auth0, (auth: Auth0Client) => {
-	if (!auth) return;
-
-	loginWithPopup = auth.loginWithPopup;
-	isAuthenticated = auth.isAuthenticated;
-}, {
-	immediate: true
-});
+const { loginWithPopup, logout, user, isAuthenticated } = useAuth0();
 </script>
 
 <style scoped lang="css">

@@ -1,4 +1,4 @@
-import { createAuth0 } from '@auth0/auth0-vue';
+import { createAuth0, useAuth0 } from '@auth0/auth0-vue';
 import authConfig from '~/auth.config.json';
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -14,7 +14,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 	return {
 		provide: {
-			auth0
+			auth: useAuth0()
 		}
 	};
 });

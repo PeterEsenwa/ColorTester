@@ -8,6 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "story:build": "histoire build",
     "story:dev": "histoire dev",
     "story:preview": "histoire preview"
@@ -20,10 +22,15 @@
     "@iconify-json/fluent": "^1.1.39",
     "@iconify-json/svg-spinners": "^1.1.2",
     "@nuxt/devtools": "latest",
+    "@nuxtjs/eslint-module": "^4.1.0",
+    "@typescript-eslint/parser": "^6.13.2",
     "@unocss/nuxt": "^0.57.1",
     "@vitejs/plugin-vue": "^4.4.0",
+    "@vue/eslint-config-typescript": "^12.0.0",
     "@vueuse/core": "^10.6.1",
     "axios": "^1.6.2",
+    "eslint": "^8.55.0",
+    "eslint-plugin-vue": "^9.19.2",
     "firebase-admin": "latest",
     "firebase-functions": "latest",
     "histoire": "0.17.2",
@@ -36,6 +43,7 @@
     "ts-essentials": "^9.4.1",
     "vite": "^4.5.0",
     "vue": "^3.3.7",
+    "vue-eslint-parser": "^9.3.2",
     "vue-router": "^4.2.5"
   },
   "dependencies": {

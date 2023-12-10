@@ -2,20 +2,17 @@
 /// <reference types="@histoire/plugin-nuxt/dist" />
 
 import type { NuxtApp } from '#app';
+import { Auth0VueClient } from '@auth0/auth0-spa-js';
 
 declare module "#app" {
-	import { Auth0Client } from '@auth0/auth0-spa-js';
-
 	interface NuxtApp {
-		$auth0: Auth0Client
+		auth: Auth0VueClient
 	}
 }
 
 declare module 'nuxt/dist/app/nuxt' {
-	import { Auth0Client } from '@auth0/auth0-spa-js';
-
 	interface NuxtApp {
-		$auth0: Auth0Client
+		auth: Auth0VueClient
 	}
 }
 
