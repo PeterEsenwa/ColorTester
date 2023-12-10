@@ -13,6 +13,7 @@
     "story:preview": "histoire preview"
   },
   "devDependencies": {
+    "@auth0/auth0-vue": "^2.3.2",
     "@fontsource-variable/source-sans-3": "^5.0.19",
     "@histoire/plugin-nuxt": "0.17.3",
     "@histoire/plugin-vue": "0.17.1",

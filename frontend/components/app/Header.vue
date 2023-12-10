@@ -1,24 +1,44 @@
 <template>
-	<header class="app-header">
+	<NavigationMenuRoot class="app-header">
 		<nav class="nav">
-			<ul class="links nav-links">
+			<NavigationMenuList class="flex flex-row gap-4 cursor-pointer">
 				<HeaderNavItem title="Home" to="/" />
 				<HeaderNavItem title="About" to="/about" />
-			</ul>
-
-			<ul class="links other-links">
-				<HeaderNavItem title="Log In" to="/login" />
-				<HeaderNavItem title="Sign Up" to="/signup" />
-			</ul>
+				<HeaderNavItem v-if="!isAuthenticated"
+					title="Login" @click="() => $auth0.loginWithPopup()">
+					<template #default>
+						<span>Login</span>
+					</template>
+				</HeaderNavItem>
+				<HeaderNavItem title="Register" to="/register" />
+			</NavigationMenuList>
 		</nav>
-	</header>
+	</NavigationMenuRoot>
 </template>
 
 <script setup lang="ts">
 import HeaderNavItem from '~/components/app/HeaderNavItem.vue';
+import { NavigationMenuList, NavigationMenuRoot, } from 'radix-vue';
+import type { Auth0Client } from '@auth0/auth0-spa-js';
+
+const {
+	$auth0
+} = useNuxtApp();
+
+let loginWithPopup: typeof $auth0['loginWithPopup'];
+let isAuthenticated: typeof $auth0['isAuthenticated'];
+
+watch(() => $auth0, (auth: Auth0Client) => {
+	if (!auth) return;
+
+	loginWithPopup = auth.loginWithPopup;
+	isAuthenticated = auth.isAuthenticated;
+}, {
+	immediate: true
+});
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .app-header {
 	@apply flex justify-end items-center font-ss3v p-4;
 	@apply bg-background text-onbackground;
@@ -30,7 +50,7 @@ import HeaderNavItem from '~/components/app/HeaderNavItem.vue';
 	.nav {
 		@apply flex justify-between items-center gap-4;
 
-		.links {
+		[data-orientation='horizontal'] {
 			@apply flex flex-row gap-4 cursor-pointer;
 
 			.nav-links {

@@ -8,7 +8,8 @@
 </script>
 
 <style lang="scss">
-@import url('@fontsource-variable/source-sans-3');
+@import '@unocss/reset/tailwind-compat.css';
+@import '@fontsource-variable/source-sans-3';
 
 html, body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -21,13 +22,12 @@ html, body {
 }
 
 #app {
-	@apply p-8 h-100vh w-100vw;
-	@apply flex flex-col items-center justify-center gap-4;
+	@apply p-2 h-100vh w-100vw;
 
-/*	background-image: url('/FlowyColours.svg');
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: cover;*/
+	/*	background-image: url('/FlowyColours.svg');
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;*/
 }
 
 button {

@@ -1,15 +1,15 @@
 <template>
-	<slot>
-		<li>
-			<router-link :to="to">{{ title }}</router-link>
-		</li>
-	</slot>
+		<NavigationMenuItem>
+			<slot>
+				<router-link :to="to">{{ title }}</router-link>
+			</slot>
+		</NavigationMenuItem>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
 	title: string;
-	to: string;
+	to?: string;
 }>();
 </script>
 
@@ -19,5 +19,10 @@ li {
 	@apply hover:bg-accent hover:text-onaccent;
 
 	@apply rd-[--item-rd,_0.25em];
+
+	a {
+		// remove default link styles
+		@apply no-underline appearance-none;
+	}
 }
 </style>

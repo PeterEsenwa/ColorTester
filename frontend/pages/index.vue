@@ -1,17 +1,16 @@
 <template>
-	<div class="container">
-		<ClientOnly>
-			<PaletteImporter
-				v-if="step === Step.Import"
-				@update="updateColors"
-			/>
-			<SvgRenderer
-				v-else-if="step === Step.View"
-				:svg-path="StorySVG"
-				:palette-colors="colors"
-			/>
-		</ClientOnly>
-	</div>
+	<AppHeader />
+	<ClientOnly>
+		<PaletteImporter
+			v-if="step === Step.Import"
+			@update="updateColors"
+		/>
+		<SvgRenderer
+			v-else-if="step === Step.View"
+			:svg-path="StorySVG"
+			:palette-colors="colors"
+		/>
+	</ClientOnly>
 </template>
 
 <script setup lang="ts">
