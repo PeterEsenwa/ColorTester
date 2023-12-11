@@ -15,13 +15,12 @@ useDark({
 </script>
 
 <style lang="scss">
+@import '@/assets/styles/typography.css';
 @import '@unocss/reset/tailwind-compat.css';
 @import '@fontsource-variable/source-sans-3';
 
 html, body {
-	font-family: 'Source Sans 3', sans-serif;
-
-	@apply h-full w-full m-0 p-0;
+	@apply h-full w-full m-0 p-0 font-ss3v;
 }
 
 * {

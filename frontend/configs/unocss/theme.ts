@@ -18,7 +18,7 @@ const lightColors = {
 
 export const darkColors: Theme['colors'] = {
 	accent: '#FFA726',
-	background: '#424242',
+	background: '#282828',
 	error: '#E64A19',
 	'on-accent': '#000000',
 	'on-error': '#000000',
@@ -50,6 +50,21 @@ const theme: Theme = {
 		 * @see https://fontsource.org/fonts/source-sans-3
 		 */
 		ss3v: '\'Source Sans 3 Variable\', sans-serif',
+	},
+	fontSize: {
+		xs: [ 'var(--font-size-1)', '1em' ],
+		sm: [ 'var(--font-size-2)', '1.25em' ],
+		base: [ 'var(--font-size-3)', '1.5em' ],
+		lg: [ 'var(--font-size-4)', '1.75em' ],
+		xl: [ 'var(--font-size-5)', '1.75em' ],
+		'2xl': [ 'var(--font-size-6)', '2em' ],
+		'3xl': [ 'var(--font-size-7)', '2.25em' ],
+		'4xl': [ 'var(--font-size-8)', '2.5em' ],
+		'5xl': 'var(--font-size-9)',
+		'6xl': 'var(--font-size-10)',
+		'7xl': 'var(--font-size-11)',
+		'8xl': 'var(--font-size-12)',
+		'9xl': 'var(--font-size-13)',
 	}
 };
 

@@ -5,10 +5,12 @@ import transformerDirectives from '@unocss/transformer-directives'
 import presetTheme from 'unocss-preset-theme';
 import type { Theme } from 'unocss/preset-uno'
 import type { IconifyJSON } from '@iconify/types';
+import presetRemToEM from './configs/unocss/remToEM';
 
 export default defineConfig({
 	presets: [
 		presetAttributify({}),
+		presetRemToEM(),
 		presetUno(),
 		presetIcons({
 			prefix: 'icon-',
@@ -28,5 +30,10 @@ export default defineConfig({
 	theme,
 	transformers: [
 		transformerDirectives()
-	]
+	],
+	shortcuts: {
+		'text-body': 'text-base sm:text-lg md:text-xl',
+		'text-h1': 'text-4xl sm:text-5xl md:text-6xl',
+		'text-h2': 'text-3xl sm:text-4xl md:text-5xl',
+	}
 })
