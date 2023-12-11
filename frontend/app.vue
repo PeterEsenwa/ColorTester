@@ -1,14 +1,17 @@
 <template>
 	<div
 		id="app"
-		:class="{ 'dark': usePreferredDark() }"
 	>
 		<NuxtPage />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { usePreferredDark } from '@vueuse/core';
+import { useDark } from '@vueuse/core';
+
+useDark({
+	selector: 'body',
+});
 </script>
 
 <style lang="scss">
@@ -16,7 +19,7 @@ import { usePreferredDark } from '@vueuse/core';
 @import '@fontsource-variable/source-sans-3';
 
 html, body {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-family: 'Source Sans 3', sans-serif;
 
 	@apply h-full w-full m-0 p-0;
 }

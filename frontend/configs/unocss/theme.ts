@@ -5,6 +5,7 @@ const lightColors = {
 	background: '#FFFFFF',
 	error: '#FF7043',
 	'on-accent': '#000000',
+	'on-error': '#000000',
 	'on-background': '#303030',
 	'on-primary': '#FFFFFF',
 	'on-secondary': '#FFFFFF',
@@ -15,11 +16,12 @@ const lightColors = {
 	surface: '#FAFAFA',
 };
 
-export const darkColors = {
+export const darkColors: Theme['colors'] = {
 	accent: '#FFA726',
 	background: '#212121',
 	error: '#E64A19',
 	'on-accent': '#000000',
+	'on-error': '#000000',
 	'on-background': '#E0E0E0',
 	'on-primary': '#FFFFFF',
 	'on-secondary': '#FFFFFF',

@@ -8,6 +8,10 @@ export default defineNuxtConfig({
 	devtools: {
 		enabled: false
 	},
+	formkit: {
+		// Experimental support for auto loading (see note):
+		autoImport: true
+	},
 	nitro: {
 		preset: 'firebase',
 		firebase: {

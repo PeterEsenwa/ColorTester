@@ -17,9 +17,11 @@
   "devDependencies": {
     "@auth0/auth0-vue": "^2.3.2",
     "@fontsource-variable/source-sans-3": "^5.0.19",
+    "@formkit/nuxt": "^1.4.0",
     "@histoire/plugin-nuxt": "0.17.3",
     "@histoire/plugin-vue": "0.17.1",
     "@iconify-json/fluent": "^1.1.39",
+    "@iconify-json/ic": "^1.1.16",
     "@iconify-json/svg-spinners": "^1.1.2",
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-module": "^4.1.0",
