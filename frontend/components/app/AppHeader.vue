@@ -1,7 +1,7 @@
 <template>
 	<NavigationMenuRoot class="app-header">
 		<nav class="nav">
-			<NavigationMenuList class="flex flex-row gap-4 cursor-pointer">
+			<NavigationMenuList class="flex flex-row gap-4 cursor-pointer items-center">
 				<HeaderNavItem
 					title="Home"
 					to="/"
@@ -10,26 +10,29 @@
 					title="About"
 					to="/about"
 				/>
-				<HeaderNavItem
-					v-if="!isAuthenticated"
-					title="Login"
-					@click="() => loginWithPopup()"
-				>
-					<span>Login</span>
-				</HeaderNavItem>
-				<HeaderNavItem
-					v-if="!isAuthenticated"
-					title="Sign Up"
-					@click="() => loginWithPopup({
-						authorizationParams: {
-							screen_hint: 'signup'
-						}
-					})"
-				>
-					<span>Sign Up</span>
-				</HeaderNavItem>
+				<template v-if="!isLoading">
+					<HeaderNavItem
+						v-if="!isAuthenticated"
+						title="Login"
+						@click="() => loginWithPopup()"
+					>
+						<span>Login</span>
+					</HeaderNavItem>
+					<HeaderNavItem
+						v-if="!isAuthenticated"
+						title="Sign Up"
+						@click="() => loginWithPopup({
+							authorizationParams: {
+								screen_hint: 'signup'
+							}
+						})"
+					>
+						<span>Sign Up</span>
+					</HeaderNavItem>
+				</template>
 				<LazyMiscUserMenu
-					v-if="isAuthenticated"
+					v-if="isLoading || isAuthenticated && user"
+					:is-loading="isLoading"
 					:user="user"
 					@logout="logout"
 				/>
@@ -43,7 +46,7 @@ import HeaderNavItem from '~/components/app/HeaderNavItem.vue';
 import { NavigationMenuList, NavigationMenuRoot, } from 'radix-vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 
-const { loginWithPopup, logout, user, isAuthenticated } = useAuth0();
+const { loginWithPopup, isLoading, logout, user, isAuthenticated } = useAuth0();
 </script>
 
 <style scoped lang="css">

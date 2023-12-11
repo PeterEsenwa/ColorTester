@@ -2,7 +2,7 @@ import type { Theme } from 'unocss/preset-uno'
 
 const lightColors = {
 	accent: '#FFCC80',
-	background: '#FFFFFF',
+	background: '#EFEFEF',
 	error: '#FF7043',
 	'on-accent': '#000000',
 	'on-error': '#000000',
@@ -13,12 +13,12 @@ const lightColors = {
 	primary: '#607D8B',
 	secondary: '#4DB6AC',
 	success: '#66BB6A',
-	surface: '#FAFAFA',
+	surface: '#FFFFFF',
 };
 
 export const darkColors: Theme['colors'] = {
 	accent: '#FFA726',
-	background: '#212121',
+	background: '#424242',
 	error: '#E64A19',
 	'on-accent': '#000000',
 	'on-error': '#000000',
@@ -29,7 +29,7 @@ export const darkColors: Theme['colors'] = {
 	primary: '#455A64',
 	secondary: '#00897B',
 	success: '#43A047',
-	surface: '#424242',
+	surface: '#212121',
 }
 
 const theme: Theme = {
