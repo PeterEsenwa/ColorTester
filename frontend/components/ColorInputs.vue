@@ -11,7 +11,8 @@
 			<label
 				:for="name"
 				class="color-label"
-			>{{ name }}</label>
+			>{{ name }}
+			</label>
 			<label
 				:for="name"
 				class="color-display"
@@ -33,7 +34,7 @@
 
 <script setup lang="ts">
 import { getColor } from '~/utils/getColor';
-import { MainColorRole, OnColorRole, type MainColorRoles, type OnColorRoles, type ColorRoles } from '~/types/ColorRole';
+import { MainColorRole, OnColorRole, type ColorRoles } from '~/types/ColorRole';
 import { ColorType } from '~/types/ColorType';
 import type { HEX, PaletteColor, ColorValue, ColorDictionaryValue } from '~/types/PaletteColor';
 

@@ -10,7 +10,6 @@
 
 <script setup lang="ts">
 import StorySVG from '@/samples/Chat_App.svg'
-import type { PaletteColors } from '~/types/PaletteColor';
 
 /*const paletteColors: ColorSettings = {
 	themeType: 'default',

@@ -11,7 +11,7 @@ export const isHex = (
 	return /^#[0-9A-F]{6}$/i.test(value);
 }
 
-const isMainColorRoles = (value: unknown): value is MainColorRoles => {
+export const isMainColorRoles = (value: unknown): value is MainColorRoles => {
 	if (typeof value !== 'object' || value === null) {
 		return false;
 	}

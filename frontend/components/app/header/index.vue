@@ -2,33 +2,33 @@
 	<NavigationMenuRoot class="app-header">
 		<nav class="nav">
 			<NavigationMenuList class="flex flex-row gap-4 cursor-pointer items-center">
-				<HeaderNavItem
+				<AppHeaderNavItem
 					title="Home"
 					to="/"
 				/>
-				<HeaderNavItem
+				<AppHeaderNavItem
 					title="About"
 					to="/about"
 				/>
 				<template v-if="!isLoading">
-					<HeaderNavItem
+					<AppHeaderNavItem
 						v-if="!isAuthenticated"
 						title="Login"
-						@click="() => loginWithPopup()"
+						@click="() => loginWithPopup?.()"
 					>
 						<span>Login</span>
-					</HeaderNavItem>
-					<HeaderNavItem
+					</AppHeaderNavItem>
+					<AppHeaderNavItem
 						v-if="!isAuthenticated"
 						title="Sign Up"
-						@click="() => loginWithPopup({
+						@click="() => loginWithPopup?.({
 							authorizationParams: {
 								screen_hint: 'signup'
 							}
 						})"
 					>
 						<span>Sign Up</span>
-					</HeaderNavItem>
+					</AppHeaderNavItem>
 				</template>
 				<LazyMiscUserMenu
 					v-if="isLoading || isAuthenticated && user"
@@ -42,11 +42,16 @@
 </template>
 
 <script setup lang="ts">
-import HeaderNavItem from '~/components/app/HeaderNavItem.vue';
 import { NavigationMenuList, NavigationMenuRoot, } from 'radix-vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 
-const { loginWithPopup, isLoading, logout, user, isAuthenticated } = useAuth0();
+const authClient = useAuth0()
+
+const loginWithPopup = authClient?.loginWithPopup;
+const isLoading = authClient?.isLoading;
+const logout = authClient?.logout;
+const user = authClient?.user;
+const isAuthenticated = authClient?.isAuthenticated;
 </script>
 
 <style scoped lang="css">

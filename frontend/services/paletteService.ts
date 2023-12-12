@@ -25,11 +25,11 @@ class PaletteService {
 		return await axios.get(`${ API_BASE_URL }/api/Palette/${ id }`);
 	}
 
-	static async createPalette(data: any) {
+	static async createPalette(data: Record<string, string>) {
 		return await axios.post(`${ API_BASE_URL }/api/Palette`, data);
 	}
 
-	static async updatePalette(id: string, data: any) {
+	static async updatePalette(id: string, data: Record<string, string>) {
 		return await axios.put(`${ API_BASE_URL }/api/Palette/${ id }`, data);
 	}
 

@@ -79,7 +79,7 @@ const updateColors = (newColors: ColorRoles) => {
 		.description {
 			@apply text-body text-center font-medium;
 			@apply md:w-25vw md:min-w-15em max-w-90vw;
-			@apply text-on-background line-height-snug;
+			@apply text-on-background;
 		}
 	}
 }

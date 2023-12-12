@@ -5,6 +5,10 @@ import { nuxtModulesConfig } from './configs/nuxt/nuxt-modules.config';
 // Define Nuxt.js configuration.
 export default defineNuxtConfig({
 	...nuxtModulesConfig,
+	// components: [{
+	// 	path: '~/components',
+	// 	pattern: '**/*.vue'
+	// }],
 	devtools: {
 		enabled: false
 	},

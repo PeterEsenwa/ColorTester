@@ -88,14 +88,14 @@
 import { Dialog, DialogPanel, DialogTitle, DialogDescription, DialogOverlay } from '@headlessui/vue';
 import { generateThemeColorsObject, generateThemeOnColorsObject } from '~/utils/generateThemeColorsObject';
 import { useToggle } from '@vueuse/core';
-import { type MainColorRoles, type OnColorRoles, type ColorRoles, type ColorRole, MainColorRole, OnColorRole } from '~/types/ColorRole';
+import { type ColorRoles, type ColorRole, MainColorRole, OnColorRole } from '~/types/ColorRole';
 import type { PaletteColor } from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
 import type { RequireAtLeastOne } from 'type-fest';
 
 const isOpen = ref(false);
 const jsonInput = ref('');
-const [ showOnColors, toggleOnColors ] = useToggle(false);
+const [ showOnColors ] = useToggle(false);
 const themeColors = ref(generateThemeColorsObject());
 const themeOnColors = ref(generateThemeOnColorsObject());
 

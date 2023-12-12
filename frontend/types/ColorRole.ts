@@ -1,4 +1,3 @@
-import type { RequireAtLeastOne } from 'type-fest';
 import type { PaletteColor } from '~/types/PaletteColor';
 
 export enum MainColorRole {

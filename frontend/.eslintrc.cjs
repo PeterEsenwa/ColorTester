@@ -17,6 +17,11 @@ module.exports = {
 			],
 			rules: {
 				'vue/html-indent': ['error', 'tab'],
+				'vue/multi-word-component-names': ['error', {
+					ignores: [
+						'index',
+					]
+				}],
 			}
 		},
 		{

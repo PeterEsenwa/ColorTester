@@ -21,7 +21,7 @@ export const presetRemToEM = definePreset((options: RemToEmOptions = {}) => {
 			util.entries.forEach((i) => {
 				const value = i[1]
 				if (typeof value === 'string' && remRE.test(value))
-					i[1] = value.replace(remRE, (_, p1) => `${p1}em`)
+					i[1] = value.replace(remRE, (_, p1) => `${p1 * baseFontSize}em`)
 			})
 		},
 	}
