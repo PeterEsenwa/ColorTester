@@ -1,28 +1,26 @@
 <template>
 	<AppHeader ref="appHeaderRef" />
-	<ClientOnly>
-		<section class="hero-section section">
-			<h1 class="title">
-				Find the Perfect Palette for Your Project
-			</h1>
-			<p class="description">
-				<!-- &#8209; is a non breakable hyphen -->
-				Explore and apply color palettes on our many low&#8209;fidelity UI mockups.
-			</p>
-		</section>
+	<section class="hero-section section">
+		<h1 class="title">
+			Find the Perfect Palette for Your Project
+		</h1>
+		<p class="description">
+			<!-- &#8209; is a non breakable hyphen -->
+			Explore and apply color palettes on our many low&#8209;fidelity UI mockups.
+		</p>
+	</section>
 
-		<template v-if="false">
-			<PaletteImporter
-				v-if="step === Step.Import"
-				@update="updateColors"
-			/>
-			<SvgRenderer
-				v-else-if="step === Step.View"
-				:svg-path="StorySVG"
-				:palette-colors="colors"
-			/>
-		</template>
-	</ClientOnly>
+	<template v-if="false">
+		<PaletteImporter
+			v-if="step === Step.Import"
+			@update="updateColors"
+		/>
+		<SvgRenderer
+			v-else-if="step === Step.View"
+			:svg-path="StorySVG"
+			:palette-colors="colors"
+		/>
+	</template>
 </template>
 
 <script setup lang="ts">

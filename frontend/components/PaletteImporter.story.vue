@@ -1,5 +1,5 @@
 <template>
-	<Story name="PaletteImporter">
+	<Story title="PaletteImporter">
 		<PaletteImporter />
 	</Story>
 </template>
