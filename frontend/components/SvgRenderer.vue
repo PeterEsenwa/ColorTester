@@ -2,6 +2,7 @@
 	<div
 		ref="svgContainer"
 		class="svg-renderer"
+		:class="{'disabled': isDisabled}"
 	/>
 </template>
 
@@ -9,12 +10,24 @@
 import { ref, onMounted } from 'vue';
 import type { ColorRoles } from '~/types/ColorRole';
 import type { PaletteColors } from '~/types/PaletteColor';
+import { isDefined, watchDebounced } from '@vueuse/core';
 
 // Props
 const props = defineProps<{
 	svgPath: string;
-	paletteColors: PaletteColors;
+	paletteColors?: PaletteColors;
 }>();
+
+const isDisabled = ref(!isDefined(props.paletteColors));
+
+const cancelWatch = watchDebounced(() => props.paletteColors, () => {
+	isDisabled.value = !isDefined(props.paletteColors);
+
+	cancelWatch();
+}, {
+	deep: true,
+	debounce: 150,
+});
 
 const emit = defineEmits<{
 	(event: 'svg-load-error', error: Error): void;
@@ -77,17 +90,34 @@ const applyColorSettings = (svgText: string, paletteColors?: PaletteColors): str
 	return svgElement.outerHTML;
 };
 
-
 // Lifecycle hooks
 onMounted(() => {
-	loadAndRenderSVG();
+	watch(() => [ props.svgPath, props.paletteColors ], () => {
+		console.log('svgPath or paletteColors changed');
+		loadAndRenderSVG();
+	}, {
+		immediate: true,
+	});
 });
 </script>
 
 <style scoped>
 .svg-renderer {
-	@apply flex items-center justify-center;
-	@apply h-full;
+	@apply flex;
+	@apply h-full relative;
+
+	&::after {
+		@apply block absolute inset-0 pointer-events-none;
+		@apply bg-background opacity-0 rounded-md;
+		@apply content-empty transition-opacity;
+	}
+
+	&.disabled {
+		@apply filter-grayscale filter-blur-1;
+		&::after {
+			@apply opacity-20;
+		}
+	}
 }
 
 /* Styles for interactive highlighting */

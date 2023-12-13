@@ -6,7 +6,8 @@
 				class="flex flex-row gap-4"
 			>
 				<PaletteSquare :palette-colors="paletteColors" />
-				<PaletteSquare :palette-colors="paletteColorsOther" />
+				<PaletteSquare :palette-colors="paletteColorsTwo" />
+				<PaletteSquare :palette-colors="paletteColorsThree" />
 			</RadioGroupRoot>
 		</div>
 	</Story>
@@ -21,146 +22,113 @@ const paletteColors = ref<Partial<PaletteColors>>({
 		role: 'accent',
 		value: {
 			type: ColorType.Color,
-			value: '#457B9D',
+			value: '#FC5130',
 		},
 	},
 	background: {
 		role: 'background',
 		value: {
 			type: ColorType.Color,
-			value: '#F1FAEE',
+			value: '#FDFDFD',
 		},
 	},
 	error: {
 		role: 'error',
 		value: {
 			type: ColorType.Color,
-			value: '#E63946',
+			value: '#D7263D',
 		},
 	},
 	primary: {
 		role: 'primary',
 		value: {
 			type: ColorType.Color,
-			value: '#1D3557',
+			value: '#2F3061',
 		},
 	},
 	secondary: {
 		role: 'secondary',
 		value: {
 			type: ColorType.Color,
-			value: '#A8DADC',
-		},
-	},
-	onAccent: {
-		role: 'onAccent',
-		value: {
-			type: ColorType.Color,
-			value: '#F1FAEE',
-		},
-	},
-	onBackground: {
-		role: 'onBackground',
-		value: {
-			type: ColorType.Color,
-			value: '#1D3557',
-		},
-	},
-	onError: {
-		role: 'onError',
-		value: {
-			type: ColorType.Color,
-			value: '#F1FAEE',
-		},
-	},
-	onPrimary: {
-		role: 'onPrimary',
-		value: {
-			type: ColorType.Color,
-			value: '#F1FAEE',
-		},
-	},
-	onSecondary: {
-		role: 'onSecondary',
-		value: {
-			type: ColorType.Color,
-			value: '#1D3557',
+			value: '#FFD166',
 		},
 	},
 })
 
-const paletteColorsOther = ref<Partial<PaletteColors>>({
+const paletteColorsThree = ref<Partial<PaletteColors>>({
 	accent: {
 		role: 'accent',
 		value: {
 			type: ColorType.Color,
-			value: '#589d45',
+			value: '#FF9B85',
 		},
 	},
 	background: {
 		role: 'background',
 		value: {
 			type: ColorType.Color,
-			value: '#F1FAEE',
+			value: '#FFF5EB',
 		},
 	},
 	error: {
 		role: 'error',
 		value: {
 			type: ColorType.Color,
-			value: '#c51c28',
+			value: '#FF616D',
 		},
 	},
 	primary: {
 		role: 'primary',
 		value: {
 			type: ColorType.Color,
-			value: '#441d57',
+			value: '#6A8D73',
 		},
 	},
 	secondary: {
 		role: 'secondary',
 		value: {
 			type: ColorType.Color,
-			value: '#A8DADC',
+			value: '#A7BED3',
 		},
 	},
-	onAccent: {
-		role: 'onAccent',
-		value: {
-			type: ColorType.Color,
-			value: '#ffffff',
-		},
-	},
-	onBackground: {
-		role: 'onBackground',
-		value: {
-			type: ColorType.Color,
-			value: '#1D3557',
-		},
-	},
-	onError: {
-		role: 'onError',
-		value: {
-			type: ColorType.Color,
-			value: '#F1FAEE',
-		},
-	},
-	onPrimary: {
-		role: 'onPrimary',
-		value: {
-			type: ColorType.Color,
-			value: '#F1FAEE',
-		},
-	},
-	onSecondary: {
-		role: 'onSecondary',
-		value: {
-			type: ColorType.Color,
-			value: '#1D3557',
-		},
-	},
+})
 
+const paletteColorsTwo = ref<Partial<PaletteColors>>({
+	accent: {
+		role: 'accent',
+		value: {
+			type: ColorType.Color,
+			value: '#FF9B85',
+		},
+	},
+	background: {
+		role: 'background',
+		value: {
+			type: ColorType.Color,
+			value: '#FFF5EB',
+		},
+	},
+	error: {
+		role: 'error',
+		value: {
+			type: ColorType.Color,
+			value: '#FF616D',
+		},
+	},
+	primary: {
+		role: 'primary',
+		value: {
+			type: ColorType.Color,
+			value: '#6A8D73',
+		},
+	},
+	secondary: {
+		role: 'secondary',
+		value: {
+			type: ColorType.Color,
+			value: '#A7BED3',
+		},
+	},
 })
 
 const selectedColor = ref()
