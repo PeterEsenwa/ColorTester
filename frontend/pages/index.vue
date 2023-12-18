@@ -1,5 +1,4 @@
 <template>
-	<AppHeader ref="appHeaderRef" />
 	<section class="hero-section section">
 		<section class="text-section">
 			<h1 class="title">
@@ -32,22 +31,6 @@
 import type { ColorRoles } from '~/types/ColorRole';
 import StorySVG from '@/samples/Chat_App.svg';
 
-// use AppHeaderRef to access the AppHeader component instance and get its height with utility from Vueuse
-import { useElementSize, } from '@vueuse/core';
-
-const appHeaderRef = ref<HTMLElement>();
-
-const {
-	height: appHeaderHeight
-	// @ts-expect-error - Vueuse types are not up-to-date
-} = useElementSize(appHeaderRef, 48, {
-	box: 'border-box',
-});
-
-const appHeaderHeightString = computed(() => {
-	return `${ appHeaderHeight.value }px`;
-});
-
 enum Step {
 	Import = 1,
 	View = 2,
@@ -65,8 +48,6 @@ const updateColors = (newColors: ColorRoles) => {
 
 <style scoped lang="scss">
 .section {
-	--app-header-height: v-bind(appHeaderHeightString);
-
 	@apply bg-background;
 
 	&.hero-section {
