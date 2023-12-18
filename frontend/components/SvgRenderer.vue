@@ -2,7 +2,10 @@
 	<div
 		ref="svgContainer"
 		class="svg-renderer"
-		:class="{'disabled': isDisabled}"
+		:class="{
+			'disabled': isDisabled,
+			'rounded': props.rounded,
+		}"
 	/>
 </template>
 
@@ -11,12 +14,17 @@ import { ref, onMounted } from 'vue';
 import type { ColorRoles } from '~/types/ColorRole';
 import type { PaletteColors } from '~/types/PaletteColor';
 import { isDefined, watchDebounced } from '@vueuse/core';
+import { ColorIntensity } from '~/types/ColorIntensity';
 
 // Props
-const props = defineProps<{
+const props = withDefaults(defineProps<{
 	svgPath: string;
 	paletteColors?: PaletteColors;
-}>();
+	rounded?: boolean;
+}>(), {
+	paletteColors: undefined,
+	rounded: true,
+});
 
 const isDisabled = ref(!isDefined(props.paletteColors));
 
@@ -36,6 +44,8 @@ const emit = defineEmits<{
 // Template ref
 const svgContainer = ref<HTMLElement | null>(null);
 
+const isLoaded = ref(false);
+
 // Methods
 const loadAndRenderSVG = async () => {
 	try {
@@ -51,8 +61,30 @@ const loadAndRenderSVG = async () => {
 		}
 	} catch (error) {
 		console.error(error);
+	} finally {
+		isLoaded.value = true;
 	}
 };
+
+const getPrimaryColor = (paletteColors?: PaletteColors): string | undefined => {
+	if (!paletteColors) {
+		return undefined;
+	}
+
+	const primaryColor = paletteColors.primary?.value;
+
+	if (!primaryColor) {
+		return undefined;
+	}
+
+	if (typeof primaryColor.value === 'object') {
+		return primaryColor.value[ColorIntensity.Intensity900];
+	}
+
+	return primaryColor.value;
+};
+
+const primaryColor = computed(() => getPrimaryColor(props.paletteColors) ?? 'currentColor');
 
 const applyColorSettings = (svgText: string, paletteColors?: PaletteColors): string => {
 	const parser = new DOMParser();
@@ -65,8 +97,6 @@ const applyColorSettings = (svgText: string, paletteColors?: PaletteColors): str
 
 	// Apply color settings to SVG elements
 	for (const colorRoleKey in paletteColors) {
-
-
 		const colorRole = paletteColors[colorRoleKey as keyof ColorRoles];
 		const color = colorRole?.value;
 
@@ -85,7 +115,6 @@ const applyColorSettings = (svgText: string, paletteColors?: PaletteColors): str
 
 	// add styles to SVG element
 	svgElement.setAttribute('style', 'width: auto; height: 100%;');
-	svgElement.classList.add('rounded-lg');
 
 	return svgElement.outerHTML;
 };
@@ -93,7 +122,6 @@ const applyColorSettings = (svgText: string, paletteColors?: PaletteColors): str
 // Lifecycle hooks
 onMounted(() => {
 	watch(() => [ props.svgPath, props.paletteColors ], () => {
-		console.log('svgPath or paletteColors changed');
 		loadAndRenderSVG();
 	}, {
 		immediate: true,
@@ -101,10 +129,13 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .svg-renderer {
+	--un-default-border-color: v-bind(primaryColor);
+
 	@apply flex;
 	@apply h-full relative;
+	@apply text-base;
 
 	&::after {
 		@apply block absolute inset-0 pointer-events-none;
@@ -114,8 +145,19 @@ onMounted(() => {
 
 	&.disabled {
 		@apply filter-grayscale filter-blur-1;
+
 		&::after {
 			@apply opacity-20;
+		}
+	}
+
+	&.rounded ::v-deep(svg) {
+		@apply rounded-md;
+	}
+
+	::v-deep(svg) {
+		[data-color-role='background'] {
+			@apply stroke-[--un-default-border-color] stroke-2;
 		}
 	}
 }

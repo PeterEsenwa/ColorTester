@@ -2,7 +2,7 @@
 	<div class="home-renderer-demo">
 		<RadioGroupRoot
 			v-model="selectedColor"
-			class="flex flex-row gap-4"
+			class="palette-selector"
 		>
 			<PaletteSquare
 				:palette-colors="paletteColors"
@@ -146,6 +146,12 @@ const selectedColor = ref();
 
 <style scoped lang="scss">
 .home-renderer-demo {
-	@apply flex flex-col gap-4 justify-center items-center;
+	@apply grid gap-4 justify-center items-center aspect-square overflow-hidden;
+	@apply bg-surface rounded-lg shadow-lg;
+	@apply border-1em border-surface;
+
+	.palette-selector {
+		@apply flex flex-row gap-4 justify-center;
+	}
 }
 </style>

@@ -1,13 +1,18 @@
 <template>
 	<AppHeader ref="appHeaderRef" />
 	<section class="hero-section section">
-		<h1 class="title">
-			Find the Perfect Palette for Your Project
-		</h1>
-		<p class="description">
-			<!-- &#8209; is a non breakable hyphen -->
-			Explore and apply color palettes on our many low&#8209;fidelity UI mockups.
-		</p>
+		<section class="text-section">
+			<h1 class="title">
+				Find the Perfect Palette for Your Project
+			</h1>
+			<p class="description">
+				<!-- &#8209; is a non breakable hyphen -->
+				Explore and apply color palettes on our many low&#8209;fidelity UI mockups.
+			</p>
+		</section>
+		<section class="demo-section">
+			<HomeRendererDemo />
+		</section>
 	</section>
 
 	<template v-if="false">
@@ -65,19 +70,28 @@ const updateColors = (newColors: ColorRoles) => {
 	@apply bg-background;
 
 	&.hero-section {
-		@apply flex flex-col items-center justify-center gap-4;
+		@apply flex flex-col lg:flex-row items-center justify-center gap-4;
 		@apply h-[calc(100%-var(--app-header-height))];
 
-		.title {
-			@apply text-h2 font-bold text-center;
+		.text-section {
+			@apply flex flex-col items-start justify-center gap-4;
+			@apply w-full;
 			@apply md:w-50vw md:min-w-10em max-w-90vw;
 			@apply text-on-background;
+
+			.title {
+				@apply text-h2 font-bold;
+				@apply w-full;
+			}
+
+			.description {
+				@apply text-body text-center font-medium;
+				@apply md:w-25% md:min-w-15em max-w-90vw;
+			}
 		}
 
-		.description {
-			@apply text-body text-center font-medium;
-			@apply md:w-25vw md:min-w-15em max-w-90vw;
-			@apply text-on-background;
+		.demo-section {
+			@apply grid items-center;
 		}
 	}
 }

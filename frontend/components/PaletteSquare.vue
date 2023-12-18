@@ -27,12 +27,12 @@ const filteredColors = computed(() => filterOnRoles(props.paletteColors));
 
 <style scoped lang="scss">
 .palette {
-	@apply flex flex-col;
-	@apply w-3em h-3em box-content rounded-md overflow-hidden border-0.2em
-	@apply bg-transparent border-transparent;
+	@apply flex flex-col justify-end;
+	@apply w-3em h-3em box-content rounded-md overflow-hidden;
+	@apply bg-transparent border-0.2em border-on-surface/20;
 
 	&[data-state='checked'] {
-		@apply border-accent;
+		@apply border-on-surface/75;
 	}
 
 	.color {
