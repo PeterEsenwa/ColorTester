@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import type { PaletteColors, PaletteColor } from '~/types/PaletteColor';
 
 const props = defineProps<{

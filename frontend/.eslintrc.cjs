@@ -26,6 +26,8 @@ module.exports = {
 					'error', {
 						ignores: [
 							'index',
+							'Index.story',
+							'*.story.vue',
 						]
 					}
 				],

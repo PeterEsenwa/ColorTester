@@ -55,6 +55,7 @@ const paletteColors = ref<Partial<PaletteColors>>({
 	},
 })
 
+/*
 const paletteColorsThree = ref<Partial<PaletteColors>>({
 	accent: {
 		role: 'accent',
@@ -92,6 +93,7 @@ const paletteColorsThree = ref<Partial<PaletteColors>>({
 		},
 	},
 })
+*/
 
 const paletteColorsTwo = ref<Partial<PaletteColors>>({
 	accent: {
