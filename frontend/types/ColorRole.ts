@@ -20,6 +20,12 @@ export enum OnColorRole {
 	onWarning = 'onWarning',
 }
 
+// group main colors and on colors (accessible at runtime)
+export const AllColorRoles = {
+	...MainColorRole,
+	...OnColorRole,
+}
+
 export type MainColorRoles = { [key in MainColorRole]: PaletteColor };
 
 export type OnColorRoles = { [key in OnColorRole]: PaletteColor };

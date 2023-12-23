@@ -20,7 +20,7 @@ export type HEX = `#${ string }`;
 
 export interface PaletteColor {
 	role: ColorRole;
-	value: ColorValue | ColorDictionaryValue | undefined;
+	value?: ColorValue | ColorDictionaryValue | undefined;
 }
 
 

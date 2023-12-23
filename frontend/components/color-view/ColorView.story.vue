@@ -1,21 +1,15 @@
 <template>
 	<Story name="ColorView">
-		<draggable
+		<div
 			ref="colorViewRef"
-			v-model="colors"
 			class="flex flex-col gap-4 relative"
-			group="colors"
-			swap-threshold="0.25"
-			item-key="role"
-			:wap="true"
-			handle=".color-view__drag-handle"
 		>
-			<template #item="{element}">
-				<ColorView
-					v-model="element.value"
-				/>
-			</template>
-		</draggable>
+			<ColorView
+				v-for="color in colors"
+				:key="color.role"
+				v-model="color.value"
+			/>
+		</div>
 	</Story>
 </template>
 
@@ -23,6 +17,9 @@
 import { ref } from 'vue';
 import type { PaletteColor } from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
+import Sortable, { Swap } from 'sortablejs';
+
+Sortable.mount(new Swap());
 
 const colors = ref<PaletteColor[]>([
 	{
@@ -97,33 +94,21 @@ const colors = ref<PaletteColor[]>([
 	},
 ]);
 
-// const colorViewRef = ref<HTMLDivElement | null>(null);
+const colorViewRef = ref<HTMLDivElement | null>(null);
 
-// const animation = 200;
-
-// watch(colorViewRef, (element) => {
-// 	if (element) {
-// 		console.log(element);
-// 		// @ts-expect-error - Vueuse types issues
-// 		const sortable = useSortable(element, colors, {
-// 			handle: '.color-view__drag-handle',
-// 			swapThreshold: 0.25,
-// 			swapClass: 'color-view--swap',
-// 			swap: true,
-// 			drag: true,
-// 			sort: false,
-// 			animation,
-// 		});
-//
-// 		sortable.start();
-//
-// 		console.log(sortable);
-//
-// 		sortable.option('animation', animation);
-// 	}
-// }, {
-// 	immediate: true,
-// });
+watch(colorViewRef, (element) => {
+	if (element) {
+/*		const sortableInstance = new Sortable(element, {
+			handle: '.color-view__drag-handle',
+			swapThreshold: 0.5,
+			swapClass: 'color-view--swap',
+			swap: true,
+			animation: 200,
+		});*/
+	}
+}, {
+	immediate: true,
+});
 </script>
 
 <style scoped lang="scss">

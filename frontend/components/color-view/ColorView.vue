@@ -3,7 +3,7 @@
 		ref="colorViewRef"
 		class="color-view"
 		tabindex="0"
-		:style="{ backgroundColor: color.value }"
+		:class="{ 'no-color': !color?.value }"
 	>
 		<button
 			ref="dragHandleRef"
@@ -31,16 +31,16 @@
 		<input
 			ref="colorPickerRef"
 			type="color"
-			class="color-view__color-picker hidden"
-			:value="color.value"
+			class="color-view__color-picker sr-only"
+			:value="color?.value"
 			@input="changeColor"
 		>
 	</div>
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue';
 import type { ColorValue, HEX } from '~/types/PaletteColor';
+import { ColorType } from '~/types/ColorType';
 
 defineOptions({
 	name: 'ColorView',
@@ -56,9 +56,12 @@ const dragHandleRef = ref<HTMLButtonElement | null>(null)
 
 const colorPickerRef = ref<HTMLInputElement>();
 
-const color = defineModel({
-	type: Object as PropType<ColorValue>,
-	required: true,
+const color = defineModel<ColorValue | undefined>()
+
+const displayColor = computed(() => {
+	if (!color.value) return 'transparent';
+
+	return color.value?.value;
 })
 
 const openColorPicker = () => {
@@ -67,17 +70,42 @@ const openColorPicker = () => {
 
 const changeColor = (event: Event) => {
 	const target = event.target as HTMLInputElement;
-	color.value.value = target.value as HEX;
+
+	const valueAsHEX = target.value as HEX;
+
+	if (!color.value) {
+		color.value = {
+			value: valueAsHEX,
+			type: ColorType.Color
+		}
+		return;
+	}
+
+	color.value.value = valueAsHEX;
 }
+
+defineExpose({
+	openColorPicker,
+})
 </script>
 
 <style scoped lang="scss">
 .color-view {
+	--color-view-display-color: v-bind(displayColor);
+
 	@apply w-max aspect-[3/1.2];
 	@apply rounded-[0.15em];
 	@apply grid relative grid-rows-1 grid-flow-row;
+	@apply transition-all duration-300 ease-in-out;
+	@apply border-2 border-[--color-view-display-color];
+	@apply bg-[--color-view-display-color];
 
 	grid-template-columns: 1fr auto 1fr;
+
+	&.no-color {
+		@apply border-style-dashed border-on-surface/50;
+		@apply hover:border-on-surface/100;
+	}
 
 	&__actions {
 		@apply flex items-center justify-center gap-2 px-2;
@@ -108,16 +136,12 @@ const changeColor = (event: Event) => {
 		@apply text-on-surface;
 	}
 
-	&__drag-handle {
-		//@apply absolute left-0;
-	}
-
 	&__icon {
 		@apply inline-block w-1.25em h-1.25em;
 	}
 
 	&__color-picker {
-		@apply hidden;
+		@apply w-full h-full;
 	}
 }
 </style>

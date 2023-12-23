@@ -35,6 +35,7 @@ export default defineConfig({
 	],
 	shortcuts: {
 		'text-body': 'text-base sm:text-lg md:text-xl',
+		'text-body2': 'text-sm sm:text-base md:text-lg',
 		'text-h1': 'text-4xl sm:text-5xl md:text-6xl',
 		'text-h2': 'text-3xl sm:text-4xl md:text-5xl',
 	}
