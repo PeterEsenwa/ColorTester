@@ -41,6 +41,7 @@
 <script setup lang="ts">
 import type { ColorValue, HEX } from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
+import { useDark } from '@vueuse/core';
 
 defineOptions({
 	name: 'ColorView',
@@ -63,6 +64,26 @@ const displayColor = computed(() => {
 
 	return color.value?.value;
 })
+
+const luminosity = computed(() => {
+	if (!color.value) return 0;
+
+	return getHEXLuminosity(color.value.value);
+})
+
+const iconColor = computed(() => {
+	const isDark = useDark()
+
+	if (!color.value) {
+		return 'var(--un-preset-theme-colors-on-surface)';
+	}
+
+	if (luminosity.value <= 128) {
+		return isDark.value ? 'var(--un-preset-theme-colors-on-surface)' : 'var(--un-preset-theme-colors-surface)';
+	}
+
+	return isDark.value ? 'var(--un-preset-theme-colors-surface)' : 'var(--un-preset-theme-colors-on-surface)';
+});
 
 const openColorPicker = () => {
 	colorPickerRef.value?.click();
@@ -131,9 +152,11 @@ defineExpose({
 	}
 
 	&__action {
+		--action-color: rgb(v-bind(iconColor));
+
 		@apply bg-transparent;
 		@apply flex items-center justify-center;
-		@apply text-on-surface;
+		@apply text-[--action-color];
 	}
 
 	&__icon {
