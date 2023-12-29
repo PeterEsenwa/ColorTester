@@ -8,6 +8,7 @@ export const nuxtModulesConfig: InputConfig<NuxtConfig> = {
 		'@unocss/nuxt',
 		'nuxt-headlessui',
 		'nuxt-monaco-editor',
-		'radix-vue/nuxt'
+		'radix-vue/nuxt',
+		'@pinia/nuxt',
 	],
 }

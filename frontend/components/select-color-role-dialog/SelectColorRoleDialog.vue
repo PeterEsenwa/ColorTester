@@ -27,7 +27,7 @@
 							<HeadlessListboxButton
 								class="color-role-dialog__listbox-button"
 							>
-								{{ selectedRoles.length ? selectedRoles.join(', ') : 'Select a role' }}
+								{{ selectedRolesText }}
 							</HeadlessListboxButton>
 							<div class="color-role-dialog__options-wrapper">
 								<HeadlessListboxOptions
@@ -36,12 +36,17 @@
 								>
 									<HeadlessListboxOption
 										v-for="role in AllColorRoles"
+										v-slot="{ selected }"
 										:key="role"
 										class="color-role-dialog__option"
 										as="button"
 										:value="role"
 									>
-										{{ role }}
+										<input
+											type="checkbox"
+											:checked="selected"
+										>
+										<span>{{ role }}</span>
 									</HeadlessListboxOption>
 								</HeadlessListboxOptions>
 							</div>
@@ -51,7 +56,7 @@
 						<button
 							ref="okButtonRef"
 							class="okay-button"
-							@click="addColorRole"
+							@click="confirmSelectedRoles"
 						>
 							OK
 						</button>
@@ -69,28 +74,43 @@
 </template>
 
 <script setup lang="ts">
-import { AllColorRoles, type ColorRole as ColorRoleType } from '~/types/ColorRole';
+import { AllColorRoles, type ColorRole } from '~/types/ColorRole';
+import type { PaletteColor } from '~/types/PaletteColor';
 
-const selectedRoles = ref<ColorRoleType[]>([]);
+const props = defineProps<{
+	currentColors: Array<PaletteColor>;
+}>();
 
-const backupRoles = ref<ColorRoleType[]>([]);
+const selectedRoles = ref<ColorRole[]>([]);
 
-const isOpen = defineModel<boolean>();
+const isOpen = defineModel<boolean>({
+	default: () => false,
+});
 
 const okButtonRef = ref<HTMLButtonElement | null>(null);
 
 const emit = defineEmits<{
-	(e: 'rolesSelected', value: ColorRoleType[]): void;
+	(e: 'rolesSelected', value: ColorRole[]): void;
 }>();
 
-watch(isOpen, (value) => {
-	if (value) {
-		// When the dialog is opened, backup the current selected roles
-		backupRoles.value = selectedRoles.value;
+const selectedRolesText = computed(() => {
+	if (selectedRoles.value.length > 2) {
+		return `Selected Roles: ${selectedRoles.value.length}`;
+	} else {
+		return selectedRoles.value.join(', ') || 'Select a role';
 	}
 });
 
-const addColorRole = () => {
+watch(isOpen, (value) => {
+	if (!value) {
+		return;
+	}
+	selectedRoles.value = props.currentColors.map((color) => color.role);
+}, {
+	immediate: true,
+});
+
+const confirmSelectedRoles = () => {
 	if (!selectedRoles.value) return;
 
 	emit('rolesSelected', selectedRoles.value);
@@ -100,7 +120,7 @@ const addColorRole = () => {
 
 const cancel = () => {
 	// Restore the backup roles
-	selectedRoles.value = backupRoles.value;
+	selectedRoles.value = props.currentColors.map((color) => color.role);
 	isOpen.value = false;
 };
 
@@ -156,14 +176,17 @@ const cancel = () => {
 		@apply absolute top-100% left-0 right-0 bottom-0;
 		@apply overflow-hidden h-fit;
 		@apply rounded-b-lg;
+		@apply text-left;
 
 		.color-role-dialog__options {
 			@apply flex flex-col overflow-y-auto;
 			@apply z-10 bg-surface max-h-32;
 
 			.color-role-dialog__option {
-				@apply block px-4 py-2 text-sm cursor-pointer select-none;
+				@apply grid grid-cols-[1em_1fr] items-center gap-2;
+				@apply px-4 py-2 text-sm cursor-pointer select-none;
 				@apply hover:bg-primary hover:text-on-primary bg-inherit text-inherit;
+				@apply text-left;
 			}
 		}
 	}

@@ -3,19 +3,29 @@
 		ref="paletteEditorRef"
 		class="palette-editor"
 	>
-		<div class="color-column">
-			<ColorRole
-				v-for="role in regularRoles"
-				:key="role"
-				:role="role"
-			/>
-		</div>
-		<div class="on-color-column">
-			<ColorRole
-				v-for="role in onRoles"
-				:key="role"
-				:role="role"
-			/>
+		<div class="columns">
+			<div
+				ref="regularColorColumnRef"
+				class="color-column"
+			>
+				<ColorRole
+					v-for="color in rolesStore.regularColors"
+					:key="color.role"
+					v-model:color="color.value"
+					v-model:role="color.role"
+				/>
+			</div>
+			<div
+				ref="onColorColumnRef"
+				class="on-color-column"
+			>
+				<ColorRole
+					v-for="color in rolesStore.onColors"
+					:key="color.role"
+					v-model:color="color.value"
+					v-model:role="color.role"
+				/>
+			</div>
 		</div>
 		<button
 			class="add-button"
@@ -26,73 +36,84 @@
 	</div>
 	<SelectColorRoleDialog
 		v-model="isOpen"
-		@roles-selected="addColorRole"
+		:current-colors="rolesStore.colors"
+		@roles-selected="addColor"
 	/>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import Sortable, { Swap } from 'sortablejs';
 import ColorRole from '~/components/color-role/ColorRole.vue';
 import { useToggle } from '@vueuse/core';
-import { type ColorRole as ColorRoleType } from '~/types/ColorRole';
+import { type ColorRole as ColorRoleType, OnColorRole } from '~/types/ColorRole';
+import { usePaletteEditorColorRolesStore } from '~/stores/paletteEditorColorRolesStore';
+import { deleteColorRoleFnKey } from '~/utils/injectionKeys';
+import type { PaletteColor } from '~/types/PaletteColor';
 
-Sortable.mount(new Swap());
+const rolesStore = usePaletteEditorColorRolesStore();
 
-const roles = ref<Set<ColorRoleType>>(new Set());
 const paletteEditorRef = ref<HTMLDivElement | null>(null);
-
-const regularRoles = computed(() => Array.from(roles.value).filter(r => !r.startsWith('on')));
-const onRoles = computed(() => Array.from(roles.value).filter(r => r.startsWith('on')));
+const regularColorColumnRef = ref<HTMLElement | null>(null);
+const onColorColumnRef = ref<HTMLElement | null>(null);
 
 const [ isOpen, toggle ] = useToggle(false);
 
-const addColorRole = (selectedRoles: ColorRoleType[]) => {
+const addColor = (selectedRoles: ColorRoleType[]) => {
 	if (!selectedRoles || !selectedRoles.length) return;
 
+	const existingRoles = new Set(rolesStore.colors.map(color => color.role));
+
 	for (const role of selectedRoles) {
-		roles.value.add(role);
+		if (existingRoles.has(role)) {
+			break;
+		}
+
+		// add color role to the array
+		if (role in OnColorRole) {
+			rolesStore.onColors.push({
+				role,
+				value: undefined,
+			});
+		} else {
+			rolesStore.regularColors.push({
+				role,
+				value: undefined,
+			});
+		}
 	}
 
 	toggle(false);
 };
 
-watch(paletteEditorRef, (element) => {
-	if (element) {
-		new Sortable(element, {
-			handle: '.color-view__drag-handle',
-			swapThreshold: 0.5,
-			swapClass: 'color-view--swap',
-			swap: true,
-			animation: 200,
-			onEnd: () => {
-				// Update colors based on the new order
-			},
+provide(deleteColorRoleFnKey, (paletteColor: PaletteColor) => {
+	// delete color role from the array
+	if (paletteColor.role in OnColorRole) {
+		rolesStore.onColors = rolesStore.onColors.filter((color) => {
+			return color.role !== paletteColor.role;
+		});
+	} else {
+		rolesStore.regularColors = rolesStore.regularColors.filter((color) => {
+			return color.role !== paletteColor.role;
 		});
 	}
-}, {
-	immediate: true,
-});
+})
 </script>
 
 <style scoped lang="scss">
+//noinspection CssUnknownAtRule
 .palette-editor {
 	@apply bg-surface text-on-surface;
 	@apply rounded-lg shadow-lg;
-	@apply p-4;
-	@apply grid gap-4;
-	@apply grid-cols-2;
+	@apply flex flex-col gap-4 p-4;
+	@apply w-full;
+	@apply min-w-fit overscroll-auto;
+	@apply @container;
 
-	grid-template-rows: 1fr auto;
+	.columns {
+		@apply flex gap-4 flex-col xs:flex-row xs:justify-between;
 
-	.color-column {
-		@apply grid grid-flow-row;
-		@apply col-span-1;
-	}
-
-	.on-color-column {
-		@apply grid grid-flow-row;
-		@apply col-span-1;
+		[class*="-column"] {
+			@apply flex flex-col gap-4;
+		}
 	}
 
 	.add-button {
@@ -101,7 +122,6 @@ watch(paletteEditorRef, (element) => {
 		@apply flex items-center justify-center;
 		@apply hover:bg-blue-600 active:bg-blue-700;
 		@apply transition-colors duration-200;
-		@apply row-start-3 col-span-2;
 	}
 }
 </style>

@@ -65,6 +65,22 @@ const theme: Theme = {
 		'7xl': 'var(--font-size-11)',
 		'8xl': 'var(--font-size-12)',
 		'9xl': 'var(--font-size-13)',
+	},
+	breakpoints: {
+		'xs': '475px',
+		'sm': '640px',
+		'md': '768px',
+		'lg': '1024px',
+		'xl': '1280px',
+		'2xl': '1536px',
+	},
+	containers: {
+		'xs': '(min-width: 475px)',
+		'sm': '(min-width: 640px)',
+		'md': '(min-width: 768px)',
+		'lg': '(min-width: 1024px)',
+		'xl': '(min-width: 1280px)',
+		'2xl': '(min-width: 1536px)',
 	}
 };
 
