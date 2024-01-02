@@ -3,6 +3,9 @@ import '@unocss/reset/tailwind-compat.css'
 import '@fontsource-variable/source-sans-3';
 import { defineSetupVue3 } from '@histoire/plugin-vue';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).global = window;
+
 export const setupVue3 = defineSetupVue3(({ addWrapper }) => {
 	addWrapper({
 		// use setup() instead of render()

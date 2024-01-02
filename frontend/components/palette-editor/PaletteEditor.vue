@@ -6,7 +6,7 @@
 		<div class="columns">
 			<div
 				ref="regularColorColumnRef"
-				class="color-column"
+				class="color-column regular-color-column"
 			>
 				<ColorRole
 					v-for="color in rolesStore.regularColors"
@@ -17,7 +17,7 @@
 			</div>
 			<div
 				ref="onColorColumnRef"
-				class="on-color-column"
+				class="color-column on-color-column"
 			>
 				<ColorRole
 					v-for="color in rolesStore.onColors"
@@ -48,23 +48,39 @@ import { type ColorRole as ColorRoleType, OnColorRole } from '~/types/ColorRole'
 import { usePaletteEditorColorRolesStore } from '~/stores/paletteEditorColorRolesStore';
 import { deleteColorRoleFnKey } from '~/utils/injectionKeys';
 import type { PaletteColor } from '~/types/PaletteColor';
+import dragula from 'dragula';
 
 const rolesStore = usePaletteEditorColorRolesStore();
 
 const paletteEditorRef = ref<HTMLDivElement | null>(null);
-const regularColorColumnRef = ref<HTMLElement | null>(null);
-const onColorColumnRef = ref<HTMLElement | null>(null);
+const regularColorColumnRef = ref<Element | null>(null);
+const onColorColumnRef = ref<Element | null>(null);
 
 const [ isOpen, toggle ] = useToggle(false);
+
+const drake = dragula({
+	copy: true,
+	accepts: () => {
+		return false;
+	},
+	isContainer(el) {
+		return el?.classList.contains('color-role');
+	},
+	invalid(el, handle) {
+		return !handle?.parentElement?.classList.contains('color-view__drag-handle');
+	}
+});
 
 const addColor = (selectedRoles: ColorRoleType[]) => {
 	if (!selectedRoles || !selectedRoles.length) return;
 
 	const existingRoles = new Set(rolesStore.colors.map(color => color.role));
+	console.log(existingRoles);
 
 	for (const role of selectedRoles) {
 		if (existingRoles.has(role)) {
-			break;
+			console.log('role already exists', role);
+			continue;
 		}
 
 		// add color role to the array

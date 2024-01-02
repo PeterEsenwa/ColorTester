@@ -41,7 +41,8 @@
 <script setup lang="ts">
 import type { ColorValue, HEX } from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
-import { useDark } from '@vueuse/core';
+import { useDark, useDraggable } from '@vueuse/core';
+import { ref } from 'vue';
 
 defineOptions({
 	name: 'ColorView',
@@ -52,6 +53,17 @@ defineEmits<{
 }>()
 
 const colorViewRef = ref<HTMLDivElement | null>(null);
+
+/*const {
+	x,
+	y,
+	style,
+} = useDraggable(colorViewRef, {
+	initialValue: {
+		x: 0,
+		y: 0,
+	},
+})*/
 
 const dragHandleRef = ref<HTMLButtonElement | null>(null)
 
@@ -68,7 +80,11 @@ const displayColor = computed(() => {
 const luminosity = computed(() => {
 	if (!color.value) return 0;
 
-	return getHEXLuminosity(color.value.value);
+	const value = color.value?.value;
+
+	if (!value) return 0;
+
+	return getHEXLuminosity(value);
 })
 
 const iconColor = computed(() => {
@@ -117,7 +133,7 @@ defineExpose({
 	@apply w-max aspect-[3/1.2];
 	@apply rounded-[0.15em];
 	@apply grid relative grid-rows-1 grid-flow-row;
-	@apply transition-all duration-300 ease-in-out;
+	@apply transition-colors duration-300 ease-in-out;
 	@apply border-2 border-[--color-view-display-color];
 	@apply bg-[--color-view-display-color];
 

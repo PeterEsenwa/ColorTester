@@ -46,6 +46,9 @@ devDependencies:
   '@pinia/nuxt':
     specifier: ^0.5.1
     version: 0.5.1(typescript@5.3.3)(vue@3.3.7)
+  '@types/dragula':
+    specifier: ^3.7.4
+    version: 3.7.4
   '@types/sortablejs':
     specifier: ^1.15.7
     version: 1.15.7
@@ -67,6 +70,9 @@ devDependencies:
   axios:
     specifier: ^1.6.2
     version: 1.6.2
+  dragula:
+    specifier: ^3.7.3
+    version: 3.7.3
   eslint:
     specifier: ^8.55.0
     version: 8.55.0
@@ -3179,6 +3185,10 @@ packages:
       '@types/node': 20.8.10
     dev: true
 
+  /@types/dragula@3.7.4:
+    resolution: {integrity: sha512-cjg5MNq8CnXyJTScWM2t9fc0FC77rrBxYBs6/R3FiwW9NOTdHPB2nJq52I0tfxiBnhFb451S2j5ok4wW7sKmvA==}
+    dev: true
+
   /@types/eslint-scope@3.7.6:
     resolution: {integrity: sha512-zfM4ipmxVKWdxtDaJ3MP3pBurDXOCoyjvlpE3u6Qzrmw4BPbfm4/ambIeTk/r/J0iq/+2/xp0Fmt+gFvXJY2PQ==}
     dependencies:
@@ -4610,6 +4620,10 @@ packages:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
     dev: true
 
+  /atoa@1.0.0:
+    resolution: {integrity: sha512-VVE1H6cc4ai+ZXo/CRWoJiHXrA1qfA31DPnx6D20+kSI547hQN5Greh51LQ1baMRMfxO5K5M4ImMtZbZt2DODQ==}
+    dev: true
+
   /autoprefixer@10.4.16(postcss@8.4.32):
     resolution: {integrity: sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ==}
     engines: {node: ^10 || ^12 || >=14}
@@ -5122,6 +5136,13 @@ packages:
     resolution: {integrity: sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==}
     engines: {node: '>= 0.6'}
 
+  /contra@1.9.4:
+    resolution: {integrity: sha512-N9ArHAqwR/lhPq4OdIAwH4e1btn6EIZMAz4TazjnzCiVECcWUPTma+dRAM38ERImEJBh8NiCCpjoQruSZ+agYg==}
+    dependencies:
+      atoa: 1.0.0
+      ticky: 1.0.1
+    dev: true
+
   /convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
     dev: true
@@ -5178,6 +5199,12 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+    dev: true
+
+  /crossvent@1.5.5:
+    resolution: {integrity: sha512-MY4xhBYEnVi+pmTpHCOCsCLYczc0PVtGdPBz6NXNXxikLaUZo4HdAeUb1UqAo3t3yXAloSelTmfxJ+/oUqkW5w==}
+    dependencies:
+      custom-event: 1.0.1
     dev: true
 
   /css-declaration-sorter@6.4.1(postcss@8.4.32):
@@ -5312,6 +5339,10 @@ packages:
 
   /cuint@0.2.2:
     resolution: {integrity: sha512-d4ZVpCW31eWwCMe1YT3ur7mUDnTXbgwyzaL320DrcRT45rfjYxkt5QWLrmOJ+/UEAI2+fQgKe/fCjR8l4TpRgw==}
+    dev: true
+
+  /custom-event@1.0.1:
+    resolution: {integrity: sha512-GAj5FOq0Hd+RsCGVJxZuKaIDXDf3h6GQoNEjFgbLLI/trgtavwUbSnZ5pVfg27DVCaWjIohryS0JFwIJyT2cMg==}
     dev: true
 
   /data-urls@3.0.2:
@@ -5515,6 +5546,13 @@ packages:
   /dotenv@16.3.1:
     resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
+    dev: true
+
+  /dragula@3.7.3:
+    resolution: {integrity: sha512-/rRg4zRhcpf81TyDhaHLtXt6sEywdfpv1cRUMeFFy7DuypH2U0WUL0GTdyAQvXegviT4PJK4KuMmOaIDpICseQ==}
+    dependencies:
+      contra: 1.9.4
+      crossvent: 1.5.5
     dev: true
 
   /duplexer@0.1.2:
@@ -10382,6 +10420,10 @@ packages:
 
   /text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
+    dev: true
+
+  /ticky@1.0.1:
+    resolution: {integrity: sha512-RX35iq/D+lrsqhcPWIazM9ELkjOe30MSeoBHQHSsRwd1YuhJO5ui1K1/R0r7N3mFvbLBs33idw+eR6j+w6i/DA==}
     dev: true
 
   /tiny-invariant@1.3.1:

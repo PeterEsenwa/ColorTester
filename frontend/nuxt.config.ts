@@ -9,6 +9,9 @@ export default defineNuxtConfig({
 	// 	path: '~/components',
 	// 	pattern: '**/*.vue'
 	// }],
+	css: [
+		'dragula/dist/dragula.css',
+	],
 	devtools: {
 		enabled: false
 	},
@@ -28,6 +31,9 @@ export default defineNuxtConfig({
 	},
 	ssr: false,
 	vite: {
+		build: {
+			target: 'esnext',
+		},
 		vue: {
 			script: {
 				defineModel: true,
