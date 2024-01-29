@@ -29,6 +29,15 @@ export default defineNuxtConfig({
 			}
 		},
 	},
+	runtimeConfig: {
+		public: {
+			baseURL: '',
+			apiURL: '',
+			bugsnagApiKey: process.env.BUGSNAG_API_KEY,
+			forgotPasswordURL: '',
+			signUpURL: ''
+		}
+	},
 	ssr: false,
 	vite: {
 		build: {

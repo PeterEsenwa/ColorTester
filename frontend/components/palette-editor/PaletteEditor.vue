@@ -48,7 +48,6 @@ import { type ColorRole as ColorRoleType, OnColorRole } from '~/types/ColorRole'
 import { usePaletteEditorColorRolesStore } from '~/stores/paletteEditorColorRolesStore';
 import { deleteColorRoleFnKey } from '~/utils/injectionKeys';
 import type { PaletteColor } from '~/types/PaletteColor';
-import dragula from 'dragula';
 
 const rolesStore = usePaletteEditorColorRolesStore();
 
@@ -57,19 +56,6 @@ const regularColorColumnRef = ref<Element | null>(null);
 const onColorColumnRef = ref<Element | null>(null);
 
 const [ isOpen, toggle ] = useToggle(false);
-
-const drake = dragula({
-	copy: true,
-	accepts: () => {
-		return false;
-	},
-	isContainer(el) {
-		return el?.classList.contains('color-role');
-	},
-	invalid(el, handle) {
-		return !handle?.parentElement?.classList.contains('color-view__drag-handle');
-	}
-});
 
 const addColor = (selectedRoles: ColorRoleType[]) => {
 	if (!selectedRoles || !selectedRoles.length) return;
@@ -125,7 +111,7 @@ provide(deleteColorRoleFnKey, (paletteColor: PaletteColor) => {
 	@apply @container;
 
 	.columns {
-		@apply flex gap-4 flex-col xs:flex-row xs:justify-between;
+		@apply flex gap-4 flex-col @xxs:flex-row @xxs:justify-between;
 
 		[class*="-column"] {
 			@apply flex flex-col gap-4;

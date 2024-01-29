@@ -1,6 +1,8 @@
 {
   "auth0": {
     "domain": "dev-5mipltcs2bp0zron.us.auth0.com",
-    "clientId": "AiWTOYni06Fba0KKWMUapWcmag4Kf5m7"
+    "clientId": "AiWTOYni06Fba0KKWMUapWcmag4Kf5m7",
+    "audience": "http://colortester.app/api",
+    "token_dialect": "access_token"
   }
 }

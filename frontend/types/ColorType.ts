@@ -1,4 +1,4 @@
 export enum ColorType {
-	Color,
-	Dictionary,
+	Color = 'Color',
+	Dictionary = 'Dictionary',
 }

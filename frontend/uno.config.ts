@@ -36,7 +36,14 @@ export default defineConfig({
 	shortcuts: {
 		'text-body': 'text-base sm:text-lg md:text-xl',
 		'text-body2': 'text-sm sm:text-base md:text-lg',
+		// small text
+		'text-caption': 'text-xs sm:text-sm md:text-base',
+		'text-overline': 'text-xs sm:text-sm md:text-base',
+		// heading
 		'text-h1': 'text-4xl sm:text-5xl md:text-6xl',
 		'text-h2': 'text-3xl sm:text-4xl md:text-5xl',
+		'text-h3': 'text-2xl sm:text-3xl md:text-4xl',
+		'text-h4': 'text-xl sm:text-2xl md:text-3xl',
+		'text-h5': 'text-lg sm:text-xl md:text-2xl',
 	}
 })

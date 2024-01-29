@@ -23,7 +23,12 @@ export default defineConfig({
 	vite: {
 		// watch files
 		build: {
-			watch: {}
+			watch: {
+				include: [
+					'**/*.vue',
+					'**/*.ts',
+				]
+			}
 		},
 		css: {
 			preprocessorOptions: {

@@ -3,9 +3,13 @@
 		ref="colorViewRef"
 		class="color-view"
 		tabindex="0"
-		:class="{ 'no-color': !color?.value }"
+		:class="{
+			'no-color': !color?.value,
+			'color-view--lite-mode': liteMode,
+		}"
 	>
 		<button
+			v-if="!liteMode"
 			ref="dragHandleRef"
 			class="color-view__action color-view__drag-handle"
 		>
@@ -13,6 +17,7 @@
 		</button>
 		<div
 			class="color-view__actions"
+			v-if="!liteMode"
 		>
 			<button
 				class="color-view__action color-view__edit"
@@ -41,7 +46,7 @@
 <script setup lang="ts">
 import type { ColorValue, HEX } from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
-import { useDark, useDraggable } from '@vueuse/core';
+import { useDark } from '@vueuse/core';
 import { ref } from 'vue';
 
 defineOptions({
@@ -52,18 +57,9 @@ defineEmits<{
 	(event: 'delete'): void
 }>()
 
-const colorViewRef = ref<HTMLDivElement | null>(null);
+const liteMode = inject(liteModeKey, ref(false))
 
-/*const {
-	x,
-	y,
-	style,
-} = useDraggable(colorViewRef, {
-	initialValue: {
-		x: 0,
-		y: 0,
-	},
-})*/
+const colorViewRef = ref<HTMLDivElement | null>(null);
 
 const dragHandleRef = ref<HTMLButtonElement | null>(null)
 
@@ -106,19 +102,17 @@ const openColorPicker = () => {
 }
 
 const changeColor = (event: Event) => {
+	// ignore if in lite mode
+	if (liteMode.value) return;
+
 	const target = event.target as HTMLInputElement;
 
 	const valueAsHEX = target.value as HEX;
 
-	if (!color.value) {
-		color.value = {
-			value: valueAsHEX,
-			type: ColorType.Color
-		}
-		return;
+	color.value = {
+		value: valueAsHEX,
+		type: ColorType.Color
 	}
-
-	color.value.value = valueAsHEX;
 }
 
 defineExpose({
@@ -131,11 +125,17 @@ defineExpose({
 	--color-view-display-color: v-bind(displayColor);
 
 	@apply w-max aspect-[3/1.2];
+	@apply min-w-5em;
 	@apply rounded-[0.15em];
 	@apply grid relative grid-rows-1 grid-flow-row;
 	@apply transition-colors duration-300 ease-in-out;
-	@apply border-2 border-[--color-view-display-color];
+	@apply border-2 border-on-surface;
 	@apply bg-[--color-view-display-color];
+
+	// lite mode
+	&--lite-mode {
+		@apply aspect-[3/1.5] border-0 rounded-none;
+	}
 
 	grid-template-columns: 1fr auto 1fr;
 

@@ -6,7 +6,9 @@ export default defineNuxtPlugin((nuxtApp) => {
 		domain: authConfig.auth0.domain,
 		clientId: authConfig.auth0.clientId,
 		authorizationParams: {
-			redirect_uri: window.location.origin
+			redirect_uri: window.location.origin,
+			audience: authConfig.auth0.audience,
+			scope: 'openid profile email read:palettes'
 		}
 	});
 

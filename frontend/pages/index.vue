@@ -1,35 +1,67 @@
 <template>
-	<section class="hero-section section">
-		<section class="text-section">
-			<h1 class="title">
-				Find the Perfect Palette for Your Project
-			</h1>
-			<p class="description">
-				<!-- &#8209; is a non breakable hyphen -->
-				Explore and apply color palettes on our many low&#8209;fidelity UI mockups.
-			</p>
+	<template v-if="!isLoading && !isAuthenticated">
+		<section class="hero-section section">
+			<section class="text-section">
+				<h1 class="title">
+					Find the Perfect Palette for Your Project
+				</h1>
+				<p class="description">
+					<!-- &#8209; is a non breakable hyphen -->
+					Explore and apply color palettes on our many low&#8209;fidelity UI mockups.
+				</p>
+			</section>
+			<section class="demo-section">
+				<HomeRendererDemo />
+			</section>
 		</section>
-		<section class="demo-section">
-			<HomeRendererDemo />
-		</section>
-	</section>
+	</template>
 
-	<template v-if="false">
-		<PaletteImporter
-			v-if="step === Step.Import"
-			@update="updateColors"
-		/>
-		<SvgRenderer
-			v-else-if="step === Step.View"
-			:svg-path="StorySVG"
-			:palette-colors="colors"
-		/>
+	<template v-else-if="!isLoading && user">
+		<section class="dashboard-section section">
+			<header class="welcome-header">
+				<span class="welcome-text">
+					Welcome back, {{ user.nickname || user.name }}
+				</span>
+
+				<h1 class="title">
+					My Palettes and Projects
+				</h1>
+			</header>
+		</section>
 	</template>
 </template>
 
 <script setup lang="ts">
 import type { ColorRoles } from '~/types/ColorRole';
-import StorySVG from '@/samples/Chat_App.svg';
+import { useAuth0, type User } from '@auth0/auth0-vue';
+import PaletteService from '~/services/palette.service';
+import type { Palettes } from '~/types/Palette';
+
+const authClient = useAuth0()
+const {
+	auth,
+	$apiFetch
+} = useNuxtApp();
+
+const isLoading = authClient?.isLoading;
+const user: User | undefined = authClient?.user;
+const isAuthenticated = authClient?.isAuthenticated;
+
+const palettes = ref<Palettes | undefined>();
+
+onMounted(async () => {
+	watch([isAuthenticated, $apiFetch], async ([doFetch]) => {
+		if (!doFetch || !$apiFetch.value) {
+			return;
+		}
+
+		const paletteService = new PaletteService($apiFetch.value, await authClient?.getAccessTokenSilently());
+
+		palettes.value = await paletteService.getPalettes();
+	}, {
+		immediate: true,
+	});
+});
 
 enum Step {
 	Import = 1,
@@ -50,6 +82,11 @@ const updateColors = (newColors: ColorRoles) => {
 .section {
 	@apply bg-background;
 
+	.title {
+		@apply text-h2 font-bold;
+		@apply w-full;
+	}
+
 	&.hero-section {
 		@apply flex flex-col lg:flex-row items-center justify-center gap-4;
 		@apply h-[calc(100%-var(--app-header-height))];
@@ -60,11 +97,6 @@ const updateColors = (newColors: ColorRoles) => {
 			@apply md:w-50vw md:min-w-10em max-w-90vw;
 			@apply text-on-background;
 
-			.title {
-				@apply text-h2 font-bold;
-				@apply w-full;
-			}
-
 			.description {
 				@apply text-body text-center font-medium;
 				@apply md:w-25% md:min-w-15em max-w-90vw;
@@ -73,6 +105,26 @@ const updateColors = (newColors: ColorRoles) => {
 
 		.demo-section {
 			@apply grid items-center;
+		}
+	}
+
+	&.dashboard-section {
+		@apply flex flex-col;
+		@apply h-[calc(100%-var(--app-header-height))];
+		@apply py-0 px-4em;
+
+		//	welcome header in top right corner
+		.welcome-header {
+			@apply align-end;
+
+			// title has smaller font size
+			.welcome-text {
+				@apply text-overline font-medium;
+			}
+
+			.title {
+				@apply text-h3;
+			}
 		}
 	}
 }

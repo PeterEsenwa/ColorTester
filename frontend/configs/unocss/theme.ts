@@ -67,6 +67,7 @@ const theme: Theme = {
 		'9xl': 'var(--font-size-13)',
 	},
 	breakpoints: {
+		'xxs': '320px',
 		'xs': '475px',
 		'sm': '640px',
 		'md': '768px',
@@ -75,6 +76,7 @@ const theme: Theme = {
 		'2xl': '1536px',
 	},
 	containers: {
+		'xxs': '(min-width: 320px)',
 		'xs': '(min-width: 475px)',
 		'sm': '(min-width: 640px)',
 		'md': '(min-width: 768px)',

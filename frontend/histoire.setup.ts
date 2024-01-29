@@ -1,5 +1,6 @@
 import 'virtual:uno.css'
 import '@unocss/reset/tailwind-compat.css'
+import '@/assets/styles/typography.css'
 import '@fontsource-variable/source-sans-3';
 import { defineSetupVue3 } from '@histoire/plugin-vue';
 
