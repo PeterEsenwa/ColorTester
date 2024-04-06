@@ -1,6 +1,7 @@
 ﻿using ColorTesterAPI.Application.Converters;
 using ColorTesterAPI.Domain.Entities;
 using ColorTesterAPI.Domain.ValueObjects;
+using ColorTesterAPI.Infrastructure.Persistence.SQL.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
@@ -26,6 +27,12 @@ public class ColorTesterDbContext : DbContext
         var paletteColors = JsonConvert.DeserializeObject<Dictionary<ColorRole, PaletteColor>>(json, settings);
         return paletteColors ??
                new Dictionary<ColorRole, PaletteColor>();
+    }
+    
+    // Register AuditableEntitiesInterceptor
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(new AuditableEntitiesInterceptor());
     }
 
     // Fluent API configuration

@@ -36,13 +36,13 @@ internal class PaletteRepository : IPaletteQueryRepository, IPaletteCommandRepos
         return Task.CompletedTask;
     }
 
-    public Task<IEnumerable<Palette>> GetPalettesAsync()
+    public Task<IEnumerable<Palette>> GetPalettesAsync(string userId)
     {
-        return Task.FromResult(_palettes.AsEnumerable());
+        return Task.FromResult(_palettes.Where(p => p.UserId == userId).AsEnumerable());
     }
 
-    public Task<Palette?> GetPaletteAsync(Guid id)
+    public Task<Palette?> GetPaletteAsync(Guid id, string userId)
     {
-        return Task.FromResult(_palettes.FirstOrDefault(p => p.Id == id));
+        return Task.FromResult(_palettes.FirstOrDefault(p => p.Id == id && p.UserId == userId));
     }
 }

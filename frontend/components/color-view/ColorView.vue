@@ -1,5 +1,5 @@
 <template>
-	<div
+	<article
 		ref="colorViewRef"
 		class="color-view"
 		tabindex="0"
@@ -16,8 +16,8 @@
 			<span class="icon-ic:round-more-vert color-view__icon" />
 		</button>
 		<div
-			class="color-view__actions"
 			v-if="!liteMode"
+			class="color-view__actions"
 		>
 			<button
 				class="color-view__action color-view__edit"
@@ -40,7 +40,7 @@
 			:value="color?.value"
 			@input="changeColor"
 		>
-	</div>
+	</article>
 </template>
 
 <script setup lang="ts">
@@ -124,10 +124,9 @@ defineExpose({
 .color-view {
 	--color-view-display-color: v-bind(displayColor);
 
-	@apply w-max aspect-[3/1.2];
-	@apply min-w-5em;
-	@apply rounded-[0.15em];
-	@apply grid relative grid-rows-1 grid-flow-row;
+	@apply w-full h-[--palette-view-color-size] aspect-[3/1.2];
+	@apply rounded-[0.15em] cursor-pointer;
+	@apply inline-flex grid relative grid-rows-1 grid-flow-row;
 	@apply transition-colors duration-300 ease-in-out;
 	@apply border-2 border-on-surface;
 	@apply bg-[--color-view-display-color];
@@ -135,6 +134,14 @@ defineExpose({
 	// lite mode
 	&--lite-mode {
 		@apply aspect-[3/1.5] border-0 rounded-none;
+
+		&:first-of-type {
+			@apply rounded-l-md;
+		}
+
+		&:last-of-type {
+			@apply rounded-r-md;
+		}
 	}
 
 	grid-template-columns: 1fr auto 1fr;

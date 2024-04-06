@@ -27,6 +27,47 @@
 					My Palettes and Projects
 				</h1>
 			</header>
+
+			<div class="flex gap-2em">
+				<div
+					class="palettes"
+				>
+					<template
+						v-if="isLoadingPalettes">
+						<MiscPaletteViewLoader
+							v-for="palette in 2"
+							:key="palette"
+							:colors="[]"
+							:is-loading="isLoadingPalettes"
+						/>
+					</template>
+					<PaletteView
+						v-for="palette in firstPalettes"
+						:is-loading="isLoadingPalettes"
+						:key="palette.id"
+						:colors="PaletteColorsToArray(palette.colors)"
+					/>
+				</div>
+				<div
+					class="palettes"
+				>
+					<template
+						v-if="isLoadingPalettes">
+						<MiscPaletteViewLoader
+							v-for="palette in 2"
+							:key="palette"
+							:colors="[]"
+							:is-loading="isLoadingPalettes"
+						/>
+					</template>
+					<PaletteView
+						v-for="palette in firstPalettes"
+						:is-loading="isLoadingPalettes"
+						:key="palette.id"
+						:colors="PaletteColorsToArray(palette.colors)"
+					/>
+				</div>
+			</div>
 		</section>
 	</template>
 </template>
@@ -36,6 +77,7 @@ import type { ColorRoles } from '~/types/ColorRole';
 import { useAuth0, type User } from '@auth0/auth0-vue';
 import PaletteService from '~/services/palette.service';
 import type { Palettes } from '~/types/Palette';
+import { PaletteColorsToArray } from '~/types/PaletteColor';
 
 const authClient = useAuth0()
 const {
@@ -47,17 +89,22 @@ const isLoading = authClient?.isLoading;
 const user: User | undefined = authClient?.user;
 const isAuthenticated = authClient?.isAuthenticated;
 
-const palettes = ref<Palettes | undefined>();
+const palettes = ref<Palettes | undefined>([]);
+const firstPalettes = computed(() => palettes.value?.slice(0, 5));
+const isLoadingPalettes = ref(true);
 
 onMounted(async () => {
-	watch([isAuthenticated, $apiFetch], async ([doFetch]) => {
+	watch([ isAuthenticated, $apiFetch ], async ([ doFetch ]) => {
 		if (!doFetch || !$apiFetch.value) {
 			return;
 		}
 
 		const paletteService = new PaletteService($apiFetch.value, await authClient?.getAccessTokenSilently());
 
+		// fetch palettes
+		isLoadingPalettes.value = true;
 		palettes.value = await paletteService.getPalettes();
+		isLoadingPalettes.value = false;
 	}, {
 		immediate: true,
 	});
@@ -111,7 +158,7 @@ const updateColors = (newColors: ColorRoles) => {
 	&.dashboard-section {
 		@apply flex flex-col;
 		@apply h-[calc(100%-var(--app-header-height))];
-		@apply py-0 px-4em;
+		@apply py-0 px-4em gap-2em;
 
 		//	welcome header in top right corner
 		.welcome-header {
@@ -125,6 +172,11 @@ const updateColors = (newColors: ColorRoles) => {
 			.title {
 				@apply text-h3;
 			}
+		}
+
+		.palettes {
+			@apply w-50%;
+			@apply grid grid-cols-1 gap-2em;
 		}
 	}
 }

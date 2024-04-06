@@ -1,33 +1,32 @@
 <template>
-	<TooltipProvider>
+	<component
+		:is="wrapper"
+		ref="colorRoleRef"
+		:delay-duration="0"
+	>
 		<component
-			:delay-duration="0"
-			:is="wrapper"
-			:class="colorRoleClasses"
-			ref="colorRoleRef"
-		>
-			<component
-				side="bottom"
-				:is="panel"
-				class="color-role__role"
-				:class="roleTextClasses"
-				:side-offset="4"
-				style="{
+			:is="panel"
+			side="bottom"
+			class="color-role__role"
+			:class="roleTextClasses"
+			:side-offset="4"
+			style="{
 					font-variant-caps: all-small-caps;
 				}"
-			>
-				{{ roleModel }}
-			</component>
-			<component
-				as-child
-				:is="viewWrapper">
-				<ColorView
-					v-model="colorModel"
-					@delete="handleDelete()"
-				/>
-			</component>
+		>
+			{{ roleModel }}
 		</component>
-	</TooltipProvider>
+		<component
+			:is="viewWrapper"
+			as-child
+			:class="wrapperClasses"
+		>
+			<ColorView
+				v-model="colorModel"
+				@delete="handleDelete()"
+			/>
+		</component>
+	</component>
 </template>
 
 <script setup lang="ts">
@@ -37,9 +36,9 @@ import ColorView from '~/components/color-view/ColorView.vue';
 import { deleteColorRoleFnKey } from '~/utils/injectionKeys';
 import { useVModel } from '@vueuse/core';
 import { type ColorRole } from '~/types/ColorRole';
-import { TooltipProvider, TooltipRoot, TooltipTrigger, TooltipContent, } from 'radix-vue';
+import { TooltipRoot, TooltipTrigger, TooltipContent, } from 'radix-vue';
 
-const deleteFn = inject(deleteColorRoleFnKey)
+const deleteFn = inject(deleteColorRoleFnKey, () => void 0)
 const liteMode = inject(liteModeKey, ref(false))
 
 // Wrapper is either a div or a Popover depending on lite mode
@@ -56,7 +55,8 @@ const props = defineProps<{
 	role: ColorRole
 }>()
 
-const colorRoleRef = ref<HTMLElement | null>(null);
+const colorRoleRef = ref<HTMLElement | typeof TooltipRoot | null>(null);
+const colorWrapperRef = ref<HTMLElement | typeof TooltipTrigger | null>(null);
 
 const emit = defineEmits<{
 	(event: 'update:role', role: ColorRole): void
@@ -73,12 +73,6 @@ const handleDelete = () => {
 	})
 }
 
-const colorRoleClasses = computed(() => [
-	{
-		'relative flex flex-col items-start gap-2 w-max': !liteMode.value,
-	}
-])
-
 const roleTextClasses = computed(() => {
 	return [
 		'text-body2 text-on-surface',
@@ -87,7 +81,24 @@ const roleTextClasses = computed(() => {
 			'text-caption': liteMode.value,
 		} ]
 })
+
+// on mounted, apply the colorRoleClasses to the colorRoleRef
+onMounted(() => {
+	const colorRoleRefValue = colorRoleRef.value;
+	if (!liteMode.value && colorRoleRefValue instanceof HTMLElement) {
+		colorRoleRefValue.classList.add('relative flex flex-col items-start gap-2 w-full')
+	}
+})
+
+const wrapperClasses = computed(() => {
+	return [
+		'color-role__wrapper',
+		{
+			'hover:outline outline-on-background hover:outline-4 !hover:rounded overflow-hidden hover:z-1': liteMode.value,
+		}
+	]
+})
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 </style>

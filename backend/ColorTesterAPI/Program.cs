@@ -11,6 +11,13 @@ using Newtonsoft.Json;
 
 public class Program
 {
+    public static readonly Dictionary<string, string> RolesDictionary = new()
+    {
+        { "PaletteCreator", "create:palettes" },
+        { "PaletteReader", "read:palettes" },
+        { "PaletteUpdater", "update:palettes" },
+        { "PaletteDeleter", "delete:palettes" }
+    };
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +32,7 @@ public class Program
     {
         builder.Services.AddEndpointsApiExplorer();
 
-        builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+        builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
 
         ConfigureCors(builder);
         ConfigureDatabase(builder);
@@ -44,8 +51,6 @@ public class Program
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ColorTesterAPI v1");
-
-                c.OAuthClientId(app.Configuration["Auth0:ClientId"]);
             });
         }
         
@@ -141,10 +146,13 @@ public class Program
     private static void ConfigureAuthentication(WebApplicationBuilder builder)
     {
         // Add authentication
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
             {
-                options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}/";
+                options.Authority = builder.Configuration["Auth0:Domain"];
                 options.Audience = builder.Configuration["Auth0:Audience"];
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -158,20 +166,14 @@ public class Program
         // Add authorization
         builder.Services.AddAuthorization(options =>
         {
-            var roles = new Dictionary<string, string>
-            {
-                { "PaletteCreator", "create:palettes" },
-                { "PaletteReader", "read:palettes" },
-                { "PaletteUpdater", "update:palettes" },
-                { "PaletteDeleter", "delete:palettes" }
-            };
+            var roles = RolesDictionary;
 
             foreach (var (role, scope) in roles)
             {
                 options.AddPolicy(
                     role,
                     policy => policy.Requirements.Add(
-                        new HasScopeRequirement(scope, $"https://{builder.Configuration["Auth0:Domain"]}/")
+                        new HasPermissionRequirement(scope, builder.Configuration["Auth0:Domain"] ?? throw new InvalidOperationException())
                     )
                 );
             }

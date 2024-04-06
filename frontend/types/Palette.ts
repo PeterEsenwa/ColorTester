@@ -1,9 +1,8 @@
 import type { Auditable } from '~/types/Auditable';
-import type { ColorRole } from '~/types/ColorRole';
-import type { PaletteColor, PaletteColors } from '~/types/PaletteColor';
-import z from 'zod';
 import { AuditableSchema } from '~/types/Auditable';
+import type { PaletteColors } from '~/types/PaletteColor';
 import { PaletteColorsSchema } from '~/types/PaletteColor';
+import z from 'zod';
 
 export type Palette = Auditable<{
 	id: string;

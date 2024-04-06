@@ -88,3 +88,12 @@ export const PaletteColorsSchema = z.record(
 	z.nativeEnum(AllColorRoles),
 	PaletteColorSchema
 );
+
+// utility function to convert Record<ColorRole, PaletteColor> to PaletteColor[]
+export const PaletteColorsToArray = (
+	paletteColors: PaletteColors
+): PaletteColor[] => {
+	return Object.entries(paletteColors).map(([role, value]) => {
+		return value;
+	});
+};

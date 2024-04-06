@@ -28,7 +28,7 @@ export default definePreset(() => {
 						}).join('\n')
 					}).join('\n');
 				} catch (error) {
-
+					console.error('Error getting color variables from theme:', error);
 				}
 
 				return `

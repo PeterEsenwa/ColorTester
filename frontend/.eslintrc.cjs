@@ -1,21 +1,18 @@
 module.exports = {
+	root: true,
 	env: {
 		browser: true,
 		node: true,
 	},
+	extends: [
+		'@nuxt/eslint-config',
+		'plugin:vue/vue3-recommended',
+	],
 	overrides: [
 		{
 			files: [ '*.vue' ],
-			parser: require.resolve('vue-eslint-parser'),
-			parserOptions: {
-				parser: require.resolve('@typescript-eslint/parser'),
-				extraFileExtensions: [ '.vue' ]
-			},
-			extends: [
-				'plugin:vue/vue3-recommended',
-				'@vue/typescript/recommended'
-			],
 			rules: {
+				'vue/no-multiple-template-root': 'off',
 				'vue/html-indent': [ 'error', 'tab' ],
 				'vue/no-unused-vars': [
 					'error', {
@@ -33,15 +30,5 @@ module.exports = {
 				],
 			}
 		},
-		{
-			files: [ '*.ts', '*.tsx' ],
-			parser: require.resolve('@typescript-eslint/parser'),
-			extends: [
-				'@vue/typescript/recommended'
-			],
-			rules: {
-				// Custom rules here
-			}
-		}
 	]
 };

@@ -4,8 +4,8 @@ namespace ColorTesterAPI.Domain.Repositories;
 
 public interface IPaletteQueryRepository
 {
-    Task<IEnumerable<Palette>> GetPalettesAsync();
-    Task<Palette?> GetPaletteAsync(Guid id);
+    Task<IEnumerable<Palette>> GetPalettesAsync(string userId);
+    Task<Palette?> GetPaletteAsync(Guid id, string userId);
 }
 
 public interface IPaletteCommandRepository
