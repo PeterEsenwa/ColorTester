@@ -8,23 +8,29 @@
 				ref="regularColorColumnRef"
 				class="color-column regular-color-column"
 			>
-				<ColorRole
-					v-for="color in rolesStore.regularColors"
+				<template
+					v-for="color in regularColors"
 					:key="color.role"
-					v-model:color="color.value"
-					v-model:role="color.role"
-				/>
+				>
+					<ColorRole
+						v-model:color="color.value"
+						v-model:role="color.role"
+					/>
+				</template>
 			</div>
 			<div
 				ref="onColorColumnRef"
 				class="color-column on-color-column"
 			>
-				<ColorRole
-					v-for="color in rolesStore.onColors"
+				<template
+					v-for="color in onColors"
 					:key="color.role"
-					v-model:color="color.value"
-					v-model:role="color.role"
-				/>
+				>
+					<ColorRole
+						v-model:color="color.value"
+						v-model:role="color.role"
+					/>
+				</template>
 			</div>
 		</div>
 		<button
@@ -44,12 +50,15 @@
 <script setup lang="ts">
 import ColorRole from '~/components/color-role/ColorRole.vue';
 import { useToggle } from '@vueuse/core';
-import { type ColorRole as ColorRoleType, OnColorRole } from '~/types/ColorRole';
+import {type ColorRole as ColorRoleType, isOnColorRole, OnColorRole} from '~/types/ColorRole';
 import { usePaletteEditorColorRolesStore } from '~/stores/paletteEditorColorRolesStore';
 import { deleteColorRoleFnKey } from '~/utils/injectionKeys';
 import type { PaletteColor } from '~/types/PaletteColor';
 
 const rolesStore = usePaletteEditorColorRolesStore();
+
+const regularColors = computed(() => rolesStore.regularColors);
+const onColors = computed(() => rolesStore.onColors);
 
 const paletteEditorRef = ref<HTMLDivElement | null>(null);
 const regularColorColumnRef = ref<Element | null>(null);
@@ -70,7 +79,7 @@ const addColor = (selectedRoles: ColorRoleType[]) => {
 		}
 
 		// add color role to the array
-		if (role in OnColorRole) {
+		if (isOnColorRole(role)) {
 			rolesStore.onColors.push({
 				role,
 				value: undefined,

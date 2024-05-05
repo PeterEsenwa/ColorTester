@@ -44,10 +44,11 @@
 </template>
 
 <script setup lang="ts">
-import type { ColorValue, HEX } from '~/types/PaletteColor';
+import {type ColorDictionaryValue, type ColorValue, type HEX, isColorDictionaryValue} from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
-import { useDark } from '@vueuse/core';
+import {useDark, useDebounceFn} from '@vueuse/core';
 import { ref } from 'vue';
+import {ColorIntensity} from "~/types/ColorIntensity";
 
 defineOptions({
 	name: 'ColorView',
@@ -65,7 +66,7 @@ const dragHandleRef = ref<HTMLButtonElement | null>(null)
 
 const colorPickerRef = ref<HTMLInputElement>();
 
-const color = defineModel<ColorValue | undefined>()
+const color = defineModel<ColorValue | ColorDictionaryValue | undefined>()
 
 const displayColor = computed(() => {
 	if (!color.value) return 'transparent';
@@ -74,13 +75,13 @@ const displayColor = computed(() => {
 })
 
 const luminosity = computed(() => {
-	if (!color.value) return 0;
+	if (!color.value || !color.value.value) return 0;
 
-	const value = color.value?.value;
+	if (isColorDictionaryValue(color.value)) {
+		return getHEXLuminosity(color.value.value[ColorIntensity.Intensity900]);
+	}
 
-	if (!value) return 0;
-
-	return getHEXLuminosity(value);
+	return getHEXLuminosity(color.value.value);
 })
 
 const iconColor = computed(() => {
@@ -101,7 +102,7 @@ const openColorPicker = () => {
 	colorPickerRef.value?.click();
 }
 
-const changeColor = (event: Event) => {
+const changeColor = useDebounceFn((event: Event) => {
 	// ignore if in lite mode
 	if (liteMode.value) return;
 
@@ -113,7 +114,7 @@ const changeColor = (event: Event) => {
 		value: valueAsHEX,
 		type: ColorType.Color
 	}
-}
+})
 
 defineExpose({
 	openColorPicker,

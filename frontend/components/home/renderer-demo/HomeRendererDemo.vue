@@ -24,124 +24,125 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import StorySVG from '@/samples/Chat_App.svg';
-import type { PaletteColors } from '~/types/PaletteColor';
+import type {PaletteColor, PaletteColors} from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
 
-const paletteColors = ref<Partial<PaletteColors>>({
-	accent: {
-		role: 'accent',
+
+const paletteColors = ref<PaletteColor[]>([
+	{
+		role: 'Accent',
 		value: {
-			type: ColorType.Color,
 			value: '#FC5130',
+			type: ColorType.Color,
 		},
 	},
-	background: {
-		role: 'background',
+	{
+		role: 'Background',
 		value: {
-			type: ColorType.Color,
 			value: '#FDFDFD',
+			type: ColorType.Color,
 		},
 	},
-	error: {
-		role: 'error',
+	{
+		role: 'Error',
 		value: {
-			type: ColorType.Color,
 			value: '#D7263D',
+			type: ColorType.Color,
 		},
 	},
-	primary: {
-		role: 'primary',
+	{
+		role: 'Primary',
 		value: {
-			type: ColorType.Color,
 			value: '#2F3061',
+			type: ColorType.Color,
 		},
 	},
-	secondary: {
-		role: 'secondary',
+	{
+		role: 'Secondary',
 		value: {
-			type: ColorType.Color,
 			value: '#FFD166',
+			type: ColorType.Color,
 		},
 	},
-})
+])
 
-const paletteColorsTwo = ref<Partial<PaletteColors>>({
-	accent: {
-		role: 'accent',
+const paletteColorsTwo = ref<PaletteColor[]>([
+	{
+		role: 'Accent',
 		value: {
-			type: ColorType.Color,
 			value: '#FF9B85',
+			type: ColorType.Color,
 		},
 	},
-	background: {
-		role: 'background',
+	{
+		role: 'Background',
 		value: {
-			type: ColorType.Color,
 			value: '#FFF5EB',
+			type: ColorType.Color,
 		},
 	},
-	error: {
-		role: 'error',
+	{
+		role: 'Error',
 		value: {
-			type: ColorType.Color,
 			value: '#FF616D',
+			type: ColorType.Color,
 		},
 	},
-	primary: {
-		role: 'primary',
+	{
+		role: 'Primary',
 		value: {
-			type: ColorType.Color,
 			value: '#6A8D73',
-		},
-	},
-	secondary: {
-		role: 'secondary',
-		value: {
 			type: ColorType.Color,
-			value: '#A7BED3',
 		},
 	},
-})
+	{
+		role: 'Secondary',
+		value: {
+			value: '#A7BED3',
+			type: ColorType.Color,
+		},
+	},
+])
 
-const paletteColorsThree = ref<Partial<PaletteColors>>({
-		accent: {
-			role: 'accent',
-			value: {
-				type: ColorType.Color,
-				value: '#C84B31',
-			},
+const paletteColorsThree = ref<PaletteColor[]>([
+	{
+		role: 'Accent',
+		value: {
+			value: '#C84B31',
+			type: ColorType.Color,
 		},
-		background: {
-			role: 'background',
-			value: {
-				type: ColorType.Color,
-				value: '#0D1B2A',
-			},
+	},
+	{
+		role: 'Background',
+		value: {
+			value: '#0D1B2A',
+			type: ColorType.Color,
 		},
-		error: {
-			role: 'error',
-			value: {
-				type: ColorType.Color,
-				value: '#E40017',
-			},
+	},
+	{
+		role: 'Error',
+		value: {
+			value: '#E40017',
+			type: ColorType.Color,
 		},
-		primary: {
-			role: 'primary',
-			value: {
-				type: ColorType.Color,
-				value: '#415A77',
-			},
+	},
+	{
+		role: 'Primary',
+		value: {
+			value: '#415A77',
+			type: ColorType.Color,
 		},
-		secondary: {
-			role: 'secondary',
-			value: {
-				type: ColorType.Color,
-				value: '#EAE8FF',
-			},
+	},
+	{
+		role: 'Secondary',
+		value: {
+			value: '#EAE8FF',
+			type: ColorType.Color,
 		},
-	})
+	},
+])
 
-const selectedColor = ref();
+const selectedColor = ref<PaletteColor[]>(paletteColors.value);
 </script>
 
 <style scoped lang="scss">

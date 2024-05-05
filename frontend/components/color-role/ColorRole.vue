@@ -14,7 +14,7 @@
 					font-variant-caps: all-small-caps;
 				}"
 		>
-			{{ roleModel }}
+			{{ getPanelText() }}
 		</component>
 		<component
 			:is="viewWrapper"
@@ -30,13 +30,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type WritableComputedRef } from 'vue';
-import type { PaletteColor, ColorValue } from '~/types/PaletteColor';
+import {ref, type WritableComputedRef} from 'vue';
+import type {ColorDictionaryValue, ColorValue, PaletteColor} from '~/types/PaletteColor';
 import ColorView from '~/components/color-view/ColorView.vue';
-import { deleteColorRoleFnKey } from '~/utils/injectionKeys';
-import { useVModel } from '@vueuse/core';
-import { type ColorRole } from '~/types/ColorRole';
-import { TooltipRoot, TooltipTrigger, TooltipContent, } from 'radix-vue';
+import {deleteColorRoleFnKey} from '~/utils/injectionKeys';
+import {useVModel} from '@vueuse/core';
+import {type ColorRole} from '~/types/ColorRole';
+import {TooltipContent, TooltipRoot, TooltipTrigger,} from 'radix-vue';
+import {ColorType} from "~/types/ColorType";
+import {ColorIntensity} from "~/types/ColorIntensity";
 
 const deleteFn = inject(deleteColorRoleFnKey, () => void 0)
 const liteMode = inject(liteModeKey, ref(false))
@@ -50,10 +52,15 @@ const panel = computed(() => liteMode?.value ? TooltipContent : 'span')
 // view wrapper is either a div or a PopoverButton depending on lite mode
 const viewWrapper = computed(() => liteMode?.value ? TooltipTrigger : 'div')
 
-const props = defineProps<{
-	color: ColorValue
+const props = withDefaults(defineProps<{
+	color: ColorValue | ColorDictionaryValue | undefined
 	role: ColorRole
-}>()
+}>(), {
+	color: () => ({
+		type: ColorType.Color,
+		value: '#000000',
+	}),
+})
 
 const colorRoleRef = ref<HTMLElement | typeof TooltipRoot | null>(null);
 const colorWrapperRef = ref<HTMLElement | typeof TooltipTrigger | null>(null);
@@ -63,8 +70,20 @@ const emit = defineEmits<{
 	(event: 'update:color', color: PaletteColor['value']): void
 }>()
 
-const colorModel = useVModel(props, 'color', emit) as WritableComputedRef<ColorValue>
+const colorModel = useVModel(props, 'color', emit) as WritableComputedRef<ColorValue | ColorDictionaryValue | undefined>
 const roleModel = useVModel(props, 'role', emit)
+
+const getPanelText = () => {
+	if (!liteMode.value) {
+		return roleModel.value
+	}
+
+	if (colorModel.value?.type === ColorType.Color) {
+		return colorModel.value?.value.toUpperCase()
+	}
+
+	return colorModel.value?.value[ColorIntensity.Intensity900]
+}
 
 const handleDelete = () => {
 	deleteFn?.({
@@ -79,23 +98,24 @@ const roleTextClasses = computed(() => {
 		{
 			'font-medium': !liteMode.value,
 			'text-caption': liteMode.value,
-		} ]
+		}]
 })
 
 // on mounted, apply the colorRoleClasses to the colorRoleRef
 onMounted(() => {
 	const colorRoleRefValue = colorRoleRef.value;
 	if (!liteMode.value && colorRoleRefValue instanceof HTMLElement) {
-		colorRoleRefValue.classList.add('relative flex flex-col items-start gap-2 w-full')
+		// error when adding classes at once
+		colorRoleRefValue.classList.add('relative', 'flex', 'flex-col', 'items-start', 'gap-2', 'w-full')
 	}
 })
 
 const wrapperClasses = computed(() => {
 	return [
 		'color-role__wrapper',
-		{
-			'hover:outline outline-on-background hover:outline-4 !hover:rounded overflow-hidden hover:z-1': liteMode.value,
-		}
+		// {
+		// 	'hover:outline outline-on-background hover:outline-4 !hover:rounded overflow-hidden hover:z-1': liteMode.value,
+		// }
 	]
 })
 </script>

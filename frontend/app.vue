@@ -23,7 +23,7 @@ html, body {
 }
 
 #app {
-	@apply h-100vh w-100vw bg-background text-on-background;
+	@apply min-h-100vh bg-background text-on-background;
 
 	/*	background-image: url('/FlowyColours.svg');
 		background-repeat: no-repeat;

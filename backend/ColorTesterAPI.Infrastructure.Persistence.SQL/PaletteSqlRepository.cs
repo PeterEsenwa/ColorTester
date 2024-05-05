@@ -35,11 +35,15 @@ public class PaletteSqlRepository : IPaletteCommandRepository, IPaletteQueryRepo
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Palette>> GetPalettesAsync(string userId)
+    public async Task<IEnumerable<Palette>> GetPalettesAsync(string userId, int page = 1, int pageSize = 5)
     {
-        return await _context.Palettes.Where(p => p.UserId == userId).ToListAsync();
+        return await _context.Palettes
+            .Where(p => p.UserId == userId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
-
+   
     public async Task<Palette?> GetPaletteAsync(Guid id, string userId)
     {
         return await _context.Palettes.FirstOrDefaultAsync(p => p.Id == id && p.UserId == userId);

@@ -20,6 +20,15 @@ export enum OnColorRole {
 	onWarning = 'OnWarning',
 }
 
+const onColorRoleLookup: { [key in OnColorRole]: boolean } = Object.values(OnColorRole).reduce((acc, val) => {
+	acc[val] = true;
+	return acc;
+}, {} as { [key in OnColorRole]: boolean });
+
+export function isOnColorRole(role: string): role is OnColorRole {
+	return onColorRoleLookup[role as OnColorRole];
+}
+
 // group main colors and on colors (accessible at runtime)
 export const AllColorRoles = {
 	...MainColorRole,

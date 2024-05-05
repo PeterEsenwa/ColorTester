@@ -36,9 +36,13 @@ internal class PaletteRepository : IPaletteQueryRepository, IPaletteCommandRepos
         return Task.CompletedTask;
     }
 
-    public Task<IEnumerable<Palette>> GetPalettesAsync(string userId)
+    public Task<IEnumerable<Palette>> GetPalettesAsync(string userId, int page = 1, int pageSize = 5)
     {
-        return Task.FromResult(_palettes.Where(p => p.UserId == userId).AsEnumerable());
+        return Task.FromResult(_palettes
+            .Where(p => p.UserId == userId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .AsEnumerable());
     }
 
     public Task<Palette?> GetPaletteAsync(Guid id, string userId)

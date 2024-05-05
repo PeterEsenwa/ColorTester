@@ -47,6 +47,10 @@ export const ColorValueSchema = z.object({
 	value: HEXSchema,
 });
 
+export const isColorValue = (value: unknown): value is ColorValue => {
+	return ColorValueSchema.safeParse(value).success;
+}
+
 /**
  * Represents a color value as a dictionary of HEX strings, where the keys
  * correspond to color intensities defined in the `ColorIntensity` enum, and
@@ -70,6 +74,10 @@ export const ColorDictionaryValueSchema = z.object({
 	type: z.literal(ColorType.Dictionary),
 	value: z.record(z.nativeEnum(ColorIntensity), HEXSchema),
 });
+
+export const isColorDictionaryValue = (value: unknown): value is ColorDictionaryValue => {
+	return ColorDictionaryValueSchema.safeParse(value).success;
+}
 
 export interface PaletteColor {
 	role: ColorRole;

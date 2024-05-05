@@ -11,18 +11,18 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import type { ColorRoles } from '~/types/ColorRole';
-import type { PaletteColors } from '~/types/PaletteColor';
+import {AllColorRoles, type ColorRole, type ColorRoles, MainColorRole} from '~/types/ColorRole';
+import type {PaletteColor} from '~/types/PaletteColor';
 import { isDefined, watchDebounced } from '@vueuse/core';
 import { ColorIntensity } from '~/types/ColorIntensity';
+import camelcase from "camelcase";
 
 // Props
 const props = withDefaults(defineProps<{
 	svgPath: string;
-	paletteColors?: PaletteColors;
+	paletteColors?: PaletteColor[];
 	rounded?: boolean;
 }>(), {
-	paletteColors: undefined,
 	rounded: true,
 });
 
@@ -35,6 +35,7 @@ const cancelWatch = watchDebounced(() => props.paletteColors, () => {
 }, {
 	deep: true,
 	debounce: 150,
+	once: true,
 });
 
 const emit = defineEmits<{
@@ -47,17 +48,20 @@ const svgContainer = ref<HTMLElement | null>(null);
 const isLoaded = ref(false);
 
 // Methods
-const loadAndRenderSVG = async () => {
+const loadAndRenderSVG = async (
+	svgPath: string,
+) => {
+	isLoaded.value = false;
 	try {
-		const response = await fetch(props.svgPath);
+		const response = await fetch(svgPath);
 		if (!response.ok) {
-			return emit('svg-load-error', new Error(`Failed to load SVG from ${ props.svgPath }`));
+			return emit('svg-load-error', new Error(`Failed to load SVG from ${ svgPath }`));
 		}
 
 		const svgText = await response.text();
 
 		if (svgContainer.value) {
-			svgContainer.value.innerHTML = applyColorSettings(svgText, props.paletteColors);
+			svgContainer.value.appendChild(new DOMParser().parseFromString(svgText, 'image/svg+xml').documentElement);
 		}
 	} catch (error) {
 		console.error(error);
@@ -66,64 +70,71 @@ const loadAndRenderSVG = async () => {
 	}
 };
 
-const getPrimaryColor = (paletteColors?: PaletteColors): string | undefined => {
-	if (!paletteColors) {
+const getPrimaryColor = (paletteColors?: PaletteColor[]): string | undefined => {
+	if (!paletteColors || !paletteColors.length) {
 		return undefined;
 	}
 
-	const primaryColor = paletteColors.primary?.value;
+	const primaryColor = paletteColors.find((color) => color.role === MainColorRole.primary as ColorRole);
 
-	if (!primaryColor) {
+	if (!primaryColor || !primaryColor.value) {
 		return undefined;
 	}
 
-	if (typeof primaryColor.value === 'object') {
-		return primaryColor.value[ColorIntensity.Intensity900];
+	const colorValue = primaryColor.value.value;
+
+	if (typeof colorValue === 'object') {
+		return colorValue[ColorIntensity.Intensity900];
 	}
 
-	return primaryColor.value;
+	return colorValue;
 };
 
 const primaryColor = computed(() => getPrimaryColor(props.paletteColors) ?? 'currentColor');
 
-const applyColorSettings = (svgText: string, paletteColors?: PaletteColors): string => {
-	const parser = new DOMParser();
-	const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
-	const svgElement = svgDoc.documentElement;
+const applyColorSettings = (paletteColors?: PaletteColor[]) => {
+	const svgElement = svgContainer.value?.querySelector('svg');
 
-	if (!paletteColors) {
-		return svgElement.outerHTML;
+	if (!paletteColors || !svgElement) {
+		return;
 	}
 
 	// Apply color settings to SVG elements
-	for (const colorRoleKey in paletteColors) {
-		const colorRole = paletteColors[colorRoleKey as keyof ColorRoles];
-		const color = colorRole?.value;
+	for (const color of paletteColors) {
+		const colorRoleKey = color.role;
 
 		if (!color) {
 			continue;
 		}
 
-		const svgElements = svgElement.querySelectorAll(`[data-color-role="${ colorRoleKey.toLowerCase() }"]`);
+		const camelcaseRole = camelcase(colorRoleKey);
+		console.log('camelcaseRole', camelcaseRole);
+
+		const svgElements = svgElement.querySelectorAll(`[data-color-role="${ camelcaseRole }"]`);
 
 		for (const svgElement of svgElements) {
-			if (color.value && typeof color.value !== 'object') {
-				svgElement.setAttribute('fill', color.value);
+			if (color.value?.value && typeof color.value.value !== 'object') {
+				svgElement.setAttribute('fill', color.value.value);
 			}
 		}
 	}
 
 	// add styles to SVG element
 	svgElement.setAttribute('style', 'width: auto; height: 100%;');
-
-	return svgElement.outerHTML;
 };
 
 // Lifecycle hooks
 onMounted(() => {
-	watch(() => [ props.svgPath, props.paletteColors ], () => {
-		loadAndRenderSVG();
+	watchEffect(() => {
+		loadAndRenderSVG(props.svgPath);
+	});
+
+	watch(() => [props.paletteColors, isLoaded], () => {
+		if (isLoaded.value) {
+			applyColorSettings(props.paletteColors);
+		}
 	}, {
+		deep: true,
 		immediate: true,
 	});
 });

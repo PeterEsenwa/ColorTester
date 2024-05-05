@@ -2,7 +2,7 @@
 	<Story name="ColorView">
 		<div
 			ref="colorViewRef"
-			class="flex flex-col gap-4 relative"
+			class="flex flex-col gap-4 relative w-5em"
 		>
 			<ColorView
 				v-for="color in colors"
@@ -23,70 +23,70 @@ Sortable.mount(new Swap());
 
 const colors = ref<PaletteColor[]>([
 	{
-		role: 'accent',
+		role: 'Accent',
 		value: {
 			value: '#FC5130',
 			type: ColorType.Color,
 		},
 	},
 	{
-		role: 'background',
+		role: 'Background',
 		value: {
 			value: '#FDFDFD',
 			type: ColorType.Color,
 		},
 	},
 	{
-		role: 'error',
+		role: 'Error',
 		value: {
 			value: '#D7263D',
 			type: ColorType.Color,
 		},
 	},
 	{
-		role: 'primary',
+		role: 'Primary',
 		value: {
 			value: '#2F3061',
 			type: ColorType.Color,
 		},
 	},
 	{
-		role: 'secondary',
+		role: 'Secondary',
 		value: {
 			value: '#A7A6CB',
 			type: ColorType.Color,
 		},
 	},
 	{
-		role: 'onAccent',
+		role: 'OnAccent',
 		value: {
 			value: '#FFFFFF',
 			type: ColorType.Color,
 		},
 	},
 	{
-		role: 'onBackground',
+		role: 'OnBackground',
 		value: {
 			value: '#000000',
 			type: ColorType.Color,
 		},
 	},
 	{
-		role: 'onError',
+		role: 'OnError',
 		value: {
 			value: '#FFFFFF',
 			type: ColorType.Color,
 		},
 	},
 	{
-		role: 'onPrimary',
+		role: 'OnPrimary',
 		value: {
 			value: '#FFFFFF',
 			type: ColorType.Color,
 		},
 	},
 	{
-		role: 'onSecondary',
+		role: 'OnSecondary',
 		value: {
 			value: '#000000',
 			type: ColorType.Color,

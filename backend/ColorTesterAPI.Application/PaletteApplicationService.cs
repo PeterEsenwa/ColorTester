@@ -54,13 +54,13 @@ public class PaletteApplicationService
     }
 
     // Get all palettes for a specific user
-    public async Task<IEnumerable<Palette>> GetPalettesAsync(String userId)
+    public async Task<IEnumerable<Palette>> GetPalettesAsync(string userId)
     {
         return await _paletteQueryRepository.GetPalettesAsync(userId);
     }
     
     // Get a specific palette from a specific user
-    public async Task<Palette?> GetPaletteAsync(Guid id, String userId)
+    public async Task<Palette?> GetPaletteAsync(Guid id, string userId)
     {
         return await _paletteQueryRepository.GetPaletteAsync(id, userId);
     }
