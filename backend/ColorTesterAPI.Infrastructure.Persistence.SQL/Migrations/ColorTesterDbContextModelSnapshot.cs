@@ -55,11 +55,71 @@ namespace ColorTesterAPI.Infrastructure.Persistence.SQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
                     b.ToTable("palettes", (string)null);
+                });
+
+            modelBuilder.Entity("ColorTesterAPI.Domain.Entities.Project", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("MockupName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("mockup_name");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<Guid?>("PaletteId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("palette_id");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaletteId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("projects", (string)null);
+                });
+
+            modelBuilder.Entity("ColorTesterAPI.Domain.Entities.Project", b =>
+                {
+                    b.HasOne("ColorTesterAPI.Domain.Entities.Palette", null)
+                        .WithMany()
+                        .HasForeignKey("PaletteId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 #pragma warning restore 612, 618
         }

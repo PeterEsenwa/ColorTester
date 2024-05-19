@@ -17,8 +17,8 @@ public class PaletteApplicationService
         _paletteCommandRepository = paletteCommandRepository;
         _paletteQueryRepository = paletteQueryRepository;
     }
-
-    public async Task<Guid> CreatePaletteAsync(CreatePaletteRequest request, string userId)
+    
+    private static Palette BuildPaletteFromRequest(CreatePaletteRequest request)
     {
         var paletteBuilder = Palette.Builder();
         foreach (var color in request.Colors)
@@ -42,7 +42,12 @@ public class PaletteApplicationService
             paletteBuilder.AddColor(new PaletteColor(color.Role, colorValue));
         }
 
-        var newPalette = paletteBuilder.Build();
+        return paletteBuilder.Build();
+    }
+    
+    public async Task<Guid> CreatePaletteAsync(CreatePaletteRequest request, string userId)
+    {
+        var newPalette = BuildPaletteFromRequest(request);
         
         // add other properties
         newPalette.UserId = userId;
@@ -65,21 +70,20 @@ public class PaletteApplicationService
         return await _paletteQueryRepository.GetPaletteAsync(id, userId);
     }
 
-    public async Task UpdatePaletteAsync(Guid id, CreatePaletteRequest request)
+    public async Task UpdatePaletteAsync(Guid id, CreatePaletteRequest request, string userId)
     {
-        // var palette = await _paletteQueryRepository.GetPaletteAsync(id);
-        // if (palette == null)
-        // {
-        //     throw new ArgumentException($"Palette with id {id} not found");
-        // }
-        //
-        // var paletteBuilder = Palette.Builder();
-        // foreach (var color in request.GetColors())
-        // {
-        //     paletteBuilder.AddColor(new PaletteColor(color.Role, color.Value));
-        // }
-        //
-        // var newPalette = paletteBuilder.Build();
-        // await _paletteCommandRepository.UpdatePaletteAsync(newPalette);
+        var palette = await _paletteQueryRepository.GetPaletteAsync(id, userId);
+
+        if (palette == null)
+        {
+            throw new ArgumentException($"Palette with id {id} not found");
+        }
+
+        var newPalette = BuildPaletteFromRequest(request);
+
+        // update properties
+        newPalette.Name = request.Name;
+
+        await _paletteCommandRepository.UpdatePaletteAsync(newPalette);
     }
 }

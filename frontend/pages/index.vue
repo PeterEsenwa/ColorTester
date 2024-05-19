@@ -61,14 +61,14 @@
 				</div>
 			</div>
 
-			<div
+<!--			<div
 				class="add-palette-area"
 			>
 				<h5 class="title-2">
 					Add a New Palette
 				</h5>
 				<PaletteEditor />
-			</div>
+			</div>-->
 		</section>
 	</template>
 </template>
