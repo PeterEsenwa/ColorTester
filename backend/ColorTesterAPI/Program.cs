@@ -1,6 +1,7 @@
 using System.Security.Claims;
 // using dotenv.net;
 using ColorTesterAPI;
+using ColorTesterAPI.Application;
 using ColorTesterAPI.Application.Converters;
 using ColorTesterAPI.Infrastructure.Persistence.SQL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+
+namespace ColorTesterAPI;
 
 public class Program
 {
@@ -23,6 +26,9 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         ConfigureServices(builder);
         
+        // Set the GOOGLE_APPLICATION_CREDENTIALS environment variable
+        Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "../keys/colortester-fb43b435338c.json");
+        
         var app = builder.Build();
         Configure(app);
         app.Run();
@@ -35,6 +41,7 @@ public class Program
         builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
 
         ConfigureCors(builder);
+        ConfigureStorage(builder);
         ConfigureDatabase(builder);
         ConfigureControllers(builder);
         ConfigureSwagger(builder);
@@ -79,6 +86,12 @@ public class Program
                 });
             });
         }
+    }
+    
+    private static void ConfigureStorage(WebApplicationBuilder builder)
+    {
+        // Add Google Cloud Storage
+        builder.Services.AddSingleton<GoogleCloudStorageService>();
     }
 
     private static void ConfigureDatabase(WebApplicationBuilder builder)

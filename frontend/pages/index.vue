@@ -82,7 +82,6 @@ import {PaletteColorsToArray} from '~/types/PaletteColor';
 
 const authClient = useAuth0()
 const {
-	auth,
 	$apiFetch
 } = useNuxtApp();
 
@@ -148,10 +147,10 @@ const getPaletteIndicatorClasses = (isChecked: boolean) => {
 
   &.hero-section {
     @apply flex flex-col lg:flex-row items-center justify-center gap-4;
-    @apply h-[calc(100%-var(--app-header-height))];
+    @apply h-[calc(100%-var(--app-header-height))] mt-10;
 
     .text-section {
-      @apply flex flex-col items-start justify-center gap-4;
+      @apply flex flex-col items-start justify-center self-start gap-4;
       @apply w-full;
       @apply md:w-50vw md:min-w-10em max-w-90vw;
       @apply text-on-background;

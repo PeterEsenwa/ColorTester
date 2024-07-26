@@ -15,18 +15,39 @@
 			/>
 		</RadioGroupRoot>
 		<SvgRenderer
-			:svg-path="StorySVG"
+			v-if="DemoSVG"
+			:svg="DemoSVG"
 			:palette-colors="selectedColor"
 		/>
+		<div v-else
+			class="w-[365px] h-[300px]"
+		>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import StorySVG from '@/samples/Chat_App.svg';
 import type {PaletteColor, PaletteColors} from '~/types/PaletteColor';
 import { ColorType } from '~/types/ColorType';
+import MockupService from "~/services/mockup.service";
+import {useAuth0} from "@auth0/auth0-vue";
 
+const authClient = useAuth0()
+const {
+	$apiFetch
+} = useNuxtApp();
+
+const DemoSVG = ref<string>();
+
+// fetch mockup SVG from new API
+watchEffect(async () => {
+	// use MockupService
+	const mockupService = new MockupService($apiFetch.value);
+	mockupService.fetchMockup('Chat_App.svg').then((mockup) => {
+		DemoSVG.value = mockup;
+	});
+});
 
 const paletteColors = ref<PaletteColor[]>([
 	{

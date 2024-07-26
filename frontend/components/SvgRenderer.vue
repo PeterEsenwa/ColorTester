@@ -19,7 +19,7 @@ import camelcase from "camelcase";
 
 // Props
 const props = withDefaults(defineProps<{
-	svgPath: string;
+	svg: string;
 	paletteColors?: PaletteColor[];
 	rounded?: boolean;
 }>(), {
@@ -49,19 +49,12 @@ const isLoaded = ref(false);
 
 // Methods
 const loadAndRenderSVG = async (
-	svgPath: string,
+	svg: string,
 ) => {
 	isLoaded.value = false;
 	try {
-		const response = await fetch(svgPath);
-		if (!response.ok) {
-			return emit('svg-load-error', new Error(`Failed to load SVG from ${ svgPath }`));
-		}
-
-		const svgText = await response.text();
-
 		if (svgContainer.value) {
-			svgContainer.value.appendChild(new DOMParser().parseFromString(svgText, 'image/svg+xml').documentElement);
+			svgContainer.value.appendChild(new DOMParser().parseFromString(svg, 'image/svg+xml').documentElement);
 		}
 	} catch (error) {
 		console.error(error);
@@ -126,7 +119,7 @@ const applyColorSettings = (paletteColors?: PaletteColor[]) => {
 // Lifecycle hooks
 onMounted(() => {
 	watchEffect(() => {
-		loadAndRenderSVG(props.svgPath);
+		loadAndRenderSVG(props.svg);
 	});
 
 	watch(() => [props.paletteColors, isLoaded], () => {

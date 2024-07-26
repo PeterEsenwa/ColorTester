@@ -1,20 +1,41 @@
 <template>
 	<div class="renderer-editor-container">
-		<SvgRenderer :palette-colors="staticPalette" :svg-path="ChatAppSVG"/>
+		<SvgRenderer
+			:palette-colors="staticPalette"
+			v-if="mockupSVG"
+			:svg="mockupSVG"/>
 		<PaletteEditor/>
 	</div>
 </template>
 
 <script setup lang="ts">
-import ChatAppSVG from '@/samples/Chat_App.svg'
 import SvgRenderer from '~/components/SvgRenderer.vue';
 import PaletteEditor from '~/components/palette-editor/PaletteEditor.vue';
 import {usePaletteEditorColorRolesStore} from "~/stores/paletteEditorColorRolesStore";
 import type {PaletteColor} from "~/types/PaletteColor";
+import MockupService from "~/services/mockup.service";
 import {ColorType} from "~/types/ColorType";
 import {watchDebounced} from "@vueuse/core";
+import {useAuth0} from "@auth0/auth0-vue";
 
 const rolesStore = usePaletteEditorColorRolesStore();
+
+const authClient = useAuth0()
+const {
+	$apiFetch
+} = useNuxtApp();
+
+// ref to store the mockup SVG
+const mockupSVG = ref<string>();
+
+// fetch mockup SVG from new API
+watchEffect(async () => {
+	// use MockupService
+	const mockupService = new MockupService($apiFetch.value, await authClient?.getAccessTokenSilently());
+	mockupService.fetchMockup('Chat_App.svg').then((mockup) => {
+		mockupSVG.value = mockup;
+	});
+});
 
 // Define your static palette here
 const staticPalette = ref<PaletteColor[]>();
@@ -71,7 +92,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .renderer-editor-container {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 </style>
