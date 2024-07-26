@@ -14,7 +14,7 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          entryPoint: '/frontend'
+          entryPoint: 'frontend'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COLORTESTER }}'
           channelId: live
           projectId: colortester
