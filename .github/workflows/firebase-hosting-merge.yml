@@ -6,15 +6,28 @@ name: Deploy to Firebase Hosting on merge
   push:
     branches:
       - v0.0.1
+permissions:
+  checks: write
+  contents: read
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile && pnpm generate
+        working-directory: frontend
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          entryPoint: 'frontend'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COLORTESTER }}'
-          channelId: live
           projectId: colortester
+          channelId: live
+          entryPoint: frontend

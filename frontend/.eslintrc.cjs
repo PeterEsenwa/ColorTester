@@ -1,5 +1,6 @@
 module.exports = {
 	root: true,
+	ignorePatterns: [ 'dist', '.output', '.nuxt' ],
 	env: {
 		browser: true,
 		node: true,

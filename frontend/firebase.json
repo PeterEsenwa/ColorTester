@@ -1,8 +1,4 @@
 {
-  "functions": {
-    "runtime": "nodejs18",
-    "source": ".output/server"
-  },
   "hosting": {
     "cleanUrls": true,
     "public": ".output/public",
@@ -14,7 +10,7 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "server"
+        "destination": "/200.html"
       }
     ]
   }

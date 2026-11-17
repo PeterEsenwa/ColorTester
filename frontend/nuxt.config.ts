@@ -20,14 +20,8 @@ export default defineNuxtConfig({
 		autoImport: true
 	},
 	nitro: {
-		preset: 'firebase',
-		firebase: {
-			nodeVersion: '18',
-			gen: 2,
-			httpsOptions: {
-				maxInstances: 2,
-			}
-		},
+		// The app is a client-side SPA (ssr: false), so it deploys as static files to Firebase Hosting.
+		preset: 'static',
 	},
 	runtimeConfig: {
 		public: {
