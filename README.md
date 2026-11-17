@@ -41,7 +41,7 @@ dotnet test ColorTesterAPI.Domain.Tests
 cd frontend
 pnpm install --frozen-lockfile
 pnpm lint
-pnpm build
+pnpm generate   # static SPA output in frontend/.output/public
 ```
 
 If `pnpm` fails with `Cannot find matching keyid`, your Corepack is older than npm's current signing keys.

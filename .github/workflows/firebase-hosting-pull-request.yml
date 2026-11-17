@@ -21,7 +21,7 @@ jobs:
           node-version: 22
           cache: pnpm
           cache-dependency-path: frontend/pnpm-lock.yaml
-      - run: pnpm install --frozen-lockfile && pnpm build
+      - run: pnpm install --frozen-lockfile && pnpm generate
         working-directory: frontend
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
