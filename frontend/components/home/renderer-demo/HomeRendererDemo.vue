@@ -19,10 +19,10 @@
 			:svg="DemoSVG"
 			:palette-colors="selectedColor"
 		/>
-		<div v-else
+		<div
+			v-else
 			class="w-[365px] h-[300px]"
-		>
-		</div>
+		/>
 	</div>
 </template>
 
