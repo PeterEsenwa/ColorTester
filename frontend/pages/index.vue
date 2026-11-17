@@ -31,9 +31,9 @@
 			<div class="flex gap-2em">
 				<div class="palettes-area">
 					<HeadlessRadioGroup
+						v-model="selectedPalette"
 						as="div"
 						class="flex flex-col gap-2em"
-						v-model="selectedPalette"
 					>
 						<template
 							v-if="isLoadingPalettes"
@@ -61,7 +61,7 @@
 				</div>
 			</div>
 
-<!--			<div
+			<!--			<div
 				class="add-palette-area"
 			>
 				<h5 class="title-2">

@@ -1,10 +1,11 @@
 <template>
 	<div class="renderer-editor-container">
 		<SvgRenderer
-			:palette-colors="staticPalette"
 			v-if="mockupSVG"
-			:svg="mockupSVG"/>
-		<PaletteEditor/>
+			:palette-colors="staticPalette"
+			:svg="mockupSVG"
+		/>
+		<PaletteEditor />
 	</div>
 </template>
 

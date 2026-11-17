@@ -25,6 +25,7 @@ module.exports = {
 							'index',
 							'Index.story',
 							'*.story.vue',
+							'[id]',
 						]
 					}
 				],
